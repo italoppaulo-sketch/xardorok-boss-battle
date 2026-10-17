@@ -36,7 +36,16 @@ static func create_units() -> Array[Dictionary]:
 				"color": colors[i],
 				"enemy": i == 5,
 				"move": 5,
-				"actions": 1
+				"actions": 1,
+				"bonus": 1,
+				"mana": 100,
+				"max_mana": 100,
+				"statuses": {},
+				"cooldowns": {},
+				"resistances":
+				{"ice": 0.2} if i == 0 else ({"fire": 0.45, "ice": -0.25} if i == 5 else {}),
+				"evasion": 0.25 if i == 1 else 0.05,
+				"spawn_round": 0
 			}
 		)
 	return units
