@@ -23,7 +23,7 @@ func settle(scene: Node) -> void:
 
 
 func run() -> void:
-	var scene: Node = load("res://scenes/main.tscn").instantiate()
+	var scene: Node = load("res://scenes/main_original.tscn").instantiate()
 	root.add_child(scene)
 	await process_frame
 	expect(scene.hud.hero_buttons.size() == 5, "Interface cria cinco botões")

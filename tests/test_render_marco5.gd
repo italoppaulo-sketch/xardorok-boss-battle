@@ -44,7 +44,7 @@ func run() -> void:
 		push_error("Teste requer display gráfico real")
 		quit(1)
 		return
-	scene = load("res://scenes/main.tscn").instantiate()
+	scene = load("res://scenes/main_original.tscn").instantiate()
 	root.add_child(scene)
 	await create_timer(0.5).timeout
 	await capture("marco5_arena_hud")

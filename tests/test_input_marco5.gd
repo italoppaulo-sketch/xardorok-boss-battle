@@ -37,7 +37,7 @@ func click(point: Vector2) -> void:
 
 
 func run() -> void:
-	scene = load("res://scenes/main.tscn").instantiate()
+	scene = load("res://scenes/main_original.tscn").instantiate()
 	root.add_child(scene)
 	await process_frame
 	var b: RefCounted = scene.battle

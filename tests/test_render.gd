@@ -13,7 +13,7 @@ func run() -> void:
 		push_error("Este teste requer display e renderização reais.")
 		quit(1)
 		return
-	var scene: Node = load("res://scenes/main.tscn").instantiate()
+	var scene: Node = load("res://scenes/main_original.tscn").instantiate()
 	root.add_child(scene)
 	await process_frame
 	var count := 0

@@ -23,7 +23,7 @@ func run() -> void:
 		push_error("Partida visual exige display gráfico")
 		quit(1)
 		return
-	scene = load("res://scenes/main.tscn").instantiate()
+	scene = load("res://scenes/main_original.tscn").instantiate()
 	root.add_child(scene)
 	await process_frame
 	scene.battle.rng.seed = 17

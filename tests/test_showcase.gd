@@ -28,7 +28,7 @@ func run() -> void:
 		push_error("Showcase requer display real")
 		quit(1)
 		return
-	var scene: Node = load("res://scenes/main.tscn").instantiate()
+	var scene: Node = load("res://scenes/main_original.tscn").instantiate()
 	root.add_child(scene)
 	await create_timer(0.6).timeout
 	await capture("marco4_batalha")
