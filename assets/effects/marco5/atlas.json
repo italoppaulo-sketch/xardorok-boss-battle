@@ -1,0 +1,18 @@
+{
+  "columns": 4,
+  "frame_size": [
+    96,
+    96
+  ],
+  "families": [
+    "aura",
+    "shield",
+    "hit_fire",
+    "floor_fire",
+    "floors",
+    "electric"
+  ],
+  "frames": 24,
+  "resampling": "nearest",
+  "runtime_dependencies": []
+}

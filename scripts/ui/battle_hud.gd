@@ -5,6 +5,7 @@ signal mode_selected(mode: String)
 signal skill_selected(id: String)
 signal end_requested
 signal restart_requested
+signal meteor_choice(choice: String)
 const Abilities = preload("res://scripts/data/abilities.gd")
 const Statuses = preload("res://scripts/combat/statuses.gd")
 const InitiativeScene = preload("res://scenes/ui/initiative_bar.tscn")
@@ -37,6 +38,11 @@ var log_panel: Panel
 var log_text: RichTextLabel
 var log_button: Button
 var turn_label: Label
+var emergency_root: Control
+var emergency_title: Label
+var emergency_evade: Button
+var emergency_guard: Button
+var boss_state_icons: Array[TextureRect] = []
 var _portrait_cache: Dictionary = {}
 var _icon_cache: Dictionary = {}
 
@@ -145,6 +151,11 @@ func _ready() -> void:
 	boss_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	reaction_label = _label(self, Vector2(883, 80), Vector2(303, 23), 12)
 	reaction_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	for i in 2:
+		var state_icon := _picture(self, Vector2(880 + i * 32, 105), Vector2(26, 26))
+		state_icon.mouse_filter = Control.MOUSE_FILTER_PASS
+		state_icon.hide()
+		boss_state_icons.append(state_icon)
 	target_info = _label(self, Vector2(330, 103), Vector2(540, 23), 12)
 	target_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	panel = _panel(Vector2(12, 566), Vector2(280, 126))
@@ -173,6 +184,18 @@ func _ready() -> void:
 					skill_selected.emit(skill_ids[i])
 		)
 		skill_buttons.append(button)
+	emergency_root = Control.new()
+	emergency_root.name = "MeteorResponses"
+	add_child(emergency_root)
+	emergency_root.hide()
+	emergency_title = _label(emergency_root, Vector2(316, 571), Vector2(650, 23), 12)
+	emergency_title.modulate = GOLD
+	emergency_evade = _button(emergency_root, Vector2(316, 600), Vector2(308, 62))
+	emergency_evade.text = "EVASÃO EMERGENCIAL [E]\n1 ação · até 2 células · escolha o destino"
+	emergency_evade.pressed.connect(func(): meteor_choice.emit("evade"))
+	emergency_guard = _button(emergency_root, Vector2(638, 600), Vector2(334, 62))
+	emergency_guard.text = "DEFENDER-SE [D]\n1 bônus + 8 PM · 50% menos dano do impacto"
+	emergency_guard.pressed.connect(func(): meteor_choice.emit("guard"))
 	description = _label(self, Vector2(316, 676), Vector2(658, 14), 10)
 	_panel(Vector2(998, 566), Vector2(190, 126))
 	end_button = _button(self, Vector2(1008, 576), Vector2(170, 43))
@@ -324,7 +347,16 @@ func refresh(battle: RefCounted, selected: int, mode: String, status: String) ->
 		button.get_node("Portrait").modulate = Color.WHITE if current.hp > 0 else Color("656970")
 		button.get_node("Name").size.x = card_width - 4
 		var badges: PackedStringArray = []
-		for state in ["silenced", "frozen", "burning", "rooted", "flying", "illusion"]:
+		for state in [
+			"silenced",
+			"frozen",
+			"burning",
+			"rooted",
+			"flight",
+			"illusion",
+			"fire_shield",
+			"fire_aura"
+		]:
 			if visible_unit and current.statuses.has(state):
 				badges.append(
 					{
@@ -332,8 +364,10 @@ func refresh(battle: RefCounted, selected: int, mode: String, status: String) ->
 						"frozen": "G",
 						"burning": "Q",
 						"rooted": "E",
-						"flying": "V",
-						"illusion": "I"
+						"flight": "V",
+						"illusion": "I",
+						"fire_shield": "P",
+						"fire_aura": "F"
 					}[state]
 				)
 		button.get_node("States").text = "".join(badges).left(3) if visible_unit else "?"
@@ -394,6 +428,7 @@ func refresh(battle: RefCounted, selected: int, mode: String, status: String) ->
 		"REAÇÕES  %d / %d   ·   FASE %d"
 		% [battle.reactions_used, battle.Config.REACTIONS_PER_ROUND, battle.boss_phase]
 	)
+	_update_boss_states(boss, boss_visible)
 	var visible_selected: bool = battle.player_visible(selected)
 	ability_root.visible = visible_selected
 	description.visible = visible_selected
@@ -461,15 +496,27 @@ func refresh(battle: RefCounted, selected: int, mode: String, status: String) ->
 	if not battle.outcome.is_empty():
 		message.text = battle.outcome + " · Pressione R para jogar novamente."
 	end_button.disabled = not battle.outcome.is_empty() or active < 0 or active >= 5
+	end_button.text = "ENCERRAR TURNO\n[Espaço]"
+	emergency_root.hide()
+	if battle.meteor_window:
+		_refresh_meteor_response(battle, mode)
 	log_text.text = "\n".join(battle.player_history())
 	log_button.text = "Registro de combate  ▴" if log_panel.visible else "Registro de combate  ▾"
 
 
 func inspect_target(battle: RefCounted, cell: Vector2i) -> void:
+	var floor_note := ""
+	if battle.has_method("is_burning_cell") and battle.is_burning_cell(cell):
+		floor_note = "CHÃO EM CHAMAS · risco ao entrar ou encerrar o turno. "
+	elif "fires" in battle:
+		for fire in battle.fires:
+			if fire.get("cell", Vector2i(-1, -1)) == cell or cell in fire.get("cells", []):
+				floor_note = "CHÃO EM CHAMAS · risco ao entrar ou encerrar o turno. "
+				break
 	var index: int = battle.unit_at(cell)
 	if index < 0 or not battle.player_visible(index):
-		target_info.text = ""
-		target_info.tooltip_text = ""
+		target_info.text = floor_note
+		target_info.tooltip_text = floor_note
 		var observer: int = battle.observer_index()
 		for known in battle.units.size():
 			if (
@@ -486,7 +533,8 @@ func inspect_target(battle: RefCounted, cell: Vector2i) -> void:
 		return
 	var unit: Dictionary = battle.units[index]
 	target_info.text = (
-		"%s · %d/%d HP · %s" % [unit.name, unit.hp, unit.max_hp, Statuses.describe(unit)]
+		floor_note
+		+ "%s · %d/%d HP · %s" % [unit.name, unit.hp, unit.max_hp, Statuses.describe(unit)]
 	)
 	target_info.tooltip_text = target_info.text
 	if index == 5:
@@ -500,6 +548,8 @@ func lock_interface() -> void:
 	for button in hero_buttons + action_buttons + skill_buttons:
 		button.disabled = true
 	end_button.disabled = true
+	emergency_evade.disabled = true
+	emergency_guard.disabled = true
 
 
 func sync_visibility(battle: RefCounted, selected: int) -> void:
@@ -534,6 +584,7 @@ func refresh_snapshot(
 		return
 	var boss: Dictionary = units[5]
 	var visible_boss: bool = observed.call(5)
+	_update_boss_states(boss, visible_boss)
 	boss_hp.visible = visible_boss
 	boss_hp.max_value = boss.max_hp
 	boss_hp.value = boss.hp if visible_boss else 0
@@ -567,3 +618,85 @@ func refresh_snapshot(
 				unit.max_mana
 			]
 		)
+
+
+func _update_boss_states(boss: Dictionary, visible_boss: bool) -> void:
+	var ids := ["fire_shield", "fire_aura"]
+	for i in ids.size():
+		var id: String = ids[i]
+		var glyph := boss_state_icons[i]
+		glyph.visible = visible_boss and boss.statuses.has(id)
+		if glyph.visible:
+			glyph.texture = _icon(id)
+			var ability := Abilities.get_skill(id)
+			glyph.tooltip_text = (
+				"%s · %d turnos próprios restantes\n%s"
+				% [ability.get("name", id), boss.statuses[id], ability.get("description", "")]
+			)
+
+
+func _refresh_meteor_response(battle: RefCounted, mode: String) -> void:
+	ability_root.hide()
+	emergency_root.show()
+	description.show()
+	lock_interface()
+	var index: int = battle.response_index
+	if index < 0:
+		emergency_title.text = "IMPACTO IMINENTE · resolvendo áreas marcadas"
+		end_button.text = "AGUARDE O IMPACTO"
+		return
+	var unit: Dictionary = battle.units[index]
+	var threatened := PackedStringArray()
+	if battle.has_method("meteor_responses"):
+		for hero in battle.meteor_responses():
+			threatened.append(str(battle.units[hero].name))
+	emergency_title.text = "METEORO · RESPOSTA DE %s" % str(unit.name).to_upper()
+	emergency_title.tooltip_text = (
+		"Ameaçados: %s. Um comando por herói; depois todos os impactos são resolvidos."
+		% ", ".join(threatened)
+	)
+	hero_portrait.texture = _portrait(index)
+	hero_hp.show()
+	hero_mana.show()
+	hero_hp.max_value = unit.max_hp
+	hero_hp.value = unit.hp
+	hero_mana.max_value = maxi(1, unit.max_mana)
+	hero_mana.value = unit.mana
+	info.text = (
+		"%s · REAÇÃO\nHP %d/%d\nPM %d/%d"
+		% [unit.name, unit.hp, unit.max_hp, unit.mana, unit.max_mana]
+	)
+	state_info.text = (
+		"Ação %d · Bônus %d · %s" % [unit.actions, unit.bonus, Statuses.describe(unit)]
+	)
+	state_info.tooltip_text = (
+		"Recursos atuais, sem renovação. "
+		+ "Fora do turno, evasão reserva a ação principal do próximo turno."
+	)
+	var guard_reason: String = battle.can_meteor_response(index, "guard", Vector2i.ZERO)
+	emergency_guard.disabled = not guard_reason.is_empty()
+	emergency_guard.tooltip_text = (
+		"Reduz em 50% somente este impacto; consome 1 bônus e 8 PM."
+		+ ("\n" + guard_reason if not guard_reason.is_empty() else "")
+	)
+	emergency_evade.disabled = battle.emergency_destinations(index).is_empty()
+	emergency_evade.tooltip_text = (
+		"Consome 1 ação principal. Máximo de 2 células, pouso livre fora de todas as marcas; "
+		+ "enraizamento e congelamento impedem a evasão. Não concede turno extra."
+	)
+	end_button.disabled = false
+	end_button.text = "MANTER POSIÇÃO\n[Espaço] · sem custo"
+	end_button.tooltip_text = (
+		"Aceita o impacto se ainda estiver na área. "
+		+ "Confirma uma resposta, sem encerrar o turno normal."
+	)
+	description.text = (
+		"Selecione uma célula segura marcada."
+		if mode == "meteor_evade"
+		else "Uma resposta por ameaçado: manter, defender ou evadir. Impacto após a última resposta."
+	)
+	description.tooltip_text = (
+		"Ameaçados: %s. Iniciativa normal pausada; nenhum herói recebe movimento ou ações extras."
+		% ", ".join(threatened)
+	)
+	turn_label.text = "RESPOSTA AO METEORO\nImpacto após as respostas"
