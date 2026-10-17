@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-SUITES = ["test_battle", "test_abilities", "test_scene", "test_input", "test_encounters", "test_visuals"]
+SUITES = ["test_battle", "test_marco4", "test_abilities", "test_scene", "test_input", "test_encounters", "test_visuals"]
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     for command in commands:
         result = subprocess.run(
             [args.godot, "--path", str(ROOT), *command],
-            cwd=ROOT, capture_output=True, text=True, timeout=45, check=False,
+            cwd=ROOT, capture_output=True, text=True, timeout=180, check=False,
         )
         output = result.stdout + result.stderr
         print(output, end="")

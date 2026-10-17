@@ -32,6 +32,7 @@ func run() -> void:
 			for i in 6:
 				scene.battle.units[i].cell = cells[i]
 			scene.battle.units[0].hp = 80
+			scene.battle.active_index = caster
 			scene.selected = mini(caster, 4)
 			var skill := Battle.Abilities.get_skill(id)
 			var cell: Vector2i = (

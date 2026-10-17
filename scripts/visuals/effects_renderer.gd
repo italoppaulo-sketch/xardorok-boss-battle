@@ -21,6 +21,8 @@ func add_event(event: Dictionary, from: Vector2, to: Vector2) -> void:
 	effect.to = to
 	effect.age = -float(event.get("delay", 0.0))
 	effect.life = 1.0 if event.kind in ["damage", "heal", "recoil", "miss"] else 0.8
+	if event.kind in ["phase", "reaction"]:
+		effect.life = 1.5
 	active.append(effect)
 
 
@@ -64,6 +66,48 @@ func _draw() -> void:
 		var point: Vector2 = effect.to
 		var frame := mini(3, int(t * 4))
 		match effect.kind:
+			"phase", "reaction":
+				var phase_change: bool = effect.kind == "phase"
+				var title := (
+					"FASE 2 — A IRA DO REI"
+					if phase_change
+					else (
+						"REAÇÃO — %s"
+						% (
+							"COMANDO DAS CINZAS"
+							if effect.get("ability", "") == "command"
+							else "BRASA ANUNCIADA"
+						)
+					)
+				)
+				draw_rect(Rect2(330, 104, 540, 48), Color(0.08, 0.05, 0.04, minf(0.9, (1 - t) * 2)))
+				draw_string(
+					ThemeDB.fallback_font,
+					Vector2(350, 126),
+					title,
+					HORIZONTAL_ALIGNMENT_LEFT,
+					-1,
+					18,
+					Color(1, 0.76, 0.42, 1 - t)
+				)
+				if not phase_change:
+					draw_string(
+						ThemeDB.fallback_font,
+						Vector2(350, 144),
+						"Aviso tático; a iniciativa normal continua.",
+						HORIZONTAL_ALIGNMENT_LEFT,
+						-1,
+						12,
+						Color(0.9, 0.85, 0.75, 1 - t)
+					)
+				if not effect.get("hide_source", false):
+					_stamp(
+						"meteor",
+						frame,
+						origin,
+						Vector2(124, 124) if phase_change else Vector2(74, 74),
+						Color(1, 0.7, 0.4, (1 - t) * 0.7)
+					)
 			"damage", "heal", "recoil", "miss":
 				var text := "ESQUIVA" if effect.kind == "miss" else str(effect.get("amount", 0))
 				if effect.kind == "heal":

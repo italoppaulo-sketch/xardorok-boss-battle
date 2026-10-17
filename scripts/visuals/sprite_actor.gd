@@ -1,6 +1,6 @@
 extends Node2D
 ## Apresentação de um combatente. Não calcula dano, ações ou deslocamento lógico.
-const NAMES := ["grosso", "kodokami", "cassandra", "thomas", "thuxil", "xardorok"]
+const NAMES := ["grosso", "kodokami", "cassandra", "thomas", "thuxil", "xardorok_marco4"]
 var sprite := AnimatedSprite2D.new()
 var duplicate_sprite := AnimatedSprite2D.new()
 var identity := ""
@@ -17,6 +17,8 @@ var flash_until := 0.0
 var ice_skin := false
 var ice_hammer := false
 var ice_texture: Texture2D
+var enraged := false
+var hit_images := {}
 
 
 func _init() -> void:
@@ -87,10 +89,11 @@ func sync(unit: Dictionary, moving: bool) -> void:
 	if not is_ready:
 		return
 	walk_active = moving
+	enraged = unit.get("boss_phase", 1) == 2 and actor_index == 5
 	ice_skin = unit.statuses.has("ice_skin")
 	ice_hammer = unit.statuses.has("ice_hammer")
 	floating = unit.statuses.has("flight") or identity == "dalamud"
-	desired_scale = 1.6 if unit.statuses.has("giant") else (1.35 if actor_index == 5 else 1.0)
+	desired_scale = 1.6 if unit.statuses.has("giant") else (1.2 if actor_index == 5 else 1.0)
 	if unit.hp <= 0 and not was_dead:
 		on_damage(true)
 	duplicate_sprite.visible = unit.statuses.has("illusion") and not was_dead
@@ -101,7 +104,7 @@ func sync(unit: Dictionary, moving: bool) -> void:
 		var idle := "hover" if floating else ("walk" if moving else "idle")
 		if sprite.animation != idle or not sprite.is_playing():
 			sprite.play(idle)
-	var color := Color.WHITE
+	var color := Color(1.2, 0.78, 0.58) if enraged else Color.WHITE
 	if ice_skin:
 		color = Color(0.65, 0.88, 1.15)
 	if unit.statuses.has("frozen"):
@@ -143,3 +146,26 @@ func _draw() -> void:
 				Rect2(frame * 96, 0, 96, 96),
 				Color(0.75, 0.95, 1, 0.55)
 			)
+
+
+func contains_point(global_point: Vector2) -> bool:
+	if not visible or not is_ready or was_dead:
+		return false
+	var texture: Texture2D = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	var point: Vector2 = (
+		sprite.to_local(global_point) - sprite.offset + Vector2(texture.get_size()) * 0.5
+	)
+	var pixel := Vector2i(floori(point.x), floori(point.y))
+	if (
+		pixel.x < 0
+		or pixel.y < 0
+		or pixel.x >= texture.get_width()
+		or pixel.y >= texture.get_height()
+	):
+		return false
+	if sprite.flip_h:
+		pixel.x = texture.get_width() - 1 - pixel.x
+	var key := "%s:%d" % [sprite.animation, sprite.frame]
+	if not hit_images.has(key):
+		hit_images[key] = texture.get_image()
+	return hit_images[key].get_pixelv(pixel).a > 0.2

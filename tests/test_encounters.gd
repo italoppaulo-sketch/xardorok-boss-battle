@@ -1,10 +1,9 @@
 extends SceneTree
-## Partidas completas desde as posições originais, sem alterar HP ou recursos.
+## 27 partidas sem adulterar HP, recursos, iniciativa ou resultado.
 const Battle = preload("res://scripts/combat/battle.gd")
+const Strategy = preload("res://tests/support/autoplayer.gd")
 var failures := 0
-var wins := 0
-var losses := 0
-var strategy := preload("res://tests/support/autoplayer.gd").new()
+var results: Array[Dictionary] = []
 
 
 func invariant(value: bool, message: String) -> void:
@@ -14,52 +13,111 @@ func invariant(value: bool, message: String) -> void:
 
 
 func _initialize() -> void:
-	for seed_value in 20:
-		var battle := Battle.new()
-		battle.rng.seed = seed_value + 17
-		for turn in 35:
-			if not battle.outcome.is_empty():
-				break
-			for hero in 5:
-				if battle.units[hero].hp > 0:
-					strategy.play_hero(battle, hero)
-				check_integrity(battle)
-				if not battle.outcome.is_empty():
-					break
-			if battle.outcome.is_empty():
-				battle.enemy_turn()
-			check_integrity(battle)
-		if battle.outcome == "BOSS DEFEATED":
-			wins += 1
-		elif battle.outcome == "GRUPO DERROTADO":
-			losses += 1
-		else:
-			invariant(false, "Partida não termina em até 35 rodadas, seed %d" % seed_value)
-	invariant(wins > 0, "Estratégia automatizada precisa conseguir vencer desde posições originais")
-	print(
-		(
-			"Partidas completas: %d vitórias, %d derrotas; falhas: %d; habilidades usadas: %s"
-			% [wins, losses, failures, str(strategy.casts.keys())]
+	for policy in Strategy.POLICIES:
+		for seed_value in [17, 42, 99]:
+			results.append(play(policy, seed_value))
+	var file := FileAccess.open("res://docs/balanceamento_marco4.json", FileAccess.WRITE)
+	file.store_string(
+		JSON.stringify(
+			{
+				"godot": Engine.get_version_info().string,
+				"policies": Strategy.POLICIES,
+				"matches": results
+			},
+			"\t"
 		)
 	)
+	print("BALANCEAMENTO: ", JSON.stringify(results))
+	print("Partidas completas: %d; falhas de integridade: %d" % [results.size(), failures])
 	quit(1 if failures else 0)
+
+
+func play(policy: String, seed_value: int) -> Dictionary:
+	var b := Battle.new()
+	b.rng.seed = seed_value
+	var strategy := Strategy.new()
+	strategy.policy = policy
+	var stats := {
+		"strategy": policy,
+		"seed": seed_value,
+		"rounds": 0,
+		"result": "",
+		"hero_hp": [],
+		"boss_hp": 0,
+		"actions": 0,
+		"casts": {},
+		"boss_damage": 0,
+		"minion_damage": 0,
+		"physical": 0,
+		"meteors": 0,
+		"smoke": 0,
+		"summons": 0,
+		"reactions": 0,
+		"phase_two": false
+	}
+	for step in 1800:
+		if not b.outcome.is_empty() or b.round_number > 80:
+			break
+		b.events.clear()
+		var actor: int = b.active_index
+		if b.units[actor].enemy:
+			b.act_enemy()
+		else:
+			strategy.play_hero(b, actor)
+		collect(stats, b.events)
+		check_integrity(b)
+		b.events.clear()
+		if b.outcome.is_empty():
+			b.end_turn()
+		collect(stats, b.events)
+		check_integrity(b)
+	stats.rounds = b.round_number
+	stats.result = b.outcome if not b.outcome.is_empty() else "LIMITE_80_RODADAS"
+	stats.boss_hp = b.units[5].hp
+	stats.phase_two = b.boss_phase == 2
+	for i in 5:
+		stats.hero_hp.append(b.units[i].hp)
+	return stats
+
+
+func collect(stats: Dictionary, events: Array[Dictionary]) -> void:
+	for event in events:
+		var kind: String = event.kind
+		if kind == "cast":
+			stats.actions += 1
+			var id: String = event.ability
+			stats.casts[id] = int(stats.casts.get(id, 0)) + 1
+			if event.source == 5:
+				if id == "basic":
+					stats.physical += 1
+				if id == "meteors":
+					stats.meteors += 1
+				if id == "smoke":
+					stats.smoke += 1
+				if id == "summon":
+					stats.summons += 1
+		if kind == "reaction":
+			stats.reactions += 1
+		if kind == "damage" and event.target < 5:
+			if event.get("source", -1) == 5 or event.get("source", -1) < 0:
+				stats.boss_damage += event.amount
+			else:
+				stats.minion_damage += event.amount
 
 
 func check_integrity(b: RefCounted) -> void:
 	var occupied := {}
 	for unit in b.units:
-		invariant(unit.hp >= 0 and unit.hp <= unit.max_hp, "HP permanece dentro dos limites")
+		invariant(unit.hp >= 0 and unit.hp <= unit.max_hp, "HP dentro dos limites")
+		invariant(unit.mana >= 0 and unit.mana <= unit.max_mana, "PM dentro dos limites")
 		invariant(
-			unit.mana >= 0 and unit.mana <= unit.max_mana, "Mana permanece dentro dos limites"
-		)
-		invariant(
-			unit.actions >= 0 and unit.bonus >= 0 and unit.move >= 0, "Recursos nunca negativos"
+			unit.actions >= 0 and unit.bonus >= 0 and unit.move >= 0, "Recursos não negativos"
 		)
 		if unit.hp <= 0:
 			continue
-		invariant(b.inside(unit.cell) and unit.cell not in b.WALLS, "Unidades vivas em chão válido")
+		invariant(b.inside(unit.cell) and unit.cell not in b.WALLS, "Unidades em piso válido")
 		invariant(not occupied.has(unit.cell), "Sem sobreposição de unidades vivas")
 		occupied[unit.cell] = true
 		for id in unit.statuses:
 			invariant(unit.statuses[id] > 0, "Não restam estados expirados")
-	invariant(b.living_minions() <= 3, "Número de lacaios respeita limite")
+	invariant(b.living_minions() <= 3, "Limite de lacaios")

@@ -5,13 +5,12 @@ const Hud = preload("res://scripts/ui/battle_hud.gd")
 var battle := Battle.new()
 var arena := Arena.new()
 var hud := Hud.new()
-var selected := 0
+var selected := 1
+var shown_turn_index := 1
+var enemy_action_finished := false
 var mode := "move"
 var busy := false
-var status := (
-	"Escolha um herói (1–5), uma habilidade e seu alvo.\n"
-	+ "Magias pessoais usam o bônus ao clicar no botão. Espaço encerra a rodada."
-)
+var status := "Seu turno: mova, use ação e bônus. Espaço encerra · R reinicia."
 
 
 func _ready() -> void:
@@ -21,6 +20,7 @@ func _ready() -> void:
 	arena.cell_clicked.connect(_on_cell)
 	arena.presentation_started.connect(_on_presentation_started)
 	arena.presentation_finished.connect(_on_presentation_finished)
+	arena.display_state_changed.connect(_on_display_state_changed)
 	arena.cell_hovered.connect(
 		func(cell: Vector2i):
 			if not busy:
@@ -37,7 +37,13 @@ func _ready() -> void:
 func _select(index: int) -> void:
 	if busy:
 		return
-	if index >= 0 and index < 5 and battle.units[index].hp > 0 and battle.outcome.is_empty():
+	if (
+		index >= 0
+		and index < 5
+		and battle.units[index].hp > 0
+		and battle.player_visible(index)
+		and battle.outcome.is_empty()
+	):
 		selected = index
 		mode = "move"
 		_refresh()
@@ -79,6 +85,8 @@ func _on_cell(cell: Vector2i) -> void:
 	if not battle.outcome.is_empty():
 		return
 	var target := battle.unit_at(cell)
+	if target >= 0 and not battle.player_visible(target):
+		target = -1
 	var id := "basic" if mode == "attack" else mode
 	var skill := Battle.Abilities.get_skill(id)
 	if target >= 0 and target < 5 and skill.get("target", "") not in ["ally", "ground", "self"]:
@@ -99,18 +107,33 @@ func _on_cell(cell: Vector2i) -> void:
 
 
 func _end_round() -> void:
-	if busy:
+	if busy or battle.active_index >= 5 or not battle.outcome.is_empty():
 		return
 	arena.capture_state()
-	status = battle.enemy_turn()
+	status = battle.end_turn()
+	enemy_action_finished = false
 	arena.present(battle.events)
-	if battle.units[selected].hp <= 0:
-		for i in 5:
-			if battle.units[i].hp > 0:
-				selected = i
-				break
-	mode = "move"
 	_refresh()
+	if not busy:
+		_continue_turns.call_deferred()
+
+
+func _continue_turns() -> void:
+	if busy or not battle.outcome.is_empty() or battle.active_index < 5:
+		return
+	arena.capture_state()
+	if not enemy_action_finished:
+		battle.events.clear()
+		enemy_action_finished = true
+		battle.act_enemy()
+		status = "O combatente inimigo executa seu turno."
+	else:
+		enemy_action_finished = false
+		status = battle.end_turn()
+	arena.present(battle.events)
+	_refresh()
+	if not busy:
+		_continue_turns.call_deferred()
 
 
 func _restart() -> void:
@@ -118,7 +141,9 @@ func _restart() -> void:
 	battle = Battle.new()
 	arena.battle = battle
 	arena.reset_visuals()
-	selected = 0
+	selected = battle.active_index
+	shown_turn_index = battle.active_index
+	enemy_action_finished = false
 	mode = "move"
 	status = "Batalha reiniciada: HP, mana, estados, recargas e invocações restaurados."
 	_refresh()
@@ -128,6 +153,10 @@ func _refresh() -> void:
 	if busy:
 		hud.lock_interface()
 		return
+	if shown_turn_index != battle.active_index:
+		shown_turn_index = battle.active_index
+		selected = battle.active_index if battle.active_index < 5 else battle.observer_index()
+		mode = "move"
 	arena.selected = selected
 	arena.show_moves = mode == "move"
 	arena.skill_id = "basic" if mode == "attack" else mode
@@ -145,6 +174,12 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		_end_round()
 	elif event.keycode == KEY_R:
 		_restart()
+	elif event.keycode == KEY_A:
+		_set_mode("attack")
+	elif event.keycode in [KEY_Q, KEY_W, KEY_E, KEY_T] and not busy:
+		var slot := [KEY_Q, KEY_W, KEY_E, KEY_T].find(event.keycode)
+		if slot < hud.skill_ids.size():
+			_choose_skill(hud.skill_ids[slot])
 	elif event.keycode == KEY_ESCAPE:
 		_set_mode("move")
 
@@ -152,9 +187,15 @@ func _unhandled_key_input(event: InputEvent) -> void:
 func _on_presentation_started() -> void:
 	busy = true
 	hud.lock_interface()
+	hud.sync_visibility(battle, selected)
 	hud.message.text = "Ação em andamento… [R] reinicia a batalha."
 
 
 func _on_presentation_finished() -> void:
 	busy = false
 	_refresh()
+	_continue_turns.call_deferred()
+
+
+func _on_display_state_changed() -> void:
+	hud.refresh_snapshot(battle, arena.visual_units, arena.visible_to_player, selected)
