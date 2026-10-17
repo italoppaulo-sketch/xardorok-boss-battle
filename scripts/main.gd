@@ -1,10 +1,12 @@
 extends Node2D
 const Battle = preload("res://scripts/combat/battle.gd")
 const Arena = preload("res://scripts/world/arena.gd")
+const HybridArena = preload("res://scripts/camera/hybrid_arena.gd")
 const Hud = preload("res://scripts/ui/battle_hud.gd")
 const VictorySequence = preload("res://scripts/visuals/victory_sequence.gd")
+@export var use_tactical_camera := true
 var battle := Battle.new()
-var arena := Arena.new()
+var arena: Arena
 var hud := Hud.new()
 var victory := VictorySequence.new()
 var selected := 1
@@ -17,21 +19,19 @@ var status := "Seu turno: mova, use ação e bônus. Espaço encerra · R reinic
 
 
 func _ready() -> void:
+	if arena == null:
+		arena = (
+			HybridArena.new()
+			if use_tactical_camera and "--original-2d" not in OS.get_cmdline_user_args()
+			else Arena.new()
+		)
 	arena.battle = battle
 	arena.cinematic_victory = true
 	add_child(arena)
 	add_child(hud)
 	add_child(victory)
 	victory.configure(arena, battle)
-	arena.cell_clicked.connect(_on_cell)
-	arena.presentation_started.connect(_on_presentation_started)
-	arena.presentation_finished.connect(_on_presentation_finished)
-	arena.display_state_changed.connect(_on_display_state_changed)
-	arena.cell_hovered.connect(
-		func(cell: Vector2i):
-			if not busy:
-				hud.inspect_target(battle, cell)
-	)
+	_connect_arena_signals()
 	hud.hero_selected.connect(_select)
 	hud.mode_selected.connect(_set_mode)
 	hud.skill_selected.connect(_choose_skill)
@@ -197,6 +197,9 @@ func _refresh() -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is not InputEventKey or not event.pressed or event.echo:
 		return
+	if event.keycode == KEY_F2:
+		_toggle_presentation()
+		return
 	if event.keycode == KEY_R:
 		_restart()
 		return
@@ -306,3 +309,38 @@ func _respond_meteor(choice: String, destination: Vector2i = Vector2i.ZERO) -> v
 	_refresh()
 	if not busy:
 		_continue_turns.call_deferred()
+
+
+func _connect_arena_signals() -> void:
+	arena.cell_clicked.connect(_on_cell)
+	arena.presentation_started.connect(_on_presentation_started)
+	arena.presentation_finished.connect(_on_presentation_finished)
+	arena.display_state_changed.connect(_on_display_state_changed)
+	arena.cell_hovered.connect(
+		func(cell: Vector2i):
+			if not busy:
+				hud.inspect_target(battle, cell)
+	)
+
+
+func _toggle_presentation() -> void:
+	if busy or victory.is_playing():
+		status = "Aguarde a ação terminar para alternar a apresentação."
+		return
+	var hybrid: bool = arena.has_method("world_cell")
+	var previous_arena: Node2D = arena
+	remove_child(previous_arena)
+	previous_arena.queue_free()
+	arena = Arena.new() if hybrid else HybridArena.new()
+	arena.battle = battle
+	arena.cinematic_victory = true
+	add_child(arena)
+	move_child(arena, 0)
+	_connect_arena_signals()
+	victory.configure(arena, battle)
+	status = (
+		"Apresentação original 2D. [F2] retorna à câmera tática."
+		if hybrid
+		else "Câmera tática 2.5D. [F2] retorna à apresentação original."
+	)
+	_refresh()
