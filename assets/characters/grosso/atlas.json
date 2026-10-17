@@ -1,0 +1,337 @@
+{
+  "grid": [
+    8,
+    4
+  ],
+  "frame_size": [
+    112,
+    128
+  ],
+  "anchor": [
+    56,
+    118
+  ],
+  "idle_height": 72,
+  "frames": [
+    {
+      "frame": 0,
+      "bounds": [
+        27,
+        46,
+        57,
+        72
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 1,
+      "bounds": [
+        28,
+        46,
+        56,
+        72
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 2,
+      "bounds": [
+        28,
+        46,
+        56,
+        72
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 3,
+      "bounds": [
+        28,
+        46,
+        56,
+        72
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 4,
+      "bounds": [
+        26,
+        46,
+        59,
+        72
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 5,
+      "bounds": [
+        24,
+        45,
+        63,
+        73
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 6,
+      "bounds": [
+        27,
+        45,
+        58,
+        73
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 7,
+      "bounds": [
+        22,
+        45,
+        67,
+        73
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 8,
+      "bounds": [
+        23,
+        33,
+        66,
+        85
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 9,
+      "bounds": [
+        25,
+        32,
+        61,
+        86
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 10,
+      "bounds": [
+        21,
+        43,
+        70,
+        75
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 11,
+      "bounds": [
+        22,
+        57,
+        67,
+        61
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 12,
+      "bounds": [
+        7,
+        50,
+        98,
+        68
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 13,
+      "bounds": [
+        27,
+        50,
+        58,
+        68
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 14,
+      "bounds": [
+        20,
+        51,
+        71,
+        67
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 15,
+      "bounds": [
+        19,
+        48,
+        74,
+        70
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 16,
+      "bounds": [
+        20,
+        48,
+        72,
+        70
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 17,
+      "bounds": [
+        26,
+        42,
+        60,
+        76
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 18,
+      "bounds": [
+        25,
+        48,
+        61,
+        70
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 19,
+      "bounds": [
+        28,
+        48,
+        56,
+        70
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 20,
+      "bounds": [
+        21,
+        51,
+        69,
+        67
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 21,
+      "bounds": [
+        26,
+        55,
+        60,
+        63
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 22,
+      "bounds": [
+        25,
+        49,
+        61,
+        69
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 23,
+      "bounds": [
+        22,
+        60,
+        67,
+        58
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 24,
+      "bounds": [
+        20,
+        64,
+        71,
+        54
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 25,
+      "bounds": [
+        24,
+        75,
+        64,
+        43
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 26,
+      "bounds": [
+        20,
+        82,
+        71,
+        36
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 27,
+      "bounds": [
+        13,
+        87,
+        86,
+        31
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 28,
+      "bounds": [
+        20,
+        55,
+        71,
+        63
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 29,
+      "bounds": [
+        22,
+        42,
+        68,
+        76
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 30,
+      "bounds": [
+        18,
+        44,
+        75,
+        74
+      ],
+      "baseline": 118
+    },
+    {
+      "frame": 31,
+      "bounds": [
+        25,
+        36,
+        61,
+        82
+      ],
+      "baseline": 118
+    }
+  ]
+}

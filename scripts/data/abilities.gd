@@ -1,6 +1,18 @@
 extends RefCounted
 ## Catálogo independente do motor e da apresentação. Distâncias em passos Manhattan.
 const DATA := {
+	"red_laser":
+	{
+		"name": "Laser Vermelho",
+		"target": "enemy",
+		"range": 6,
+		"power": 14,
+		"element": "arcane",
+		"magic": true,
+		"color": "ff354a",
+		"description":
+		"Raio mágico vermelho dos acólitos. Alcance 6, dano 14; bloqueado por silêncio e visão."
+	},
 	"basic":
 	{
 		"name": "Ataque básico",
@@ -270,4 +282,4 @@ static func get_skill(id: String) -> Dictionary:
 
 
 static func loadout(index: int) -> Array:
-	return LOADOUTS[index].duplicate() if index < LOADOUTS.size() else []
+	return LOADOUTS[index].duplicate() if index < LOADOUTS.size() else ["red_laser"]

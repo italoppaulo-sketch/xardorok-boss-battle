@@ -72,7 +72,7 @@ func _ready() -> void:
 	content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.add_child(content)
 	var heading := _label(content, Vector2(16, 12), Vector2(356, 26), 17)
-	heading.text = "HERÓIS  ·  MARCO 2"
+	heading.text = "HERÓIS  ·  MARCO 3"
 	for i in 5:
 		var button := _button(content, Vector2(16 + i * 71, 46), Vector2(67, 48))
 		button.add_theme_font_size_override("font_size", 12)
@@ -201,3 +201,9 @@ func inspect_target(battle: RefCounted, cell: Vector2i) -> void:
 		)
 
 	target_info.tooltip_text = target_info.text
+
+
+func lock_interface() -> void:
+	for button in hero_buttons + action_buttons + skill_buttons:
+		button.disabled = true
+	end_button.disabled = true

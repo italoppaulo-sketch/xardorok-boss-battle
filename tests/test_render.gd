@@ -43,6 +43,8 @@ func run() -> void:
 				scene.battle.phase = "enemies"
 				if id == "basic":
 					cell = cells[0]
+			scene.arena.reset_visuals()
+			scene._refresh()
 			if not scene.battle.use_ability(caster, id, cell):
 				failures += 1
 				push_error("Falha ao executar: " + id)
@@ -51,7 +53,7 @@ func run() -> void:
 				scene.battle._resolve_world()
 			scene.arena.present(scene.battle.events)
 			scene._refresh()
-			await create_timer(0.22).timeout
+			await create_timer(0.6).timeout
 			await RenderingServer.frame_post_draw
 			var image2d := root.get_texture().get_image()
 			if image2d == null or image2d.is_empty() or image2d.get_width() != 1200:

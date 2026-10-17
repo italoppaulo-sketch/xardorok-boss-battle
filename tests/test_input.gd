@@ -1,5 +1,6 @@
 extends SceneTree
 var failures := 0
+var tested_scene: Node
 
 
 func expect(value: bool, text: String) -> void:
@@ -23,6 +24,8 @@ func click(point: Vector2) -> void:
 		event.pressed = down
 		root.push_input(event, true)
 		await process_frame
+	while tested_scene.busy:
+		await process_frame
 
 
 func key(code: int) -> void:
@@ -32,10 +35,13 @@ func key(code: int) -> void:
 		event.pressed = down
 		root.push_input(event, true)
 		await process_frame
+	while tested_scene.busy:
+		await process_frame
 
 
 func run() -> void:
 	var scene: Node = load("res://scenes/main.tscn").instantiate()
+	tested_scene = scene
 	root.add_child(scene)
 	await process_frame
 	await click(Vector2(982, 88))

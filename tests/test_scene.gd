@@ -14,6 +14,11 @@ func _initialize() -> void:
 	call_deferred("run")
 
 
+func settle(scene: Node) -> void:
+	while scene.busy:
+		await process_frame
+
+
 func run() -> void:
 	var scene: Node = load("res://scenes/main.tscn").instantiate()
 	root.add_child(scene)
@@ -29,6 +34,7 @@ func run() -> void:
 	scene.hud.hero_buttons[0].pressed.emit()
 	scene.arena.cell_clicked.emit(Vector2i(3, 2))
 	expect(scene.battle.units[0].cell == Vector2i(3, 2), "Clique na arena move herói")
+	await settle(scene)
 	scene.hud.end_requested.emit()
 	expect(scene.battle.round_number == 2, "Interface encerra rodada")
 	scene.hud.restart_requested.emit()
@@ -105,6 +111,7 @@ func run() -> void:
 	scene.battle.units[5].hp = 1
 	scene._set_mode("attack")
 	scene._on_cell(Vector2i(12, 4))
+	await settle(scene)
 	expect(scene.hud.message.text.begins_with("BOSS DEFEATED"), "Interface mostra vitória")
 
 	scene.queue_free()

@@ -6,6 +6,7 @@ const Abilities = preload("res://scripts/data/abilities.gd")
 const Statuses = preload("res://scripts/combat/statuses.gd")
 const Navigation = preload("res://scripts/combat/navigation.gd")
 const Executor = preload("res://scripts/abilities/executor.gd")
+const MinionAI = preload("res://scripts/ai/minion_ai.gd")
 const BossAI = preload("res://scripts/ai/xardorok_ai.gd")
 const SIZE := Vector2i(15, 9)
 const WALLS := [Vector2i(7, 2), Vector2i(7, 3), Vector2i(7, 5), Vector2i(7, 6)]
@@ -43,6 +44,8 @@ func apply_status(index: int, id: String, duration: int) -> bool:
 		record(
 			{
 				"kind": "status",
+				"status_id": id,
+				"turns": duration,
 				"target": index,
 				"color": Statuses.DEFINITIONS[id].color,
 				"text":
@@ -342,12 +345,12 @@ func spawn_minions() -> void:
 				var minion: Dictionary = units[5].duplicate(true)
 				minion.merge(
 					{
-						"name": "Cinza %d" % (units.size() - 5),
+						"name": "Acólito %d" % (units.size() - 5),
 						"hp": 60,
 						"max_hp": 60,
 						"damage": 14,
 						"cell": cell,
-						"color": Color("bf8c73"),
+						"color": Color("e74b55"),
 						"statuses": {},
 						"cooldowns": {},
 						"evasion": 0.05,
@@ -396,6 +399,7 @@ func _tick_statuses(index: int) -> void:
 		record(
 			{
 				"kind": "expire",
+				"status_id": id,
 				"target": index,
 				"color": Statuses.DEFINITIONS[id].color,
 				"text": "%s: %s terminou." % [units[index].name, Statuses.DEFINITIONS[id].name]
@@ -473,8 +477,7 @@ func enemy_turn() -> String:
 		if not has_status(i, "frozen"):
 			var target := BossAI.nearest_hero(self, i)
 			if target >= 0:
-				Navigation.pursue(self, i, target)
-				attack(i, target)
+				MinionAI.act(self, i, target)
 		_tick_statuses(i)
 	if outcome.is_empty():
 		round_number += 1
