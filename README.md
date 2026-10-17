@@ -1,14 +1,27 @@
-# Xardorok Boss Battle — Marco 5: A Ira do Rei das Cinzas
+# Xardorok Boss Battle — Marco 5.1: Arena Viva e Câmera Tática
 
-RPG tático em **Godot 4.7.2 / GDScript**, continuando o Marco 4. Corrige o desaparecimento indevido perto das ruínas e acrescenta escudo, aura ativável, meteoros com resposta limitada, incêndios, IA contextual e vitória cinematográfica. Os sprites aprovados dos cinco heróis e de Dalamud permanecem preservados.
+RPG tático em **Godot 4.7.2 / GDScript**, continuando o Marco 5 aprovado. A apresentação principal agora é híbrida 2.5D: cenário com profundidade real e os mesmos sprites 2D. Corrige o desaparecimento indevido perto das ruínas e acrescenta escudo, aura ativável, meteoros com resposta limitada, incêndios, IA contextual e vitória cinematográfica. Os sprites aprovados dos cinco heróis e de Dalamud permanecem preservados.
 
 ## Executar no computador
 
-1. No GitHub Desktop, use **Fetch origin**, escolha **feature/marco-5-polish** e atualize a branch.
+1. No GitHub Desktop, use **Fetch origin**, escolha **feature/marco-5-1-camera-terrain** e atualize a branch.
 2. Abra `project.godot` no **Godot 4.7.2**, aguarde a importação e pressione **F5**.
 3. Se usar o ZIP, extraia o pacote inteiro em uma pasta separada e importe `project.godot`. Não copie apenas os scripts.
 
-O PR parte de `feature/marco-4-boss-hud`, pois o Marco 4 ainda aguarda revisão. Nenhuma alteração é incorporada automaticamente à `main`. Não há plugins ou dependências de execução externos.
+O PR parte de `feature/marco-5-polish`, cuja versão aprovada foi preservada intacta. Nenhuma alteração é incorporada automaticamente à `main`. Não há plugins ou dependências de execução externos.
+
+## Câmera e comparação com a versão aprovada
+
+- **Botão direito + arrastar horizontalmente:** orbitar de −90° a +90°; a arena tem profundidade real, não é uma imagem 2D girada.
+- **Roda:** zoom suave, limitado. **Botão do meio + arrastar:** deslocar o foco dentro da arena.
+- **F:** focar o herói selecionado, desde que esteja visível. **Home:** restaurar orientação, foco e zoom.
+- **F2:** alternar entre 2.5D e apresentação original 2D, mantendo a mesma batalha, posições e recursos. Aguarde a animação corrente ou a vitória terminar antes de alternar.
+- Para iniciar diretamente na apresentação original, execute `scenes/main_original.tscn` com **F6**, ou `godot --path . -- --original-2d`.
+- O laboratório separado está em `scenes/experimental/camera_lab.tscn`. Foi validado antes da integração com seleção, movimento, ataques e uma partida completa.
+
+Personagens têm uma perspectiva corporal aprovada. Billboarding mantém os sprites voltados para a câmera; **não cria vistas novas de costas ou laterais**. Os pés indicam a célula real e dão prioridade de seleção quando corpos se interceptam; o restante do corpo usa transparência e profundidade. Obstáculos físicos interceptam cliques; a fumaça mantém ocultação independentemente do ângulo. Os retratos continuam como alternativa para grupos próximos.
+
+O piso perigoso usa a fotografia vulcânica fornecida, com amostragem contínua global, máscara irregular, variação estável por semente e pulsação. Células seguras não recebem o material perigoso. A lava visual não causa dano por conta própria. A referência tem resolução limitada e pode revelar suavização ao aproximar muito.
 
 ## Jogar
 
@@ -94,3 +107,26 @@ godot --path . --rendering-method gl_compatibility --script tests/test_match_vis
 Consulte [validação](docs/VALIDACAO_MARCO5.md), [balanceamento](docs/BALANCEAMENTO_MARCO5.md), [diagnóstico do bug](docs/BUG_VISIBILIDADE_MARCO5.md), [arte e licença](docs/ARTE_MARCO5.md) e [capturas reais](docs/capturas/).
 
 Validação realizada em Linux com Godot 4.7.2 oficial. Windows, exportação executável e dificuldade definitiva para jogadores humanos continuam sujeitos a teste no computador do usuário. Os três seeds por política não equivalem a uma pesquisa com jogadores. Trilha e efeitos sonoros permanecem para a próxima etapa.
+
+
+## Demonstração e testes do Marco 5.1
+
+[Vídeo real de câmera e combate — 18 segundos](docs/demos/marco51_camera.mp4). A gravação usa um jogador automático com as regras de produção, rotação e zoom programados. O HUD e os efeitos vêm do viewport do Godot; não são imagens conceituais. A reprodução visual foi acelerada em 1,5×, sem alterar HP, dano ou custos.
+
+```text
+python tests/run_tests.py --godot CAMINHO_DO_GODOT --skip-encounters
+godot --path . --rendering-method gl_compatibility --script tests/test_render_marco51.gd
+godot --path . --rendering-method gl_compatibility --script tests/test_spatial_effects_marco51.gd
+```
+
+Use `--skip-encounters` apenas quando os módulos de combate e as estratégias permanecerem inalterados, como nesta atualização visual. Remova a opção para executar novamente as 36 partidas.
+
+## Documentação do Marco 5.1
+
+- [Implementação da câmera e limitações](docs/IMPLEMENTACAO_MARCO51.md)
+- [Regressão e evidência gráfica](docs/VALIDACAO_MARCO51.md)
+- [Diagnóstico dos lacaios](docs/LACAIOS_MARCO51.md)
+- [Terreno vulcânico](docs/TERRENO_MARCO51.md)
+- [Palco tridimensional](docs/AMBIENTE25D_MARCO51.md)
+
+O motor de combate, os valores de dano, a IA, os dados dos heróis e os sprites aprovados permanecem iguais à versão aprovada. O modo original nesta branch recebe somente as correções independentes de terreno e seleção dos lacaios; a branch histórica do Marco 5 permanece sem alterações.

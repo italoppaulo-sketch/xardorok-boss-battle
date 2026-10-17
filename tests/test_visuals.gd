@@ -74,7 +74,7 @@ func run() -> void:
 	var boss_frames: SpriteFrames = load("res://assets/characters/xardorok_marco4/animations.tres")
 	for animation in ["idle", "walk", "attack", "cast", "hit", "death", "special"]:
 		expect(boss_frames.has_animation(animation), "Xardorok Marco4 animação " + animation)
-	var scene: Node = load("res://scenes/main.tscn").instantiate()
+	var scene: Node = load("res://scenes/main_original.tscn").instantiate()
 	root.add_child(scene)
 	await process_frame
 	expect(scene.arena.sorting.y_sort_enabled, "Oclusão por pés")

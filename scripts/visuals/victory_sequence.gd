@@ -113,7 +113,10 @@ func _update_visuals() -> void:
 	# A caída usa PNG da própria coroa; os personagens continuam sendo seus sprites.
 	var fall := clampf((elapsed - 0.15) / 0.85, 0, 1)
 	var bounce := absf(sin(fall * PI * 2.5)) * (1 - fall) * 13
-	crown.position = crown_origin + Vector2(fall * 25, fall * fall * 80 - bounce)
+	if arena.has_method("crown_screen_at"):
+		crown.position = arena.crown_screen_at(fall, bounce)
+	else:
+		crown.position = crown_origin + Vector2(fall * 25, fall * fall * 80 - bounce)
 	crown.rotation = fall * 0.62
 	crown.modulate.a = clampf(elapsed * 4, 0, 1)
 	shade.color.a = clampf((elapsed - 0.6) * 0.24, 0, 0.36)

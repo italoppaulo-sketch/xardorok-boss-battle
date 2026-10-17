@@ -398,7 +398,22 @@ func _unhandled_input(event: InputEvent) -> void:
 func pointer_cell(pointer: Vector2) -> Vector2i:
 	# O corpo desenhado, inclusive a coroa, seleciona a base lógica do combatente.
 	var indices: Array = actors.keys()
-	indices.sort_custom(func(a: int, b: int): return actors[a].position.y > actors[b].position.y)
+	indices.sort_custom(
+		func(a: int, b: int):
+			if not is_equal_approx(actors[a].position.y, actors[b].position.y):
+				return actors[a].position.y > actors[b].position.y
+			# Empate segue a ordem real dos irmãos no Y-sort, de cima para baixo.
+			return actors[a].get_index() > actors[b].get_index()
+	)
+	# A base tem prioridade sobre corpos que se projetam de células vizinhas.
+	# Assim, um lacaio atrás da coroa/barba do chefe continua selecionável.
+	for index in indices:
+		if (
+			battle.units[index].hp > 0
+			and visible_to_player(index)
+			and actors[index].contains_base(to_global(pointer))
+		):
+			return battle.units[index].cell
 	for index in indices:
 		if (
 			battle.units[index].hp > 0
@@ -512,6 +527,11 @@ func paint_overlays(canvas: Node2D) -> void:
 		if unit.hp <= 0 or not actors.has(i) or not visible_to_player(i):
 			continue
 		var point: Vector2 = positions.get(i, center(battle.units[i].cell))
+		# Marca discreta dos pés acima das silhuetas, sem esconder combatentes.
+		# É a mesma pequena região de seleção prioritária do mouse.
+		canvas.draw_set_transform(point + Vector2(0, 14), 0, Vector2(1, 0.55))
+		canvas.draw_arc(Vector2.ZERO, 10, 0, TAU, 24, Color(unit.color, 0.75), 1.2)
+		canvas.draw_set_transform(Vector2.ZERO)
 		canvas.draw_rect(Rect2(point + Vector2(-23, 27), Vector2(46, 7)), Color("101623"))
 		canvas.draw_rect(
 			Rect2(point + Vector2(-22, 28), Vector2(44.0 * unit.hp / unit.max_hp, 5)), unit.color

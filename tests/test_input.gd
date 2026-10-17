@@ -44,7 +44,7 @@ func key(code: int) -> void:
 
 
 func run() -> void:
-	var scene: Node = load("res://scenes/main.tscn").instantiate()
+	var scene: Node = load("res://scenes/main_original.tscn").instantiate()
 	tested_scene = scene
 	root.add_child(scene)
 	await process_frame

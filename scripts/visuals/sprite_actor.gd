@@ -20,6 +20,7 @@ var ice_hammer := false
 var ice_texture: Texture2D
 var enraged := false
 var hit_images := {}
+var render_ground_shadow := true
 var fire_aura := false
 var fire_shield := false
 var electric_until := 0.0
@@ -55,6 +56,15 @@ func configure(index: int, forced_identity: String = "") -> void:
 	var metadata_path := "res://assets/characters/%s/atlas.json" % identity
 	var metadata: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(metadata_path))
 	idle_height = float(metadata.get("idle_height", 64))
+	# O ponto (56,118) dos atlas é o pé, não o centro do quadro transparente.
+	# Derivar a origem preserva a âncora em qualquer animação e escala.
+	var frame_size: Array = metadata.get("frame_size", [112, 128])
+	var anchor: Array = metadata.get("anchor", [56, 118])
+	sprite.offset = (
+		Vector2(float(frame_size[0]), float(frame_size[1])) * 0.5
+		- Vector2(float(anchor[0]), float(anchor[1]))
+	)
+	duplicate_sprite.offset = sprite.offset + Vector2(-24, 0)
 	if index == 3 or identity == "dalamud":
 		sprite.sprite_frames = sprite.sprite_frames.duplicate()
 		sprite.sprite_frames.add_animation("hover")
@@ -139,7 +149,7 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
-	if identity != "dalamud":
+	if identity != "dalamud" and render_ground_shadow:
 		draw_set_transform(Vector2(0, 1), 0, Vector2(1, 0.3))
 		draw_circle(Vector2.ZERO, 19, Color(0.02, 0.025, 0.04, 0.45))
 		draw_set_transform(Vector2.ZERO)
@@ -194,3 +204,12 @@ func extinguish() -> void:
 	fire_aura = false
 	fire_shield = false
 	fire_overlay.set_effects(false, false)
+
+
+func contains_base(global_point: Vector2) -> bool:
+	# Pequena elipse no chão: independente de tamanho, voo e corpo do chefe.
+	# Não desloca o sprite nem aumenta a ocupação lógica.
+	if not visible or not is_ready or was_dead:
+		return false
+	var delta := global_point - global_position
+	return Vector2(delta.x / 11.0, delta.y / 7.0).length_squared() <= 1.0

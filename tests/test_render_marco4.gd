@@ -53,7 +53,7 @@ func run() -> void:
 		DirAccess.make_dir_recursive_absolute("/tmp/marco4-demo")
 		recording = true
 		record_movie.call_deferred()
-	scene = load("res://scenes/main.tscn").instantiate()
+	scene = load("res://scenes/main_original.tscn").instantiate()
 	root.add_child(scene)
 	await create_timer(0.5).timeout
 	await capture("marco4_hud_arena")
