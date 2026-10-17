@@ -8,10 +8,26 @@ const Navigation = preload("res://scripts/combat/navigation.gd")
 const Executor = preload("res://scripts/abilities/executor.gd")
 const MinionAI = preload("res://scripts/ai/minion_ai.gd")
 const BossAI = preload("res://scripts/ai/xardorok_ai.gd")
-const SIZE := Vector2i(15, 9)
-const WALLS := [Vector2i(7, 2), Vector2i(7, 3), Vector2i(7, 5), Vector2i(7, 6)]
+const Config = preload("res://scripts/data/boss_config.gd")
+const Geometry = preload("res://scripts/combat/arena_geometry.gd")
+const Initiative = preload("res://scripts/combat/initiative.gd")
+const Reactions = preload("res://scripts/combat/reactions.gd")
+const Perception = preload("res://scripts/combat/perception.gd")
+const SIZE := Geometry.SIZE
+const WALLS := Geometry.WALLS
 const DIRECTIONS := [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
 var units: Array[Dictionary] = Roster.create_units()
+var initiative: Array[int] = []
+var active_index := 1
+var turn_cursor := 0
+var turn_serial := 0
+var enemy_acted_serial := -1
+var boss_phase := 1
+var phase_transition_count := 0
+var reactions_used := 0
+var hero_turns_ended := 0
+var last_hero_index := 1
+var perception_memory := {}
 var round_number := 1
 var outcome := ""
 var phase := "heroes"
@@ -26,6 +42,10 @@ var rng := RandomNumberGenerator.new()
 
 func _init() -> void:
 	rng.randomize()
+	initiative = Initiative.order(units, round_number)
+	active_index = initiative[0]
+	_refresh_resources(active_index, 5)
+	remember_positions()
 
 
 func valid_unit(index: int) -> bool:
@@ -56,10 +76,22 @@ func apply_status(index: int, id: String, duration: int) -> bool:
 
 
 func record(event: Dictionary) -> void:
+	var source: int = event.get("source", -1)
+	var target: int = event.get("target", -1)
+	event.visible_source = source < 0 or player_visible(source)
+	event.visible_target = target < 0 or player_visible(target)
+	var public_text: String = event.get("text", "")
+	if target >= 0 and not event.visible_target and not public_text.is_empty():
+		public_text = "Um efeito ocorre fora da visão."
+	elif not public_text.is_empty():
+		for i in units.size():
+			if not player_visible(i):
+				public_text = public_text.replace(units[i].name, "presença oculta")
+	event.public_text = public_text
 	events.append(event)
-	if not event.get("text", "").is_empty():
-		history.append(event.text)
-		if history.size() > 50:
+	if not public_text.is_empty():
+		history.append(public_text)
+		if history.size() > 80:
 			history.remove_at(0)
 
 
@@ -68,7 +100,7 @@ func chance(probability: float) -> bool:
 
 
 func inside(cell: Vector2i) -> bool:
-	return cell.x >= 0 and cell.y >= 0 and cell.x < SIZE.x and cell.y < SIZE.y
+	return Geometry.valid_cell(cell)
 
 
 func unit_at(cell: Vector2i) -> int:
@@ -86,10 +118,14 @@ func reachable(index: int) -> Dictionary:
 	return Navigation.destinations(self, index) if valid_unit(index) else {}
 
 
+func preview_reachable(index: int) -> Dictionary:
+	return Navigation.destinations(self, index, true) if valid_unit(index) else {}
+
+
 func move_unit(index: int, destination: Vector2i) -> bool:
 	if not outcome.is_empty() or not valid_unit(index) or units[index].hp <= 0:
 		return false
-	if units[index].enemy != (phase == "enemies"):
+	if index != active_index:
 		return false
 	var costs := reachable(index)
 	if not costs.has(destination) or destination == units[index].cell:
@@ -108,34 +144,54 @@ func move_unit(index: int, destination: Vector2i) -> bool:
 			"text": ""
 		}
 	)
+	remember_positions()
 	return true
 
 
 func visible(a: Vector2i, b: Vector2i) -> bool:
-	for zone in smoke:
-		var center := Vector2(zone.cell)
-		var from_inside: bool = Vector2(a).distance_to(center) <= zone.radius
-		var to_inside: bool = Vector2(b).distance_to(center) <= zone.radius
-		var closest := Geometry2D.get_closest_point_to_segment(center, Vector2(a), Vector2(b))
-		if not (from_inside and to_inside) and closest.distance_to(center) <= zone.radius:
-			return false
-	# Segmento entre centros; interseção conservadora com cada obstáculo quadrado.
-	var start := Vector2(a) + Vector2(0.5, 0.5)
-	var finish := Vector2(b) + Vector2(0.5, 0.5)
-	for wall in WALLS:
-		var rect := Rect2(Vector2(wall), Vector2.ONE)
-		var corners := [
-			rect.position, rect.position + Vector2(1, 0), rect.end, rect.position + Vector2(0, 1)
-		]
-		for edge in 4:
-			if (
-				Geometry2D.segment_intersects_segment(
-					start, finish, corners[edge], corners[(edge + 1) % 4]
-				)
-				!= null
-			):
-				return false
-	return true
+	return Perception.line(a, b, smoke, WALLS)
+
+
+func observer_index() -> int:
+	if active_index < 5 and units[active_index].hp > 0:
+		return active_index
+	if units[last_hero_index].hp > 0:
+		return last_hero_index
+	for i in 5:
+		if units[i].hp > 0:
+			return i
+	return 0
+
+
+func can_observe(observer: int, target: int) -> bool:
+	return (
+		valid_unit(observer)
+		and valid_unit(target)
+		and (observer == target or visible(units[observer].cell, units[target].cell))
+	)
+
+
+func player_visible(index: int) -> bool:
+	return can_observe(observer_index(), index)
+
+
+func remember_positions() -> void:
+	for observer in units.size():
+		if units[observer].hp <= 0:
+			continue
+		if not perception_memory.has(observer):
+			perception_memory[observer] = {}
+		for target in units.size():
+			if units[target].hp > 0 and can_observe(observer, target):
+				perception_memory[observer][target] = units[target].cell
+
+
+func last_seen(observer: int, target: int) -> Vector2i:
+	return perception_memory.get(observer, {}).get(target, Vector2i(-1, -1))
+
+
+func player_history() -> PackedStringArray:
+	return history.duplicate()
 
 
 func attack(attacker: int, target: int) -> bool:
@@ -161,8 +217,8 @@ func availability(index: int, id: String) -> String:
 	var skill := Abilities.get_skill(id)
 	if skill.is_empty() or (id != "basic" and id not in Abilities.loadout(index)):
 		return "Habilidade não pertence a este personagem."
-	if unit.enemy != (phase == "enemies"):
-		return "Aguarde sua fase."
+	if index != active_index:
+		return "Aguarde o turno deste personagem."
 	if has_status(index, "frozen"):
 		return "Congelamento impede ações e movimento."
 	if skill.get("magic", false) and has_status(index, "silenced"):
@@ -171,7 +227,7 @@ func availability(index: int, id: String) -> String:
 		return "Sem ação bônus." if skill.get("bonus", false) else "Sem ação principal."
 	if unit.mana < skill.get("mana", 0) or unit.hp <= skill.get("hp_cost", 0):
 		return "Mana ou HP insuficiente."
-	if id == "summon" and living_minions() >= 3:
+	if id == "summon" and living_minions() >= Config.MAX_MINIONS:
 		return "Limite de lacaios."
 	if unit.cooldowns.get(id, 0) > 0:
 		return "Habilidade em recarga."
@@ -219,9 +275,12 @@ func use_ability(index: int, id: String, cell: Vector2i) -> bool:
 			}
 		)
 	if skill.get("cooldown", 0) > 0:
-		unit.cooldowns[id] = skill.cooldown
+		unit.cooldowns[id] = (
+			Config.COOLDOWNS.get(id, skill.cooldown) if index == 5 else skill.cooldown
+		)
 	Executor.execute(self, index, id, unit.cell if skill.target == "self" else cell, skill)
 	check_outcome()
+	remember_positions()
 	return true
 
 
@@ -252,9 +311,13 @@ func deal_damage(
 			return 0
 	var crit := forced_critical or (source >= 0 and chance(0.1))
 	var value := float(power) * (1.5 if crit else 1.0)
+	if source == 5 and element == "physical" and boss_phase == 2:
+		value *= Config.PHASE_TWO_PHYSICAL_MULTIPLIER
 	if source >= 0 and has_status(source, "attack"):
 		value *= 1.35
 	value *= 1.0 - float(victim.resistances.get(element, 0.0))
+	if target == 5 and element != "true":
+		value *= Config.ARMOR_DAMAGE_MULTIPLIER
 	if has_status(target, "defense"):
 		value *= 0.65
 	var amount := maxi(1, roundi(value))
@@ -274,6 +337,7 @@ func deal_damage(
 	)
 	if contact and has_status(target, "ice_skin") and valid_unit(source) and units[source].hp > 0:
 		deal_damage(-1, source, 8, "ice")
+	_update_boss_phase()
 	check_outcome()
 	return amount
 
@@ -332,7 +396,7 @@ func living_minions() -> int:
 
 
 func spawn_minions() -> void:
-	if living_minions() >= 3:
+	if living_minions() >= Config.MAX_MINIONS:
 		return
 	var spawned := 0
 	# Expande a busca a partir do chefe, sem reutilizar células ocupadas ou pilares.
@@ -340,7 +404,12 @@ func spawn_minions() -> void:
 		for y in SIZE.y:
 			for x in SIZE.x:
 				var cell := Vector2i(x, y)
-				if distance(cell, units[5].cell) != radius or cell in WALLS or unit_at(cell) >= 0:
+				if (
+					not inside(cell)
+					or distance(cell, units[5].cell) != radius
+					or cell in WALLS
+					or unit_at(cell) >= 0
+				):
 					continue
 				var minion: Dictionary = units[5].duplicate(true)
 				minion.merge(
@@ -355,7 +424,8 @@ func spawn_minions() -> void:
 						"cooldowns": {},
 						"evasion": 0.05,
 						"resistances": {"fire": 0.25},
-						"spawn_round": round_number
+						"spawn_round": round_number,
+						"initiative": Config.MINION_INITIATIVE
 					},
 					true
 				)
@@ -366,11 +436,11 @@ func spawn_minions() -> void:
 						"target": units.size() - 1,
 						"cell": cell,
 						"color": "ff905a",
-						"text": "Guerreiro de cinzas invocado."
+						"text": "Acólito de cinzas invocado."
 					}
 				)
 				spawned += 1
-				if spawned >= 2 or living_minions() >= 3:
+				if spawned >= Config.MINIONS_PER_SUMMON or living_minions() >= Config.MAX_MINIONS:
 					return
 
 
@@ -379,9 +449,12 @@ func meteor_centers(first: Vector2i) -> Array[Vector2i]:
 	var best := -1
 	var best_score := -1
 	for i in 5:
-		if units[i].hp <= 0 or distance(units[i].cell, first) <= 2:
+		if units[i].hp <= 0 or not can_observe(5, i) or distance(units[i].cell, first) <= 2:
 			continue
-		var score: int = heroes_in_area(units[i].cell, 1).size()
+		var score := 0
+		for hero in heroes_in_area(units[i].cell, 1):
+			if can_observe(5, hero):
+				score += 1
 		if score > best_score:
 			best_score = score
 			best = i
@@ -421,6 +494,14 @@ func _resolve_world() -> void:
 	for zone in smoke.duplicate():
 		if zone.expires <= round_number:
 			smoke.erase(zone)
+			record(
+				{
+					"kind": "world",
+					"smoke_zones": smoke.duplicate(true),
+					"marks": meteors.duplicate(true),
+					"text": "A fumaça se dissipa naturalmente."
+				}
+			)
 	for mark in meteors.duplicate():
 		if mark.due > round_number:
 			continue
@@ -430,58 +511,122 @@ func _resolve_world() -> void:
 				"kind": "meteor",
 				"cell": mark.cell,
 				"color": "ff905a",
+				"radius": mark.radius,
 				"text": "Meteoro impacta a área marcada!"
 			}
 		)
 		for hero in heroes_in_area(mark.cell, mark.radius):
-			deal_damage(-1, hero, 40, "fire")
+			deal_damage(5, hero, mark.get("power", Config.METEOR_DAMAGE), "fire")
 
 
 func _aura() -> void:
 	if units[5].hp <= 0:
 		return
 	for i in heroes_in_area(units[5].cell, 1):
-		deal_damage(-1, i, 10, "fire")
+		deal_damage(
+			5, i, Config.AURA_PHASE_TWO_DAMAGE if boss_phase == 2 else Config.AURA_DAMAGE, "fire"
+		)
 		if units[i].hp > 0 and chance(0.35):
 			apply_status(i, "burning", 2)
 
 
-func enemy_turn() -> String:
+func _update_boss_phase() -> void:
+	if (
+		boss_phase == 1
+		and units[5].hp > 0
+		and units[5].hp <= units[5].max_hp * Config.PHASE_THRESHOLD
+	):
+		boss_phase = 2
+		phase_transition_count += 1
+		record(
+			{
+				"kind": "phase",
+				"source": 5,
+				"cell": units[5].cell,
+				"text":
+				"FASE 2 — A Ira do Rei. A aura se intensifica; marcas permanecem antecipadas."
+			}
+		)
+
+
+func end_turn() -> String:
 	if not outcome.is_empty():
 		return outcome
 	events.clear()
-	for i in 5:
-		_tick_statuses(i)
+	var previous := active_index
+	_tick_statuses(previous)
 	check_outcome()
 	if not outcome.is_empty():
 		return outcome
-	phase = "enemies"
-	_resolve_world()
-	_aura()
-	if outcome.is_empty():
-		_refresh_resources(5, 4)
-		if not has_status(5, "frozen"):
-			var target := BossAI.nearest_hero(self, 5)
-			if target >= 0:
-				Navigation.pursue(self, 5, target)
-				var choice := BossAI.choose(self)
-				if not choice.is_empty():
-					use_ability(5, choice.id, choice.cell)
-		_tick_statuses(5)
-	for i in range(6, units.size()):
-		if not outcome.is_empty():
+	if previous < 5:
+		Reactions.after_hero_turn(self)
+	turn_cursor += 1
+	turn_serial += 1
+	var guard := 0
+	while guard < units.size() * 2 + 2:
+		guard += 1
+		if turn_cursor >= initiative.size():
+			round_number += 1
+			reactions_used = 0
+			hero_turns_ended = 0
+			initiative = Initiative.order(units, round_number)
+			turn_cursor = 0
+		active_index = initiative[turn_cursor]
+		if units[active_index].hp > 0:
 			break
-		if units[i].hp <= 0 or units[i].spawn_round == round_number:
-			continue
-		_refresh_resources(i, 3)
-		if not has_status(i, "frozen"):
-			var target := BossAI.nearest_hero(self, i)
-			if target >= 0:
-				MinionAI.act(self, i, target)
-		_tick_statuses(i)
-	if outcome.is_empty():
-		round_number += 1
-		phase = "heroes"
-		for i in 5:
-			_refresh_resources(i, 5)
-	return "Fase inimiga concluída. Rodada %d." % round_number if outcome.is_empty() else outcome
+		turn_cursor += 1
+	phase = "enemies" if units[active_index].enemy else "heroes"
+	if active_index < 5:
+		last_hero_index = active_index
+	_refresh_resources(active_index, 4 if active_index == 5 else (3 if active_index > 5 else 5))
+	remember_positions()
+	record(
+		{
+			"kind": "turn",
+			"source": active_index,
+			"text":
+			(
+				"Turno de %s · iniciativa %d."
+				% [units[active_index].name, units[active_index].initiative]
+			)
+		}
+	)
+	return (
+		"Turno de %s · rodada %d."
+		% [
+			units[active_index].name if player_visible(active_index) else "combatente oculto",
+			round_number
+		]
+	)
+
+
+func act_enemy() -> void:
+	if not outcome.is_empty() or active_index < 5 or units[active_index].hp <= 0:
+		return
+	if enemy_acted_serial == turn_serial:
+		return
+	enemy_acted_serial = turn_serial
+	var index := active_index
+	if index == 5:
+		_resolve_world()
+		_aura()
+	if not outcome.is_empty() or has_status(index, "frozen"):
+		return
+	var target := BossAI.nearest_hero(self, index)
+	if index == 5:
+		if target >= 0:
+			Navigation.pursue(self, 5, target)
+		else:
+			BossAI.search_last_seen(self, 5)
+		var choice := BossAI.choose(self)
+		if not choice.is_empty():
+			use_ability(5, choice.id, choice.cell)
+	elif target >= 0:
+		MinionAI.act(self, index, target)
+	else:
+		BossAI.search_last_seen(self, index)
+
+
+func enemy_turn() -> String:
+	# Compatibilidade de API; agora encerra somente o turno individual ativo.
+	return end_turn()

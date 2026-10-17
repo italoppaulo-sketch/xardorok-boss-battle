@@ -119,14 +119,19 @@ const DATA := {
 	"ice_arrow":
 	{
 		"name": "Flecha de Gelo",
-		"target": "enemy",
+		"target": "ground",
+		"los": false,
 		"range": 7,
 		"power": 38,
 		"element": "ice",
 		"mana": 16,
 		"radius": 1,
 		"color": "93e7fa",
-		"description": "38 de gelo no alvo e nos inimigos a até 1 passo. Não atinge aliados."
+		"description":
+		(
+			"38 de gelo em área de raio 1. Mira no chão mesmo sem visão direta; "
+			+ "não revela alvos ocultos nem atinge aliados."
+		)
 	},
 	"energy_arrow":
 	{
@@ -157,7 +162,7 @@ const DATA := {
 	},
 	"antispell":
 	{
-		"name": "Antispell",
+		"name": "Antimagia",
 		"target": "ground",
 		"range": 9,
 		"mana": 12,
@@ -241,7 +246,10 @@ const DATA := {
 		"cooldown": 3,
 		"color": "9d94a7",
 		"description":
-		"Fumaça por 2 rodadas. Bloqueia visão entre interior/exterior e através da área."
+		(
+			"Nuvem de raio 3 por 2 rodadas. Oculta corpo, nome e barra; quem está "
+			+ "na mesma nuvem se percebe. Antimagia dissipa."
+		)
 	},
 	"meteors":
 	{
@@ -255,11 +263,14 @@ const DATA := {
 		"radius": 1,
 		"color": "ff905a",
 		"description":
-		"Marca 2 áreas de raio 1; impactos só na próxima fase inimiga. Antispell cancela uma marca."
+		(
+			"Marca 2 áreas de raio 1; impactos só no turno de Xardorok na rodada "
+			+ "seguinte. Antispell cancela uma marca."
+		)
 	},
 	"summon":
 	{
-		"name": "Guerreiros de Cinzas",
+		"name": "Acólitos de Cinzas",
 		"target": "self",
 		"magic": true,
 		"cooldown": 4,

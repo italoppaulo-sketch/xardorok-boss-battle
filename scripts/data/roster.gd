@@ -1,12 +1,12 @@
 extends RefCounted
-## Parâmetros provisórios para a batalha inicial.
+const BossConfig = preload("res://scripts/data/boss_config.gd")
 
 
 static func create_units() -> Array[Dictionary]:
 	var units: Array[Dictionary] = []
 	var names := ["Grosso", "Kodokami", "Cassandra", "Thomas", "Thuxil", "Xardorok"]
-	var health := [150, 95, 85, 95, 90, 520]
-	var damage := [32, 36, 27, 30, 28, 30]
+	var health := [150, 95, 85, 95, 90, BossConfig.MAX_HP]
+	var damage := [32, 36, 27, 30, 28, BossConfig.PHYSICAL_DAMAGE]
 	var reach := [1, 1, 6, 7, 5, 1]
 	var cells := [
 		Vector2i(2, 2),
@@ -28,6 +28,7 @@ static func create_units() -> Array[Dictionary]:
 		units.append(
 			{
 				"name": names[i],
+				"initiative": [14, 18, 12, 16, 15, 13][i],
 				"hp": health[i],
 				"max_hp": health[i],
 				"damage": damage[i],
@@ -43,7 +44,7 @@ static func create_units() -> Array[Dictionary]:
 				"statuses": {},
 				"cooldowns": {},
 				"resistances":
-				{"ice": 0.2} if i == 0 else ({"fire": 0.45, "ice": -0.25} if i == 5 else {}),
+				{"ice": 0.2} if i == 0 else (BossConfig.RESISTANCES.duplicate() if i == 5 else {}),
 				"evasion": 0.25 if i == 1 else 0.05,
 				"spawn_round": 0
 			}
