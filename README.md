@@ -1,11 +1,11 @@
-# Xardorok Boss Battle — Marco 2
+# Xardorok Boss Battle — Marco 3
 
-RPG tático 2D em Godot **4.7.2**, ampliando o protótipo do Marco 1. Combate jogável com os cinco heróis, habilidades especiais, estados temporários e IA contextual de Xardorok. Os desenhos de personagens ainda são estudos provisórios; sprites e cinematografia definitivos ficam para etapas posteriores.
+RPG tático 2D em Godot **4.7.2**, ampliando o protótipo do Marco 1. Combate jogável com os cinco heróis, habilidades especiais, estados temporários e IA contextual de Xardorok. Agora com sprites PNG animados, efeitos sincronizados e arena modular. Os sprites integrados v1 seguem as referências originais e aguardam revisão artística do usuário; a cinematografia final fica para outra etapa.
 
 ## Atualizar e jogar no Windows
 
 1. No GitHub Desktop, abra este repositório e clique em **Fetch origin**.
-2. Em **Current branch**, selecione **feature/marco-2**. Use **Pull origin** se houver atualizações.
+2. Em **Current branch**, selecione **feature/marco-3-visual**. Use **Pull origin** se houver atualizações.
 3. Abra o projeto no Godot 4.7.2, aguarde a importação e pressione **F5**.
 
 Salve eventuais alterações locais antes de trocar de branch. A `main` mantém o Marco 1 até que o pull request seja revisado e incorporado. Não é necessário copiar ZIPs.
@@ -23,6 +23,8 @@ Salve eventuais alterações locais antes de trocar de branch. A `main` mantém 
 
 A interface apresenta HP, PM, movimento, ação, bônus, alcance, recargas e estados. Marcas vermelhas mostram exatamente as células de impacto dos meteoros; indicadores de habilidade mostram alvos válidos, área de gelo e saltos do raio.
 
+Durante animações, os comandos de combate ficam bloqueados para evitar sobreposição. **R** continua disponível para cancelar a sequência e reiniciar. O modelo resolve cada ação uma única vez; barras da arena e números acompanham o impacto visual.
+
 ## Habilidades
 
 | Herói | Habilidades implementadas |
@@ -32,7 +34,7 @@ A interface apresenta HP, PM, movimento, ação, bônus, alcance, recargas e est
 | Cassandra | Antispell, Cura, Raio de Fogo Roxo |
 | Thomas | Flecha Enraizante, Flecha de Gelo em área, Flecha Energizada, Botas Mágicas |
 | Thuxil | Duplicata Ilusória com bônus, Raio Azul Encadeado, Silêncio |
-| Xardorok | Aura incandescente, ataque físico, Bolha de Fumaça, Chuva de Meteoros, invocação de guerreiros de cinzas |
+| Xardorok | Aura incandescente, ataque físico, Bolha de Fumaça, Chuva de Meteoros, invocação de acólitos encapuzados |
 
 Custos, alcance, dano e recargas são configuráveis em `scripts/data/abilities.gd`. Números de balanceamento são iniciais. Não há compras nem dependências de serviços pagos.
 
@@ -52,10 +54,10 @@ Custos, alcance, dano e recargas são configuráveis em `scripts/data/abilities.
 - **Fumaça:** bloqueia visão entre dentro/fora e ao atravessar a região. Unidades dentro da mesma bolha ainda se enxergam. Antispell ignora linha de visão para dissipá-la.
 - **Antispell:** remove fumaça, marcas de meteoro, estados negativos de aliados ou buffs de inimigos. Não ressuscita nem apaga a aura passiva.
 - **Meteoros:** marcam áreas de raio Manhattan 1 e só impactam na próxima fase inimiga; há uma fase inteira dos heróis para escapar. Silêncio não desfaz magias já preparadas; Antispell pode cancelá-las.
-- **Lacaios:** até 3 vivos, com HP e recursos próprios. Agem a partir da rodada seguinte à invocação. Ataques em área não causam fogo amigo.
+- **Lacaios:** magos encapuzados com laser arcano vermelho de alcance 6, dano 14 e linha de visão; silêncio impede o laser e mantém a alternativa física. Até 3 vivos, com HP e recursos próprios. Agem a partir da rodada seguinte à invocação. Ataques em área não causam fogo amigo.
 - **Fim:** derrotar Xardorok vence a batalha mesmo com lacaios restantes. Todos os heróis caídos causam derrota. Reiniciar limpa tudo, incluindo efeitos visuais.
 
-**Dalamud é um espírito ancestral aliado.** O ponto de integração `scripts/support/spirit_support.gd` concede buffs pelo mesmo sistema de estados, sem criar um corpo físico. Sua aparição e cinematografia não fazem parte deste marco.
+**Dalamud é um espírito ancestral aliado.** O ponto de integração `scripts/support/spirit_support.gd` concede buffs pelo mesmo sistema de estados, sem criar um corpo físico. A manifestação animada/translúcida é acionada pelo ponto de integração existente, sem criar unidade física. Não há botão ou regra nova de invocação; a cinematografia completa continua futura.
 
 ## Arquitetura
 
@@ -70,7 +72,10 @@ O Marco 1 permanece como base: mesma cena inicial, coordenadas, elenco, controle
 | `scripts/abilities/executor.gd` | Execução mecânica das habilidades |
 | `scripts/ai/xardorok_ai.gd` | Pontuação de opções conforme distância, alvos, HP e disponibilidade |
 | `scripts/world/arena.gd` | Cenário, seleção, indicadores e interpolação do movimento |
-| `scripts/world/unit_painter.gd` | Silhuetas provisórias e estados visuais |
+| `scripts/visuals/sprite_actor.gd` | AnimatedSprite2D, poses, voo, ilusão e reações |
+| `scripts/visuals/timeline.gd` | Agenda visual de preparação, emissão e impacto; não calcula dano |
+| `scripts/visuals/arena_environment.gd` | Piso correspondente às células, props e iluminação |
+| `scripts/ai/minion_ai.gd` | Laser mágico, aproximação, visão e silêncio |
 | `scripts/world/effects.gd` | Projéteis, cortes, raios, partículas e números flutuantes |
 | `scripts/ui/battle_hud.gd` | Interface e descrições |
 
@@ -91,6 +96,7 @@ godot --headless --path . --script tests/test_abilities.gd
 godot --headless --path . --script tests/test_scene.gd
 godot --headless --path . --script tests/test_input.gd
 godot --headless --path . --script tests/test_encounters.gd
+godot --headless --path . --script tests/test_visuals.gd
 godot --headless --path . --quit-after 120
 ```
 
@@ -98,6 +104,7 @@ O teste gráfico requer display e deve ser executado **sem** `--headless`:
 
 ```text
 godot --path . --script tests/test_render.gd
+godot --path . --script tests/test_showcase.gd
 ```
 
-Resultados e limitações em [docs/VALIDACAO.md](docs/VALIDACAO.md). Ainda não há áudio, sprites aprovados, exportação Windows ou vídeo cinematográfico final.
+Resultados atuais e capturas reais em [docs/VALIDACAO_MARCO3.md](docs/VALIDACAO_MARCO3.md). [Referências visuais](docs/REFERENCIAS_VISUAIS.md) e [pipeline de arte](docs/ARTE_PIPELINE.md). O relatório anterior [docs/VALIDACAO.md](docs/VALIDACAO.md) registra o Marco 2. Ainda não há áudio, aprovação artística final, exportação Windows ou vídeo cinematográfico final.

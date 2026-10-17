@@ -7,6 +7,7 @@ var arena := Arena.new()
 var hud := Hud.new()
 var selected := 0
 var mode := "move"
+var busy := false
 var status := (
 	"Escolha um herói (1–5), uma habilidade e seu alvo.\n"
 	+ "Magias pessoais usam o bônus ao clicar no botão. Espaço encerra a rodada."
@@ -18,7 +19,13 @@ func _ready() -> void:
 	add_child(arena)
 	add_child(hud)
 	arena.cell_clicked.connect(_on_cell)
-	arena.cell_hovered.connect(func(cell: Vector2i): hud.inspect_target(battle, cell))
+	arena.presentation_started.connect(_on_presentation_started)
+	arena.presentation_finished.connect(_on_presentation_finished)
+	arena.cell_hovered.connect(
+		func(cell: Vector2i):
+			if not busy:
+				hud.inspect_target(battle, cell)
+	)
 	hud.hero_selected.connect(_select)
 	hud.mode_selected.connect(_set_mode)
 	hud.skill_selected.connect(_choose_skill)
@@ -28,6 +35,8 @@ func _ready() -> void:
 
 
 func _select(index: int) -> void:
+	if busy:
+		return
 	if index >= 0 and index < 5 and battle.units[index].hp > 0 and battle.outcome.is_empty():
 		selected = index
 		mode = "move"
@@ -35,11 +44,15 @@ func _select(index: int) -> void:
 
 
 func _set_mode(value: String) -> void:
+	if busy:
+		return
 	mode = value
 	_refresh()
 
 
 func _choose_skill(id: String) -> void:
+	if busy:
+		return
 	mode = id
 	var skill := Battle.Abilities.get_skill(id)
 	if skill.get("target", "") == "self":
@@ -50,6 +63,9 @@ func _choose_skill(id: String) -> void:
 
 
 func _execute(id: String, cell: Vector2i) -> void:
+	if busy:
+		return
+	arena.capture_state()
 	battle.events.clear()
 	var success := battle.use_ability(selected, id, cell)
 	status = "Habilidade executada." if success else battle.last_error
@@ -58,6 +74,8 @@ func _execute(id: String, cell: Vector2i) -> void:
 
 
 func _on_cell(cell: Vector2i) -> void:
+	if busy:
+		return
 	if not battle.outcome.is_empty():
 		return
 	var target := battle.unit_at(cell)
@@ -67,6 +85,7 @@ func _on_cell(cell: Vector2i) -> void:
 		_select(target)
 		return
 	if mode == "move":
+		arena.capture_state()
 		battle.events.clear()
 		status = (
 			"Movimento realizado."
@@ -80,6 +99,9 @@ func _on_cell(cell: Vector2i) -> void:
 
 
 func _end_round() -> void:
+	if busy:
+		return
+	arena.capture_state()
 	status = battle.enemy_turn()
 	arena.present(battle.events)
 	if battle.units[selected].hp <= 0:
@@ -92,6 +114,7 @@ func _end_round() -> void:
 
 
 func _restart() -> void:
+	busy = false
 	battle = Battle.new()
 	arena.battle = battle
 	arena.reset_visuals()
@@ -102,6 +125,9 @@ func _restart() -> void:
 
 
 func _refresh() -> void:
+	if busy:
+		hud.lock_interface()
+		return
 	arena.selected = selected
 	arena.show_moves = mode == "move"
 	arena.skill_id = "basic" if mode == "attack" else mode
@@ -121,3 +147,14 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		_restart()
 	elif event.keycode == KEY_ESCAPE:
 		_set_mode("move")
+
+
+func _on_presentation_started() -> void:
+	busy = true
+	hud.lock_interface()
+	hud.message.text = "Ação em andamento… [R] reinicia a batalha."
+
+
+func _on_presentation_finished() -> void:
+	busy = false
+	_refresh()
