@@ -1,0 +1,77 @@
+{
+  "milestone": 4,
+  "art_mode": "native image generation; technical crop and nearest-neighbour export",
+  "source_assets": [
+    "exec-1f900ccd-153b-4f61-8ad5-e1e574c0eb5c.png",
+    "exec-14b74eb4-de00-4621-8360-fd749cc62a8b.png"
+  ],
+  "prompt_set": {
+    "modular_atlas": "Original 2D pixel-art ash citadel tileset, transparent 4x4 atlas: four flat square limestone floors, four low ruined plinth obstacles, four broken architectural arches, supported pedestal brazier, ice in cracked rock, vertical masonry fascia, isolated storm cloud. Muted grey, bronze, cold blue. No assembled floor, characters, text or copied game assets.",
+    "backdrop": "Original classic 2D pixel-art citadel ruins in supernatural thunderstorm; enormous shattered arches frame distant broken towers amid layered clouds and abyss. Quiet dark centre. No playable ground, floor, characters, moon, HUD or copied artwork."
+  },
+  "floor_cells": 119,
+  "walkable_cells": 115,
+  "logical_origin": [
+    225,
+    104
+  ],
+  "cell_size": 50,
+  "row_bounds_inclusive": [
+    [
+      3,
+      11
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      0,
+      14
+    ],
+    [
+      0,
+      14
+    ],
+    [
+      0,
+      14
+    ],
+    [
+      0,
+      14
+    ],
+    [
+      0,
+      14
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      3,
+      11
+    ]
+  ],
+  "obstacles": [
+    [
+      3,
+      1
+    ],
+    [
+      11,
+      1
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      12,
+      7
+    ]
+  ],
+  "asset_count_png": 17,
+  "runtime_dependencies": []
+}

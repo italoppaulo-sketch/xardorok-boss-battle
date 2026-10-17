@@ -15,7 +15,8 @@ func _initialize() -> void:
 
 
 func settle(scene: Node) -> void:
-	while scene.busy:
+	await process_frame
+	while scene.busy or scene.battle.active_index >= 5:
 		await process_frame
 
 
@@ -31,12 +32,14 @@ func run() -> void:
 	expect(scene.mode == "attack", "Botão de ataque escolhe modo correto")
 	scene.hud.action_buttons[0].pressed.emit()
 	expect(scene.mode == "move", "Botão de movimento escolhe modo correto")
+	scene.battle.active_index = 0
 	scene.hud.hero_buttons[0].pressed.emit()
 	scene.arena.cell_clicked.emit(Vector2i(3, 2))
 	expect(scene.battle.units[0].cell == Vector2i(3, 2), "Clique na arena move herói")
 	await settle(scene)
 	scene.hud.end_requested.emit()
-	expect(scene.battle.round_number == 2, "Interface encerra rodada")
+	await settle(scene)
+	expect(scene.battle.active_index != 0, "Interface encerra turno individual")
 	scene.hud.restart_requested.emit()
 	expect(scene.battle.round_number == 1, "Reiniciar renova rodada")
 	expect(scene.battle.units[0].cell == Vector2i(2, 2), "Reiniciar restaura posições")
@@ -52,11 +55,13 @@ func run() -> void:
 				scene.hud.skill_buttons[skill_index].visible,
 				"Botão disponível: " + expected[skill_index]
 			)
+	scene.battle.active_index = 0
 	scene._select(0)
 	scene.hud.skill_buttons[0].pressed.emit()
 	expect(scene.battle.has_status(0, "ice_skin"), "Botão executa habilidade pessoal real")
 	expect(scene.hud.skill_buttons[1].disabled, "Interface bloqueia segundo bônus na mesma rodada")
 	scene._restart()
+	scene.battle.active_index = 0
 	scene._select(0)
 	scene.hud.skill_buttons[3].pressed.emit()
 	await create_timer(0.4).timeout
@@ -65,6 +70,7 @@ func run() -> void:
 	scene.battle.units[0].hp = 50
 	scene.battle.units[0].cell = Vector2i(9, 4)
 	scene.battle.units[2].cell = Vector2i(5, 4)
+	scene.battle.active_index = 2
 	scene._select(2)
 	scene.hud.skill_buttons[1].pressed.emit()
 	scene.arena.cell_clicked.emit(Vector2i(9, 4))
@@ -107,6 +113,8 @@ func run() -> void:
 	expect(scene.hud.message.text.begins_with("GRUPO DERROTADO"), "Interface mostra derrota")
 	scene._restart()
 	scene.battle.random_outcomes = false
+	scene.battle.active_index = 0
+	scene._select(0)
 	scene.battle.units[0].cell = Vector2i(11, 4)
 	scene.battle.units[5].hp = 1
 	scene._set_mode("attack")

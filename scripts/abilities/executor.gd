@@ -51,10 +51,27 @@ static func execute(
 		"antispell":
 			_dispel(b, caster, cell)
 		"smoke":
-			b.smoke.append({"cell": source.cell, "radius": 2.3, "expires": b.round_number + 2})
+			b.smoke.append(
+				{
+					"cell": source.cell,
+					"radius": b.Config.SMOKE_RADIUS,
+					"expires": b.round_number + b.Config.SMOKE_ROUNDS
+				}
+			)
 		"meteors":
 			for center in b.meteor_centers(cell):
-				b.meteors.append({"cell": center, "due": b.round_number + 1, "radius": 1})
+				b.meteors.append(
+					{
+						"cell": center,
+						"due": b.round_number + 1,
+						"radius": 1,
+						"power":
+						(
+							b.Config.METEOR_DAMAGE
+							+ (b.Config.PHASE_TWO_METEOR_BONUS if b.boss_phase == 2 else 0)
+						)
+					}
+				)
 		"summon":
 			b.spawn_minions()
 		"chain":
@@ -98,6 +115,15 @@ static func execute(
 									b.apply_status(victim, "frozen", 1)
 			elif skill.has("status"):
 				b.apply_status(target, skill.status, skill.duration)
+
+	b.record(
+		{
+			"kind": "world",
+			"smoke_zones": b.smoke.duplicate(true),
+			"marks": b.meteors.duplicate(true),
+			"text": ""
+		}
+	)
 
 
 static func _dispel(b: RefCounted, caster: int, cell: Vector2i) -> void:

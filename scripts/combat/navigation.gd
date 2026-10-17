@@ -2,7 +2,9 @@ extends RefCounted
 
 
 ## BFS preserva o custo e a ocupação do Marco 1; voo só muda travessia, nunca pouso.
-static func search(battle: RefCounted, index: int, budget: int) -> Dictionary:
+static func search(
+	battle: RefCounted, index: int, budget: int, preview: bool = false
+) -> Dictionary:
 	var start: Vector2i = battle.units[index].cell
 	var costs := {start: 0}
 	var parents := {}
@@ -16,7 +18,10 @@ static func search(battle: RefCounted, index: int, budget: int) -> Dictionary:
 			var next: Vector2i = cell + direction
 			if not battle.inside(next) or costs.has(next):
 				continue
-			if not flying and (next in battle.WALLS or battle.unit_at(next) != -1):
+			var occupant: int = battle.unit_at(next)
+			if preview and occupant >= 0 and not battle.can_observe(index, occupant):
+				occupant = -1
+			if not flying and (next in battle.WALLS or occupant != -1):
 				continue
 			var cost: int = costs[cell] + 1
 			if cost <= budget:
@@ -26,10 +31,13 @@ static func search(battle: RefCounted, index: int, budget: int) -> Dictionary:
 	return {"costs": costs, "parents": parents}
 
 
-static func destinations(battle: RefCounted, index: int) -> Dictionary:
-	var result: Dictionary = search(battle, index, battle.units[index].move).costs
+static func destinations(battle: RefCounted, index: int, preview: bool = false) -> Dictionary:
+	var result: Dictionary = search(battle, index, battle.units[index].move, preview).costs
 	for cell in result.keys():
-		if cell in battle.WALLS or (battle.unit_at(cell) != -1 and battle.unit_at(cell) != index):
+		var occupant: int = battle.unit_at(cell)
+		if preview and occupant >= 0 and not battle.can_observe(index, occupant):
+			occupant = -1
+		if cell in battle.WALLS or (occupant != -1 and occupant != index):
 			result.erase(cell)
 	return result
 

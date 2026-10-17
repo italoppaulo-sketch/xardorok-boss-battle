@@ -1,16 +1,18 @@
+# gdlint: disable=max-returns
 extends Node2D
 signal cell_clicked(cell: Vector2i)
 signal cell_hovered(cell: Vector2i)
 signal presentation_started
 signal presentation_finished
+signal display_state_changed
 const Battle = preload("res://scripts/combat/battle.gd")
 const Effects = preload("res://scenes/effects/combat_effects.tscn")
 const Actor = preload("res://scenes/characters/combat_sprite.tscn")
 const Timeline = preload("res://scripts/visuals/timeline.gd")
 const ArenaEnvironment = preload("res://scenes/environments/xardorok_arena.tscn")
 const Overlay = preload("res://scripts/visuals/unit_overlay.gd")
-const ORIGIN := Vector2(40, 130)
-const TILE := 48.0
+const ORIGIN := Vector2(225, 104)
+const TILE := 50.0
 var battle: RefCounted
 var selected := 0
 var show_moves := false
@@ -31,6 +33,8 @@ var visual_smoke: Array[Dictionary] = []
 var visual_meteors: Array[Dictionary] = []
 var spirit: Node2D
 var spirit_age := 0.0
+var pending_spawns := {}
+var fog := preload("res://scripts/visuals/smoke_cloud.gd").new()
 
 
 func _ready() -> void:
@@ -40,6 +44,8 @@ func _ready() -> void:
 	add_child(sorting)
 	environment.setup(Battle.SIZE, Battle.WALLS, ORIGIN, TILE, sorting)
 	add_child(effects)
+	fog.arena = self
+	add_child(fog)
 	overlay.arena = self
 	overlay.z_index = 40
 	add_child(overlay)
@@ -51,6 +57,8 @@ func capture_state() -> void:
 	visual_units = battle.units.duplicate(true)
 	visual_smoke = battle.smoke.duplicate(true)
 	visual_meteors = battle.meteors.duplicate(true)
+	if visual_units.size() > 5:
+		visual_units[5].boss_phase = battle.boss_phase
 
 
 func _ensure_actors() -> void:
@@ -76,6 +84,8 @@ func reset_visuals() -> void:
 	routes.clear()
 	scales.clear()
 	effects.active.clear()
+	pending_spawns.clear()
+	fog.reset()
 	if is_instance_valid(spirit):
 		spirit.queue_free()
 	spirit = null
@@ -141,7 +151,11 @@ func present(events: Array[Dictionary]) -> void:
 			"meteor":
 				impact = cursor + 0.3
 				var centers: Array[Vector2] = []
-				for direction in Battle.DIRECTIONS + [Vector2i.ZERO]:
+				for direction in (
+					Battle.DIRECTIONS + [Vector2i.ZERO]
+					if event.get("radius", 1) > 0
+					else [Vector2i.ZERO]
+				):
 					var cell: Vector2i = event.cell + direction
 					if battle.inside(cell):
 						centers.append(center(cell))
@@ -160,9 +174,13 @@ func present(events: Array[Dictionary]) -> void:
 				timeline.add(maxf(0, impact - 0.1), event)
 			"spawn":
 				actors[event.target].visible = false
+				pending_spawns[event.target] = true
 				timeline.add(impact, event)
-			"status":
+			"world", "status":
 				timeline.add(impact, event)
+			"phase", "reaction":
+				timeline.add(cursor, event)
+				cursor += 0.8
 			"expire":
 				timeline.add(cursor, event)
 			"spirit":
@@ -179,6 +197,17 @@ func _apply_visual(event: Dictionary) -> void:
 	var source: int = event.get("source", -1)
 	var target: int = event.get("target", -1)
 	match event.kind:
+		"world":
+			visual_smoke = event.smoke_zones.duplicate(true)
+			visual_meteors = event.marks.duplicate(true)
+			display_state_changed.emit()
+			return
+		"phase":
+			visual_units[5].boss_phase = 2
+			actors[5].animate("special", 0.8)
+		"reaction":
+			actors[5].animate("cast", 0.7)
+			visual_meteors = battle.meteors.duplicate(true)
 		"route":
 			routes[source] = event.path.duplicate()
 			return
@@ -209,6 +238,7 @@ func _apply_visual(event: Dictionary) -> void:
 			if target >= 0:
 				actors[target].animate("evade", 0.3)
 		"spawn":
+			pending_spawns.erase(target)
 			if actors.has(target):
 				actors[target].visible = true
 		"spirit":
@@ -226,6 +256,7 @@ func _apply_visual(event: Dictionary) -> void:
 			spirit = manifestation
 			spirit_age = 0.0
 			return
+	display_state_changed.emit()
 	var from: Vector2 = (
 		center(battle.units[source].cell) + Vector2(8, -26)
 		if battle.valid_unit(source)
@@ -244,7 +275,29 @@ func _apply_visual(event: Dictionary) -> void:
 		and event.get("cell") != battle.units[source].cell
 	):
 		actors[source].sprite.flip_h = to.x < from.x
+	if target >= 0 and not visible_to_player(target):
+		return
+	if (
+		event.kind in ["cast", "link", "phase", "reaction"]
+		and source >= 0
+		and not visible_to_player(source)
+	):
+		return
 	effects.add_event(event, from, to)
+
+
+func visible_to_player(index: int) -> bool:
+	if index < 0 or index >= visual_units.size() or pending_spawns.has(index):
+		return false
+	var observer: int = battle.observer_index()
+	if observer >= visual_units.size():
+		return false
+	return (
+		observer == index
+		or Battle.Perception.line(
+			visual_units[observer].cell, visual_units[index].cell, visual_smoke, Battle.WALLS
+		)
+	)
 
 
 func _process(delta: float) -> void:
@@ -258,8 +311,7 @@ func _process(delta: float) -> void:
 		capture_state()
 		presentation_finished.emit()
 	_ensure_actors()
-	var local := (get_global_mouse_position() - ORIGIN) / TILE
-	var cell := Vector2i(floori(local.x), floori(local.y))
+	var cell := pointer_cell(to_local(get_global_mouse_position()))
 	if cell != hovered:
 		hovered = cell
 		cell_hovered.emit(cell)
@@ -275,10 +327,12 @@ func _process(delta: float) -> void:
 			positions[i] = positions[i].move_toward(destination, delta * 480)
 			if positions[i].distance_to(destination) < 0.1:
 				routes[i].pop_front()
+				visual_units[i].cell = Vector2i((destination - ORIGIN) / TILE)
 		elif not timeline.playing:
 			positions[i] = positions[i].move_toward(center(battle.units[i].cell), delta * 480)
 		actors[i].position = positions[i] + Vector2(0, 14)
 		actors[i].sync(visual_units[i], moving)
+		actors[i].visible = visible_to_player(i)
 		scales[i] = actors[i].scale.x
 	if is_instance_valid(spirit):
 		spirit_age += delta
@@ -295,10 +349,24 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var pointer: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
-		var local := (pointer - ORIGIN) / TILE
-		var cell := Vector2i(floori(local.x), floori(local.y))
+		var cell := pointer_cell(pointer)
 		if battle.inside(cell):
 			cell_clicked.emit(cell)
+
+
+func pointer_cell(pointer: Vector2) -> Vector2i:
+	# O corpo desenhado, inclusive a coroa, seleciona a base lógica do combatente.
+	var indices: Array = actors.keys()
+	indices.sort_custom(func(a: int, b: int): return actors[a].position.y > actors[b].position.y)
+	for index in indices:
+		if (
+			battle.units[index].hp > 0
+			and visible_to_player(index)
+			and actors[index].contains_point(to_global(pointer))
+		):
+			return battle.units[index].cell
+	var local := (pointer - ORIGIN) / TILE
+	return Vector2i(floori(local.x), floori(local.y))
 
 
 func center(cell: Vector2i) -> Vector2:
@@ -309,17 +377,11 @@ func _draw() -> void:
 	if battle == null:
 		return
 	_indicators()
-	for zone in visual_smoke:
-		var texture: Texture2D = load("res://assets/effects/smoke/atlas.png")
-		var frame := int(elapsed * 3) % 4
-		var size2d: Vector2 = Vector2.ONE * zone.radius * TILE * 2
-		draw_texture_rect_region(
-			texture,
-			Rect2(center(zone.cell) - size2d * 0.5, size2d),
-			Rect2(frame * 96, 0, 96, 96),
-			Color(0.8, 0.85, 0.95, 0.7)
-		)
-	if visual_units.size() > selected and visual_units[selected].hp > 0:
+	if (
+		visual_units.size() > selected
+		and visual_units[selected].hp > 0
+		and visible_to_player(selected)
+	):
 		draw_arc(
 			positions.get(selected, center(battle.units[selected].cell)) + Vector2(0, 13),
 			24,
@@ -329,9 +391,20 @@ func _draw() -> void:
 			Color("ead7a0"),
 			2
 		)
-	if visual_units.size() > 5 and visual_units[5].hp > 0:
+	if visual_units.size() > 5 and visual_units[5].hp > 0 and visible_to_player(5):
 		var boss: Vector2 = positions.get(5, center(battle.units[5].cell))
-		draw_circle(boss, 47, Color(1, 0.28, 0.05, 0.07 + sin(elapsed * 3) * 0.02))
+		var rage: bool = visual_units[5].get("boss_phase", 1) == 2
+		draw_circle(
+			boss, 47, Color(1, 0.28, 0.05, (0.16 if rage else 0.07) + sin(elapsed * 3) * 0.02)
+		)
+		if rage:
+			for ember in 12:
+				var angle := ember * TAU / 12.0 + elapsed * 0.5
+				var point := (
+					boss
+					+ Vector2(cos(angle) * 42, sin(angle) * 26 - fmod(elapsed * 16 + ember * 7, 35))
+				)
+				draw_rect(Rect2(point, Vector2(2, 3)), Color(1, 0.48, 0.15, 0.7))
 		draw_arc(boss, 46, 0, TAU, 32, Color(1, 0.4, 0.1, 0.3), 1)
 
 
@@ -345,10 +418,15 @@ func _indicators() -> void:
 						center(cell), 22, Color(1, 0.25, 0.1, 0.13 + sin(elapsed * 5) * 0.05)
 					)
 					draw_arc(center(cell), 21, 0, TAU, 24, Color("ff8a58"), 2)
-	if timeline.playing or not battle.outcome.is_empty() or battle.units[selected].hp <= 0:
+	if (
+		timeline.playing
+		or not battle.outcome.is_empty()
+		or battle.units[selected].hp <= 0
+		or selected != battle.active_index
+	):
 		return
 	if show_moves:
-		for cell in battle.reachable(selected):
+		for cell in battle.preview_reachable(selected):
 			draw_circle(center(cell), 3, Color(0.55, 0.83, 0.9, 0.6))
 	else:
 		var skill := Battle.Abilities.get_skill(skill_id)
@@ -381,7 +459,7 @@ func paint_overlays(canvas: Node2D) -> void:
 	var font := ThemeDB.fallback_font
 	for i in visual_units.size():
 		var unit: Dictionary = visual_units[i]
-		if unit.hp <= 0 or not actors.has(i) or not actors[i].visible:
+		if unit.hp <= 0 or not actors.has(i) or not visible_to_player(i):
 			continue
 		var point: Vector2 = positions.get(i, center(battle.units[i].cell))
 		canvas.draw_rect(Rect2(point + Vector2(-23, 27), Vector2(46, 7)), Color("101623"))
@@ -415,13 +493,11 @@ func paint_overlays(canvas: Node2D) -> void:
 			)
 			at_x += 11
 	if not battle.outcome.is_empty() and not timeline.playing:
-		canvas.draw_rect(
-			Rect2(ORIGIN + Vector2(60, 155), Vector2(600, 110)), Color(0.04, 0.05, 0.08, 0.94)
-		)
-		canvas.draw_line(ORIGIN + Vector2(80, 165), ORIGIN + Vector2(640, 165), Color("ad9161"), 2)
+		canvas.draw_rect(Rect2(Vector2(300, 260), Vector2(600, 110)), Color(0.04, 0.05, 0.08, 0.94))
+		canvas.draw_line(Vector2(320, 270), Vector2(880, 270), Color("ad9161"), 2)
 		canvas.draw_string(
 			font,
-			ORIGIN + Vector2(160, 215),
+			Vector2(400, 325),
 			battle.outcome,
 			HORIZONTAL_ALIGNMENT_LEFT,
 			-1,
