@@ -357,6 +357,30 @@
         64
       ],
       "source_cell": 34
+    },
+    "fire_aura": {
+      "file": "fire_aura.png",
+      "region": [
+        0,
+        0,
+        64,
+        64
+      ],
+      "source_file": "res://assets/effects/marco5/aura.png",
+      "source_frame": 0,
+      "note": "Marco 5: recorte técnico de efeito PNG original, centro transparente"
+    },
+    "fire_shield": {
+      "file": "fire_shield.png",
+      "region": [
+        0,
+        0,
+        64,
+        64
+      ],
+      "source_file": "res://assets/effects/marco5/shield.png",
+      "source_frame": 0,
+      "note": "Marco 5: recorte técnico de efeito PNG original, centro transparente"
     }
   }
 }

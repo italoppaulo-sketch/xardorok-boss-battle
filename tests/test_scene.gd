@@ -1,8 +1,10 @@
 extends SceneTree
 var failures := 0
+var checks := 0
 
 
 func expect(value: bool, description: String) -> void:
+	checks += 1
 	if value:
 		print("PASS: ", description)
 	else:
@@ -124,5 +126,5 @@ func run() -> void:
 
 	scene.queue_free()
 	await process_frame
-	print("Falhas: ", failures)
+	print("Cena: %d verificações; %d falhas" % [checks, failures])
 	quit(1 if failures else 0)

@@ -1,6 +1,7 @@
 extends Node2D
 ## Apresentação de um combatente. Não calcula dano, ações ou deslocamento lógico.
 const NAMES := ["grosso", "kodokami", "cassandra", "thomas", "thuxil", "xardorok_marco4"]
+const FireEnvelope := preload("res://scripts/visuals/fire_envelope.gd")
 var sprite := AnimatedSprite2D.new()
 var duplicate_sprite := AnimatedSprite2D.new()
 var identity := ""
@@ -19,12 +20,19 @@ var ice_hammer := false
 var ice_texture: Texture2D
 var enraged := false
 var hit_images := {}
+var fire_aura := false
+var fire_shield := false
+var electric_until := 0.0
+var fire_overlay: Node2D
 
 
 func _init() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	add_child(duplicate_sprite)
 	add_child(sprite)
+	fire_overlay = FireEnvelope.new()
+	fire_overlay.z_index = 2
+	add_child(fire_overlay)
 	sprite.offset = Vector2(0, -54)
 	duplicate_sprite.offset = Vector2(-24, -54)
 	duplicate_sprite.modulate = Color(0.4, 0.8, 1, 0.38)
@@ -78,6 +86,8 @@ func on_damage(dead: bool) -> void:
 	if dead:
 		was_dead = true
 		sprite.play("death")
+		if actor_index == 5:
+			sprite.speed_scale = 0.35
 		duplicate_sprite.visible = false
 		locked_until = INF
 	else:
@@ -89,6 +99,9 @@ func sync(unit: Dictionary, moving: bool) -> void:
 	if not is_ready:
 		return
 	walk_active = moving
+	fire_aura = unit.statuses.has("fire_aura") and unit.hp > 0
+	fire_shield = unit.statuses.has("fire_shield") and unit.hp > 0
+	fire_overlay.set_effects(fire_aura, fire_shield)
 	enraged = unit.get("boss_phase", 1) == 2 and actor_index == 5
 	ice_skin = unit.statuses.has("ice_skin")
 	ice_hammer = unit.statuses.has("ice_hammer")
@@ -111,6 +124,8 @@ func sync(unit: Dictionary, moving: bool) -> void:
 		color = Color(0.6, 0.85, 1)
 	if clock < flash_until:
 		color = Color(2, 1.3, 1.3)
+	if clock < electric_until:
+		color = Color(0.65, 1.6, 2.3)
 	sprite.modulate = color
 
 
@@ -169,3 +184,13 @@ func contains_point(global_point: Vector2) -> bool:
 	if not hit_images.has(key):
 		hit_images[key] = texture.get_image()
 	return hit_images[key].get_pixelv(pixel).a > 0.2
+
+
+func electric_pulse() -> void:
+	electric_until = clock + 0.22
+
+
+func extinguish() -> void:
+	fire_aura = false
+	fire_shield = false
+	fire_overlay.set_effects(false, false)

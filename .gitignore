@@ -15,3 +15,7 @@ export_credentials.cfg
 *.pfx
 *.log
 *.tmp
+
+# Caches Python das ferramentas de teste
+__pycache__/
+*.pyc

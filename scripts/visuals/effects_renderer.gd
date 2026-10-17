@@ -13,6 +13,8 @@ func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	for family in FAMILIES:
 		textures[family] = load("res://assets/effects/%s/atlas.png" % family)
+	for family in ["aura", "shield", "hit_fire", "electric"]:
+		textures[family] = load("res://assets/effects/marco5/%s.png" % family)
 
 
 func add_event(event: Dictionary, from: Vector2, to: Vector2) -> void:
@@ -127,13 +129,44 @@ func _draw() -> void:
 				draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_SIZE, color)
 				if effect.kind == "heal":
 					_stamp("healing", frame, point, Vector2(72, 72), Color(1, 1, 1, 1 - t))
+				elif (
+					str(effect.get("cause", ""))
+					in [
+						"aura",
+						"shield",
+						"meteor",
+						"floor",
+						"fire_aura",
+						"fire_shield",
+						"floor_fire"
+					]
+				):
+					_stamp(
+						"hit_fire",
+						frame,
+						point + Vector2(0, 8),
+						Vector2(74, 82),
+						Color(1, 1, 1, 1 - t)
+					)
+					for ember in 9:
+						var spark := (
+							point
+							+ Vector2(
+								sin(ember * 8.2 + t) * (10 + t * 23), 12 - t * (25 + ember * 5)
+							)
+						)
+						draw_rect(Rect2(spark, Vector2(2, 2)), Color(1, 0.6, 0.12, 1 - t))
 			"link":
-				var middle := origin.lerp(point, 0.5) + Vector2(0, sin(t * 60) * 10)
-				draw_polyline(
-					PackedVector2Array([origin, middle, point]), Color(0.2, 0.65, 1, 1 - t), 3
+				var strength := sin(minf(1, t * 1.5) * PI)
+				_electric_arc(origin, point, strength, effect.age)
+				_stamp(
+					"electric",
+					mini(3, int(t * 5)),
+					point,
+					Vector2(78, 78),
+					Color(0.75, 1, 1, 1 - t)
 				)
-				draw_line(origin, point, Color(0.8, 0.95, 1, 1 - t), 1)
-				_stamp("lightning", frame, point, Vector2(62, 62), Color(1, 1, 1, 1 - t))
+
 			"meteor":
 				if effect.age < 0.3:
 					var falling: Vector2 = point + Vector2(-45, -150) * (1.0 - effect.age / 0.3)
@@ -161,7 +194,30 @@ func _draw() -> void:
 func _cast(effect: Dictionary, t: float, frame: int, origin: Vector2, point: Vector2) -> void:
 	var id: String = effect.ability
 	var angle := origin.angle_to_point(point)
-	if id == "red_laser":
+	if id == "chain":
+		# Concentração nas mãos precede os eventos de link reais emitidos pelo combate.
+		if t < 0.62:
+			var charge := clampf(t / 0.45, 0.2, 1.0)
+			_stamp(
+				"electric",
+				0 if t < 0.3 else 1,
+				origin,
+				Vector2(38, 38) * charge,
+				Color(0.7, 1, 1, 1 - t * 0.5)
+			)
+			for spark in 6:
+				var angle_charge := spark * TAU / 6 + t * 4
+				var start := origin + Vector2.from_angle(angle_charge) * (22 * (1 - t))
+				draw_line(start, origin, Color(0.3, 0.7, 1, 0.7), 1)
+	elif id in ["fire_aura", "fire_shield"]:
+		_stamp(
+			"aura" if id == "fire_aura" else "shield",
+			frame,
+			origin + Vector2(0, -10),
+			Vector2(110, 100),
+			Color(1, 1, 1, 1 - t * 0.6)
+		)
+	elif id == "red_laser":
 		if t < 0.3:
 			_stamp("laser", 0, origin, Vector2(46, 46))
 		elif t < 0.78:
@@ -229,3 +285,26 @@ func _cast(effect: Dictionary, t: float, frame: int, origin: Vector2, point: Vec
 		}
 		var family: String = families.get(id, "illusion")
 		_stamp(family, frame, point, Vector2(78, 78), Color(1, 1, 1, 1 - t))
+
+
+func _electric_arc(origin: Vector2, point: Vector2, strength: float, age: float) -> void:
+	var direction := (point - origin).normalized()
+	var normal := direction.orthogonal()
+	var segments := clampi(int(origin.distance_to(point) / 14), 5, 30)
+	var nodes := PackedVector2Array([origin])
+	for step in range(1, segments):
+		var ratio := float(step) / segments
+		var noise := sin(step * 13.71 + floorf(age * 18) * 4.2) * 10
+		nodes.append(origin.lerp(point, ratio) + normal * noise)
+	nodes.append(point)
+	draw_polyline(nodes, Color(0.08, 0.4, 1, strength * 0.22), 13)
+	draw_polyline(nodes, Color(0.2, 0.65, 1, strength), 4)
+	draw_polyline(nodes, Color(0.85, 0.98, 1, strength), 1.5)
+	for branch in range(2, segments - 1, 3):
+		var root := nodes[branch]
+		var side := 1.0 if branch % 2 else -1.0
+		var tip := root + normal * side * (15 + 8 * sin(age * 22 + branch)) + direction * 13
+		var middle := root.lerp(tip, 0.5) - direction * 6
+		draw_polyline(
+			PackedVector2Array([root, middle, tip]), Color(0.3, 0.8, 1, strength * 0.75), 2
+		)

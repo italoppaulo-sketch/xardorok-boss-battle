@@ -64,10 +64,44 @@ static func pursue(battle: RefCounted, index: int, target: int) -> void:
 			return
 		if not battle.inside(goal) or goal in battle.WALLS or battle.unit_at(goal) != -1:
 			continue
-		var route := path(battle, index, goal)
-		if not route.is_empty() and route.size() < shortest:
-			shortest = route.size()
+		var route := safe_path(battle, index, goal)
+		var risk: int = battle.FireRules.path_risk(battle, index, route)
+		if not route.is_empty() and route.size() + risk < shortest:
+			shortest = route.size() + risk
 			best_path = route
 	if not best_path.is_empty() and battle.units[index].move > 0:
 		var amount: int = mini(best_path.size(), battle.units[index].move)
-		battle.move_unit(index, best_path[amount - 1])
+		battle.move_unit(index, best_path[amount - 1], true)
+
+
+static func safe_path(battle: RefCounted, index: int, destination: Vector2i) -> Array[Vector2i]:
+	# Dijkstra só para a IA: o preço de risco não reduz passos normais do jogador.
+	var start: Vector2i = battle.units[index].cell
+	var pending: Array[Vector2i] = [start]
+	var scores := {start: 0}
+	var parents := {}
+	while not pending.is_empty():
+		pending.sort_custom(func(a: Vector2i, c: Vector2i): return scores[a] < scores[c])
+		var cell: Vector2i = pending.pop_front()
+		if cell == destination:
+			var route: Array[Vector2i] = []
+			while cell != start:
+				route.push_front(cell)
+				cell = parents[cell]
+			return route
+		for direction in battle.DIRECTIONS:
+			var next: Vector2i = cell + direction
+			if (
+				not battle.inside(next)
+				or next in battle.WALLS
+				or (battle.unit_at(next) >= 0 and next != start)
+			):
+				continue
+			var step: Array[Vector2i] = [next]
+			var score: int = scores[cell] + 1 + battle.FireRules.path_risk(battle, index, step)
+			if score < scores.get(next, 100000):
+				scores[next] = score
+				parents[next] = cell
+				if next not in pending:
+					pending.append(next)
+	return []

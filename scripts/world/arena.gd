@@ -31,6 +31,10 @@ var overlay := Overlay.new()
 var visual_units: Array[Dictionary] = []
 var visual_smoke: Array[Dictionary] = []
 var visual_meteors: Array[Dictionary] = []
+var visual_fire: Array[Dictionary] = []
+var movement_speed := 480.0
+var cinematic_victory := false
+var fire_fields: Node2D
 var spirit: Node2D
 var spirit_age := 0.0
 var pending_spawns := {}
@@ -44,6 +48,9 @@ func _ready() -> void:
 	add_child(sorting)
 	environment.setup(Battle.SIZE, Battle.WALLS, ORIGIN, TILE, sorting)
 	add_child(effects)
+	fire_fields = load("res://scripts/visuals/fire_fields.gd").new()
+	fire_fields.configure(self)
+	add_child(fire_fields)
 	fog.arena = self
 	add_child(fog)
 	overlay.arena = self
@@ -57,6 +64,9 @@ func capture_state() -> void:
 	visual_units = battle.units.duplicate(true)
 	visual_smoke = battle.smoke.duplicate(true)
 	visual_meteors = battle.meteors.duplicate(true)
+	visual_fire.clear()
+	if battle.get("fire_zones") != null:
+		visual_fire.assign(battle.get("fire_zones").duplicate(true))
 	if visual_units.size() > 5:
 		visual_units[5].boss_phase = battle.boss_phase
 
@@ -101,6 +111,7 @@ func present(events: Array[Dictionary]) -> void:
 	var cursor := 0.0
 	var impact := 0.12
 	var skill := ""
+	var chain_link_index := 0
 	for original in events:
 		var event := original.duplicate(true)
 		var source: int = event.get("source", -1)
@@ -109,10 +120,11 @@ func present(events: Array[Dictionary]) -> void:
 				timeline.add(
 					cursor, {"kind": "route", "source": source, "path": event.path.duplicate()}
 				)
-				cursor += event.path.size() * 0.1
+				cursor += event.path.size() * TILE / movement_speed
 				impact = cursor + 0.12
 			"cast":
 				skill = event.ability
+				chain_link_index = 0
 				var data := Battle.Abilities.get_skill(skill)
 				impact = cursor + (0.2 if data.get("target", "") == "self" else 0.55)
 				if skill in ["double", "unarmed"]:
@@ -136,7 +148,19 @@ func present(events: Array[Dictionary]) -> void:
 					)
 					else "cast"
 				)
-				if skill in ["giant", "fushigiri", "flight", "illusion", "meteors", "summon"]:
+				if (
+					skill
+					in [
+						"giant",
+						"fushigiri",
+						"flight",
+						"illusion",
+						"meteors",
+						"summon",
+						"fire_shield",
+						"fire_aura"
+					]
+				):
 					animation = "special"
 				if skill == "heal":
 					animation = "attack_alt"
@@ -168,10 +192,13 @@ func present(events: Array[Dictionary]) -> void:
 				var at := impact
 				if skill in ["double", "unarmed"] and float(event.get("delay", 0.0)) > 0.0:
 					at += 0.4
+				if skill == "chain":
+					at += maxi(0, chain_link_index - 1) * 0.12
 				event.delay = 0.0
 				timeline.add(at, event)
 			"link":
-				timeline.add(maxf(0, impact - 0.1), event)
+				timeline.add(maxf(0, impact - 0.1) + chain_link_index * 0.12, event)
+				chain_link_index += 1
 			"spawn":
 				actors[event.target].visible = false
 				pending_spawns[event.target] = true
@@ -180,7 +207,7 @@ func present(events: Array[Dictionary]) -> void:
 				timeline.add(impact, event)
 			"phase", "reaction":
 				timeline.add(cursor, event)
-				cursor += 0.8
+				cursor += 0.35 if event.kind == "reaction" else 0.8
 			"expire":
 				timeline.add(cursor, event)
 			"spirit":
@@ -198,15 +225,16 @@ func _apply_visual(event: Dictionary) -> void:
 	var target: int = event.get("target", -1)
 	match event.kind:
 		"world":
-			visual_smoke = event.smoke_zones.duplicate(true)
-			visual_meteors = event.marks.duplicate(true)
+			visual_smoke.assign(event.smoke_zones.duplicate(true))
+			visual_meteors.assign(event.marks.duplicate(true))
+			visual_fire.assign(event.get("fire_zones", visual_fire).duplicate(true))
 			display_state_changed.emit()
 			return
 		"phase":
 			visual_units[5].boss_phase = 2
 			actors[5].animate("special", 0.8)
 		"reaction":
-			actors[5].animate("cast", 0.7)
+			actors[5].animate("cast", 0.35)
 			visual_meteors = battle.meteors.duplicate(true)
 		"route":
 			routes[source] = event.path.duplicate()
@@ -234,6 +262,9 @@ func _apply_visual(event: Dictionary) -> void:
 				unit.hp = clampi(unit.hp + sign_value * event.amount, 0, unit.max_hp)
 				if event.kind != "heal":
 					actors[target].on_damage(unit.hp <= 0)
+		"link":
+			if actors.has(target) and actors[target].has_method("electric_pulse"):
+				actors[target].electric_pulse()
 		"miss":
 			if target >= 0:
 				actors[target].animate("evade", 0.3)
@@ -294,8 +325,8 @@ func visible_to_player(index: int) -> bool:
 		return false
 	return (
 		observer == index
-		or Battle.Perception.line(
-			visual_units[observer].cell, visual_units[index].cell, visual_smoke, Battle.WALLS
+		or Battle.Perception.presentation_line(
+			displayed_cell(observer), displayed_cell(index), visual_smoke
 		)
 	)
 
@@ -307,33 +338,43 @@ func _process(delta: float) -> void:
 	var was_playing := timeline.playing
 	for event in timeline.advance(delta):
 		_apply_visual(event)
-	if was_playing and not timeline.playing:
-		capture_state()
-		presentation_finished.emit()
 	_ensure_actors()
 	var cell := pointer_cell(to_local(get_global_mouse_position()))
 	if cell != hovered:
 		hovered = cell
 		cell_hovered.emit(cell)
+	var routes_pending := false
 	for i in battle.units.size():
-		var moving: bool = routes.has(i) and not routes[i].is_empty()
-		if moving:
+		var remaining := delta * movement_speed
+		while routes.has(i) and not routes[i].is_empty() and remaining > 0:
 			var destination := center(routes[i][0])
-			actors[i].sprite.flip_h = (
-				destination.x < positions[i].x
-				if absf(destination.x - positions[i].x) > 0.1
-				else actors[i].sprite.flip_h
-			)
-			positions[i] = positions[i].move_toward(destination, delta * 480)
+			var distance_left: float = positions[i].distance_to(destination)
+			if absf(destination.x - positions[i].x) > 0.1:
+				actors[i].sprite.flip_h = destination.x < positions[i].x
+			positions[i] = positions[i].move_toward(destination, remaining)
+			remaining -= distance_left
 			if positions[i].distance_to(destination) < 0.1:
-				routes[i].pop_front()
-				visual_units[i].cell = Vector2i((destination - ORIGIN) / TILE)
-		elif not timeline.playing:
-			positions[i] = positions[i].move_toward(center(battle.units[i].cell), delta * 480)
+				visual_units[i].cell = routes[i].pop_front()
+			else:
+				break
+		var moving: bool = routes.has(i) and not routes[i].is_empty()
+		routes_pending = routes_pending or moving
+		if not moving and not timeline.playing:
+			positions[i] = positions[i].move_toward(
+				center(battle.units[i].cell), delta * movement_speed
+			)
 		actors[i].position = positions[i] + Vector2(0, 14)
 		actors[i].sync(visual_units[i], moving)
-		actors[i].visible = visible_to_player(i)
 		scales[i] = actors[i].scale.x
+	# Uma queda de FPS não encerra a apresentação antes de completar o caminho.
+	if was_playing and not timeline.playing and routes_pending:
+		timeline.playing = true
+	if was_playing and not timeline.playing:
+		capture_state()
+		presentation_finished.emit()
+	# Todos os observadores já estão na posição desenhada deste mesmo frame.
+	for i in battle.units.size():
+		actors[i].visible = visible_to_player(i)
 	if is_instance_valid(spirit):
 		spirit_age += delta
 		var wing_pose := "hover" if spirit_age >= 0.6 and spirit_age < 2.1 else "idle"
@@ -369,6 +410,12 @@ func pointer_cell(pointer: Vector2) -> Vector2i:
 	return Vector2i(floori(local.x), floori(local.y))
 
 
+func displayed_cell(index: int) -> Vector2:
+	if positions.has(index):
+		return (positions[index] - ORIGIN) / TILE - Vector2(0.5, 0.5)
+	return Vector2(visual_units[index].cell)
+
+
 func center(cell: Vector2i) -> Vector2:
 	return ORIGIN + (Vector2(cell) + Vector2(0.5, 0.5)) * TILE
 
@@ -391,21 +438,6 @@ func _draw() -> void:
 			Color("ead7a0"),
 			2
 		)
-	if visual_units.size() > 5 and visual_units[5].hp > 0 and visible_to_player(5):
-		var boss: Vector2 = positions.get(5, center(battle.units[5].cell))
-		var rage: bool = visual_units[5].get("boss_phase", 1) == 2
-		draw_circle(
-			boss, 47, Color(1, 0.28, 0.05, (0.16 if rage else 0.07) + sin(elapsed * 3) * 0.02)
-		)
-		if rage:
-			for ember in 12:
-				var angle := ember * TAU / 12.0 + elapsed * 0.5
-				var point := (
-					boss
-					+ Vector2(cos(angle) * 42, sin(angle) * 26 - fmod(elapsed * 16 + ember * 7, 35))
-				)
-				draw_rect(Rect2(point, Vector2(2, 3)), Color(1, 0.48, 0.15, 0.7))
-		draw_arc(boss, 46, 0, TAU, 32, Color(1, 0.4, 0.1, 0.3), 1)
 
 
 func _indicators() -> void:
@@ -418,6 +450,24 @@ func _indicators() -> void:
 						center(cell), 22, Color(1, 0.25, 0.1, 0.13 + sin(elapsed * 5) * 0.05)
 					)
 					draw_arc(center(cell), 21, 0, TAU, 24, Color("ff8a58"), 2)
+		var label := "IMPACTO APÓS RESPOSTA"
+		var text_width := (
+			ThemeDB.fallback_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 10).x
+		)
+		draw_string(
+			ThemeDB.fallback_font,
+			center(mark.cell) + Vector2(-text_width / 2, -30),
+			label,
+			HORIZONTAL_ALIGNMENT_LEFT,
+			-1,
+			10,
+			Color("ffd19c")
+		)
+	if battle.get("meteor_window") == true:
+		if skill_id == "meteor_evade" and not timeline.playing:
+			for cell in battle.emergency_destinations(selected):
+				draw_circle(center(cell), 6, Color("a8e7da"))
+		return
 	if (
 		timeline.playing
 		or not battle.outcome.is_empty()
@@ -492,7 +542,7 @@ func paint_overlays(canvas: Node2D) -> void:
 				Color.WHITE
 			)
 			at_x += 11
-	if not battle.outcome.is_empty() and not timeline.playing:
+	if not battle.outcome.is_empty() and not timeline.playing and not cinematic_victory:
 		canvas.draw_rect(Rect2(Vector2(300, 260), Vector2(600, 110)), Color(0.04, 0.05, 0.08, 0.94))
 		canvas.draw_line(Vector2(320, 270), Vector2(880, 270), Color("ad9161"), 2)
 		canvas.draw_string(

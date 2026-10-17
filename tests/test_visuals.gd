@@ -65,7 +65,7 @@ func run() -> void:
 		expect(icon.get_size() == Vector2i(64, 64), "Ícone 64×64: " + icon_id)
 		expect(icon.detect_alpha() != Image.ALPHA_NONE, "Ícone com alfa: " + icon_id)
 		icon_hashes[hash(icon.get_data())] = true
-	expect(icon_hashes.size() == 35, "35 ícones originais distintos importados")
+	expect(icon_hashes.size() == 37, "37 ícones distintos importados incluindo escudo/aura")
 	for skill_id in Battle.Abilities.DATA:
 		expect(
 			icon_manifest.icons.has("basic_0" if skill_id == "basic" else skill_id),
