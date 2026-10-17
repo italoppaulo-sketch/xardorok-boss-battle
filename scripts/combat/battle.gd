@@ -13,6 +13,8 @@ const Geometry = preload("res://scripts/combat/arena_geometry.gd")
 const Initiative = preload("res://scripts/combat/initiative.gd")
 const Reactions = preload("res://scripts/combat/reactions.gd")
 const Perception = preload("res://scripts/combat/perception.gd")
+const MeteorResolution = preload("res://scripts/combat/meteor_resolution.gd")
+const FireRules = preload("res://scripts/combat/fire_fields.gd")
 const SIZE := Geometry.SIZE
 const WALLS := Geometry.WALLS
 const DIRECTIONS := [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
@@ -33,6 +35,16 @@ var outcome := ""
 var phase := "heroes"
 var smoke: Array[Dictionary] = []
 var meteors: Array[Dictionary] = []
+var meteor_window := false
+var response_index := -1
+var response_queue: Array[int] = []
+var meteor_guards := {}
+var fire_zones: Array[Dictionary] = []
+var fire_ticks := {}
+var aura_ticks := {}
+var emergency_action_debt := {}
+var initial_summon_done := false
+var boss_damage_since_turn := 0
 var events: Array[Dictionary] = []
 var history: PackedStringArray = []
 var last_error := ""
@@ -122,17 +134,23 @@ func preview_reachable(index: int) -> Dictionary:
 	return Navigation.destinations(self, index, true) if valid_unit(index) else {}
 
 
-func move_unit(index: int, destination: Vector2i) -> bool:
-	if not outcome.is_empty() or not valid_unit(index) or units[index].hp <= 0:
+func move_unit(index: int, destination: Vector2i, safe_route: bool = false) -> bool:
+	if meteor_window or not outcome.is_empty() or not valid_unit(index) or units[index].hp <= 0:
 		return false
 	if index != active_index:
 		return false
 	var costs := reachable(index)
 	if not costs.has(destination) or destination == units[index].cell:
 		return false
-	var steps := Navigation.path(self, index, destination)
+	var steps := (
+		Navigation.safe_path(self, index, destination)
+		if safe_route
+		else Navigation.path(self, index, destination)
+	)
+	if steps.is_empty() or steps.size() > units[index].move:
+		return false
 	var start: Vector2i = units[index].cell
-	units[index].move -= costs[destination]
+	units[index].move -= steps.size()
 	units[index].cell = destination
 	record(
 		{
@@ -144,6 +162,7 @@ func move_unit(index: int, destination: Vector2i) -> bool:
 			"text": ""
 		}
 	)
+	FireRules.on_route(self, index, steps)
 	remember_positions()
 	return true
 
@@ -172,7 +191,12 @@ func can_observe(observer: int, target: int) -> bool:
 
 
 func player_visible(index: int) -> bool:
-	return can_observe(observer_index(), index)
+	return (
+		valid_unit(index)
+		and Perception.presentation_line(
+			Vector2(units[observer_index()].cell), Vector2(units[index].cell), smoke
+		)
+	)
 
 
 func remember_positions() -> void:
@@ -211,7 +235,7 @@ func skill_range(index: int, id: String) -> int:
 
 
 func availability(index: int, id: String) -> String:
-	if not outcome.is_empty() or not valid_unit(index) or units[index].hp <= 0:
+	if meteor_window or not outcome.is_empty() or not valid_unit(index) or units[index].hp <= 0:
 		return "Personagem indisponível."
 	var unit: Dictionary = units[index]
 	var skill := Abilities.get_skill(id)
@@ -227,6 +251,8 @@ func availability(index: int, id: String) -> String:
 		return "Sem ação bônus." if skill.get("bonus", false) else "Sem ação principal."
 	if unit.mana < skill.get("mana", 0) or unit.hp <= skill.get("hp_cost", 0):
 		return "Mana ou HP insuficiente."
+	if id in ["fire_shield", "fire_aura"] and has_status(index, id):
+		return "Efeito já ativo."
 	if id == "summon" and living_minions() >= Config.MAX_MINIONS:
 		return "Limite de lacaios."
 	if unit.cooldowns.get(id, 0) > 0:
@@ -291,7 +317,8 @@ func deal_damage(
 	element: String,
 	forced_critical: bool = false,
 	contact: bool = false,
-	delay: float = 0.0
+	delay: float = 0.0,
+	cause: String = ""
 ) -> int:
 	if not valid_unit(target) or units[target].hp <= 0:
 		return 0
@@ -309,7 +336,7 @@ func deal_damage(
 				}
 			)
 			return 0
-	var crit := forced_critical or (source >= 0 and chance(0.1))
+	var crit := forced_critical or (source >= 0 and cause.is_empty() and chance(0.1))
 	var value := float(power) * (1.5 if crit else 1.0)
 	if source == 5 and element == "physical" and boss_phase == 2:
 		value *= Config.PHASE_TWO_PHYSICAL_MULTIPLIER
@@ -318,10 +345,14 @@ func deal_damage(
 	value *= 1.0 - float(victim.resistances.get(element, 0.0))
 	if target == 5 and element != "true":
 		value *= Config.ARMOR_DAMAGE_MULTIPLIER
+	if target == 5 and has_status(5, "fire_shield"):
+		value *= Config.SHIELD_DAMAGE_MULTIPLIER
 	if has_status(target, "defense"):
 		value *= 0.65
 	var amount := maxi(1, roundi(value))
 	victim.hp = maxi(0, victim.hp - amount)
+	if target == 5:
+		boss_damage_since_turn += amount
 	record(
 		{
 			"kind": "damage",
@@ -330,6 +361,7 @@ func deal_damage(
 			"amount": amount,
 			"critical": crit,
 			"element": element,
+			"cause": cause,
 			"delay": delay,
 			"color": "ffdb88" if crit else "ffb6a0",
 			"text": "%s: %d de %s%s." % [victim.name, amount, element, " — CRÍTICO" if crit else ""]
@@ -337,6 +369,14 @@ func deal_damage(
 	)
 	if contact and has_status(target, "ice_skin") and valid_unit(source) and units[source].hp > 0:
 		deal_damage(-1, source, 8, "ice")
+	if (
+		contact
+		and target == 5
+		and has_status(5, "fire_shield")
+		and valid_unit(source)
+		and units[source].hp > 0
+	):
+		deal_damage(5, source, Config.SHIELD_RETALIATION, "fire", false, false, delay, "shield")
 	_update_boss_phase()
 	check_outcome()
 	return amount
@@ -380,6 +420,8 @@ func chain_targets(first: int, count: int, jump: int) -> Array[int]:
 func check_outcome() -> void:
 	if units[5].hp <= 0:
 		outcome = "BOSS DEFEATED"
+		if meteor_window:
+			MeteorResolution.cancel(self)
 		return
 	for unit in units:
 		if not unit.enemy and unit.hp > 0:
@@ -396,6 +438,7 @@ func living_minions() -> int:
 
 
 func spawn_minions() -> void:
+	var before := living_minions()
 	if living_minions() >= Config.MAX_MINIONS:
 		return
 	var spawned := 0
@@ -440,6 +483,8 @@ func spawn_minions() -> void:
 					}
 				)
 				spawned += 1
+				if living_minions() > before:
+					initial_summon_done = true
 				if spawned >= Config.MINIONS_PER_SUMMON or living_minions() >= Config.MAX_MINIONS:
 					return
 
@@ -469,6 +514,7 @@ func _tick_statuses(index: int) -> void:
 	if has_status(index, "burning"):
 		deal_damage(-1, index, 8, "fire")
 	for id in Statuses.expire(units[index]):
+		boss_effect_removed(index, id)
 		record(
 			{
 				"kind": "expire",
@@ -483,7 +529,8 @@ func _tick_statuses(index: int) -> void:
 func _refresh_resources(index: int, movement: int) -> void:
 	var unit: Dictionary = units[index]
 	unit.move = movement + (2 if has_status(index, "flight") else 0)
-	unit.actions = 1
+	unit.actions = 0 if emergency_action_debt.has(index) else 1
+	emergency_action_debt.erase(index)
 	unit.bonus = 1
 	unit.mana = mini(unit.max_mana, unit.mana + 8)
 	for id in unit.cooldowns.keys():
@@ -494,40 +541,83 @@ func _resolve_world() -> void:
 	for zone in smoke.duplicate():
 		if zone.expires <= round_number:
 			smoke.erase(zone)
-			record(
-				{
-					"kind": "world",
-					"smoke_zones": smoke.duplicate(true),
-					"marks": meteors.duplicate(true),
-					"text": "A fumaça se dissipa naturalmente."
-				}
-			)
-	for mark in meteors.duplicate():
-		if mark.due > round_number:
-			continue
-		meteors.erase(mark)
-		record(
-			{
-				"kind": "meteor",
-				"cell": mark.cell,
-				"color": "ff905a",
-				"radius": mark.radius,
-				"text": "Meteoro impacta a área marcada!"
-			}
-		)
-		for hero in heroes_in_area(mark.cell, mark.radius):
-			deal_damage(5, hero, mark.get("power", Config.METEOR_DAMAGE), "fire")
+	FireRules.expire(self)
+	record_world()
 
 
-func _aura() -> void:
-	if units[5].hp <= 0:
+func _aura(index: int = -1) -> void:
+	if index < 0:
+		index = active_index
+	if index >= 5 or units[index].hp <= 0 or units[5].hp <= 0 or not has_status(5, "fire_aura"):
 		return
-	for i in heroes_in_area(units[5].cell, 1):
-		deal_damage(
-			5, i, Config.AURA_PHASE_TWO_DAMAGE if boss_phase == 2 else Config.AURA_DAMAGE, "fire"
-		)
-		if units[i].hp > 0 and chance(0.35):
-			apply_status(i, "burning", 2)
+	var token := "%d:%d" % [turn_serial, index]
+	if aura_ticks.has(token) or distance(units[index].cell, units[5].cell) > 1:
+		return
+	aura_ticks[token] = true
+	deal_damage(
+		5,
+		index,
+		Config.AURA_PHASE_TWO_DAMAGE if boss_phase == 2 else Config.AURA_DAMAGE,
+		"fire",
+		false,
+		false,
+		0.0,
+		"aura"
+	)
+	if units[index].hp > 0 and chance(0.35):
+		apply_status(index, "burning", 2)
+
+
+func boss_effect_removed(index: int, id: String) -> void:
+	if index == 5 and id == "fire_shield":
+		units[5].cooldowns.fire_shield = Config.SHIELD_COOLDOWN
+
+
+func record_world() -> void:
+	record(
+		{
+			"kind": "world",
+			"smoke_zones": smoke.duplicate(true),
+			"marks": meteors.duplicate(true),
+			"fire_zones": fire_zones.duplicate(true),
+			"text": ""
+		}
+	)
+
+
+func is_burning_cell(cell: Vector2i) -> bool:
+	return FireRules.contains(self, cell)
+
+
+func prepare_meteors(centers: Array[Vector2i], radius: int, power: int) -> void:
+	MeteorResolution.prepare(self, centers, radius, power)
+
+
+func meteor_responses() -> Array[int]:
+	var pending: Array[int] = []
+	if response_index >= 0:
+		pending.append(response_index)
+	pending.append_array(response_queue)
+	return pending
+
+
+func emergency_destinations(index: int) -> Dictionary:
+	return MeteorResolution.destinations(self, index)
+
+
+func can_meteor_response(
+	index: int, choice: String, destination: Vector2i = Vector2i.ZERO
+) -> String:
+	return MeteorResolution.can_respond(self, index, choice, destination)
+
+
+func meteor_response(index: int, choice: String, destination: Vector2i = Vector2i.ZERO) -> bool:
+	return MeteorResolution.respond(self, index, choice, destination)
+
+
+func resolve_meteor_window() -> void:
+	if meteor_window and response_index < 0:
+		MeteorResolution.resolve(self)
 
 
 func _update_boss_phase() -> void:
@@ -544,17 +634,21 @@ func _update_boss_phase() -> void:
 				"source": 5,
 				"cell": units[5].cell,
 				"text":
-				"FASE 2 — A Ira do Rei. A aura se intensifica; marcas permanecem antecipadas."
+				"FASE 2 — A Ira do Rei. Fogo intensificado; meteoros permitem resposta limitada."
 			}
 		)
 
 
 func end_turn() -> String:
+	if meteor_window:
+		return "Responda ao meteoro iminente."
 	if not outcome.is_empty():
 		return outcome
 	events.clear()
 	var previous := active_index
 	_tick_statuses(previous)
+	_aura(previous)
+	FireRules.touch(self, previous)
 	check_outcome()
 	if not outcome.is_empty():
 		return outcome
@@ -567,6 +661,9 @@ func end_turn() -> String:
 		guard += 1
 		if turn_cursor >= initiative.size():
 			round_number += 1
+			_resolve_world()
+			fire_ticks.clear()
+			aura_ticks.clear()
 			reactions_used = 0
 			hero_turns_ended = 0
 			initiative = Initiative.order(units, round_number)
@@ -601,7 +698,7 @@ func end_turn() -> String:
 
 
 func act_enemy() -> void:
-	if not outcome.is_empty() or active_index < 5 or units[active_index].hp <= 0:
+	if meteor_window or not outcome.is_empty() or active_index < 5 or units[active_index].hp <= 0:
 		return
 	if enemy_acted_serial == turn_serial:
 		return
@@ -609,7 +706,6 @@ func act_enemy() -> void:
 	var index := active_index
 	if index == 5:
 		_resolve_world()
-		_aura()
 	if not outcome.is_empty() or has_status(index, "frozen"):
 		return
 	var target := BossAI.nearest_hero(self, index)
@@ -618,9 +714,12 @@ func act_enemy() -> void:
 			Navigation.pursue(self, 5, target)
 		else:
 			BossAI.search_last_seen(self, 5)
+		if BossAI.wants_aura(self):
+			use_ability(5, "fire_aura", units[5].cell)
 		var choice := BossAI.choose(self)
 		if not choice.is_empty():
 			use_ability(5, choice.id, choice.cell)
+		boss_damage_since_turn = 0
 	elif target >= 0:
 		MinionAI.act(self, index, target)
 	else:

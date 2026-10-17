@@ -1,6 +1,9 @@
 extends RefCounted
 ## Duração em turnos do portador, incluindo o turno atual quando aplicado em si.
 const DEFINITIONS := {
+	"fire_shield":
+	{"name": "Escudo de Fogo −40%", "short": "EF", "negative": false, "color": "ffd47b"},
+	"fire_aura": {"name": "Aura de Fogo", "short": "AF", "negative": false, "color": "ff762d"},
 	"burning": {"name": "Queimadura", "short": "Q", "negative": true, "color": "ff905a"},
 	"frozen": {"name": "Congelamento", "short": "G", "negative": true, "color": "93e7fa"},
 	"rooted": {"name": "Enraizamento", "short": "R", "negative": true, "color": "8bdb78"},

@@ -58,35 +58,39 @@ static func execute(
 					"expires": b.round_number + b.Config.SMOKE_ROUNDS
 				}
 			)
+		"fire_shield":
+			b.apply_status(caster, "fire_shield", b.Config.SHIELD_DURATION)
+		"fire_aura":
+			b.apply_status(caster, "fire_aura", b.Config.AURA_DURATION)
 		"meteors":
-			for center in b.meteor_centers(cell):
-				b.meteors.append(
-					{
-						"cell": center,
-						"due": b.round_number + 1,
-						"radius": 1,
-						"power":
-						(
-							b.Config.METEOR_DAMAGE
-							+ (b.Config.PHASE_TWO_METEOR_BONUS if b.boss_phase == 2 else 0)
-						)
-					}
+			b.prepare_meteors(
+				b.meteor_centers(cell),
+				1,
+				(
+					b.Config.METEOR_DAMAGE
+					+ (b.Config.PHASE_TWO_METEOR_BONUS if b.boss_phase == 2 else 0)
 				)
+			)
 		"summon":
 			b.spawn_minions()
 		"chain":
 			var previous := caster
+			var sequence := 0
 			for victim in b.chain_targets(target, skill.bounces, skill.jump):
 				b.record(
 					{
 						"kind": "link",
+						"sequence": sequence,
 						"source": previous,
 						"target": victim,
 						"color": skill.color,
 						"text": ""
 					}
 				)
-				b.deal_damage(caster, victim, skill.power, skill.element, crit, false)
+				b.deal_damage(
+					caster, victim, skill.power, skill.element, crit, false, sequence * 0.12
+				)
+				sequence += 1
 				previous = victim
 		_:
 			if skill.has("power"):
@@ -116,14 +120,7 @@ static func execute(
 			elif skill.has("status"):
 				b.apply_status(target, skill.status, skill.duration)
 
-	b.record(
-		{
-			"kind": "world",
-			"smoke_zones": b.smoke.duplicate(true),
-			"marks": b.meteors.duplicate(true),
-			"text": ""
-		}
-	)
+	b.record_world()
 
 
 static func _dispel(b: RefCounted, caster: int, cell: Vector2i) -> void:
@@ -138,9 +135,22 @@ static func _dispel(b: RefCounted, caster: int, cell: Vector2i) -> void:
 			removed += 1
 	var target: int = b.unit_at(cell)
 	if target >= 0:
+		var previous: Dictionary = b.units[target].statuses.duplicate()
 		removed += b.Statuses.dispel(
 			b.units[target], b.units[target].enemy == b.units[caster].enemy
 		)
+		for id in previous:
+			if not b.units[target].statuses.has(id):
+				b.boss_effect_removed(target, id)
+				b.record(
+					{
+						"kind": "expire",
+						"target": target,
+						"status_id": id,
+						"text": "%s dissipado." % b.Statuses.DEFINITIONS[id].name
+					}
+				)
+
 	b.record(
 		{
 			"kind": "dispel",

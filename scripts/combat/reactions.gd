@@ -34,19 +34,14 @@ static func after_hero_turn(b: RefCounted) -> void:
 		var power: int = (
 			b.Config.REACTION_PHASE_TWO_DAMAGE if b.boss_phase == 2 else b.Config.REACTION_DAMAGE
 		)
-		b.meteors.append(
-			{"cell": cell, "due": b.round_number + 1, "radius": 0, "power": power, "reaction": true}
-		)
 		b.record(
 			{
 				"kind": "reaction",
 				"source": 5,
 				"cell": cell,
 				"ability": "warning",
-				"text":
-				(
-					"REAÇÃO — Brasa anunciada: impacto na próxima vez que Xardorok agir na "
-					+ "rodada seguinte. Saia da marca ou use Antispell."
-				)
+				"text": "REAÇÃO — Brasa iminente. Responda: manter, defender ou evadir."
 			}
 		)
+		var centers: Array[Vector2i] = [cell]
+		b.prepare_meteors(centers, 0, power)

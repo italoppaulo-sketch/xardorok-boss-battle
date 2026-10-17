@@ -1,6 +1,33 @@
 extends RefCounted
 ## Catálogo independente do motor e da apresentação. Distâncias em passos Manhattan.
 const DATA := {
+	"fire_shield":
+	{
+		"name": "Escudo de Fogo",
+		"target": "self",
+		"magic": true,
+		"color": "ffd47b",
+		"description":
+		(
+			"2 turnos próprios: −40% dano; devolve 6 fogo em contato efetivo. "
+			+ "Antimagia dissipa. Recarga 3 após encerrar."
+		)
+		## Catálogo independente do motor e da apresentação. Distâncias em passos Manhattan.
+	},
+	"fire_aura":
+	{
+		"name": "Aura de Fogo",
+		"target": "self",
+		"magic": true,
+		"bonus": true,
+		"cooldown": 4,
+		"color": "ff762d",
+		"description":
+		(
+			"Bônus; 3 turnos próprios. Fim de turno de herói adjacente: 16/20 fogo, "
+			+ "35% queimadura. Antimagia dissipa."
+		)
+	},
 	"red_laser":
 	{
 		"name": "Laser Vermelho",
@@ -264,8 +291,8 @@ const DATA := {
 		"color": "ff905a",
 		"description":
 		(
-			"Marca 2 áreas de raio 1; impactos só no turno de Xardorok na rodada "
-			+ "seguinte. Antispell cancela uma marca."
+			"Marca até 2 áreas de raio 1. Resposta imediata: manter, defender (bônus + 8 PM) "
+			+ "ou evadir até 2 passos (ação principal). Impacto após respostas; piso queima por 2 rodadas."
 		)
 	},
 	"summon":
@@ -284,7 +311,7 @@ const LOADOUTS := [
 	["antispell", "heal", "purple_fire"],
 	["root_arrow", "ice_arrow", "energy_arrow", "flight"],
 	["illusion", "chain", "silence"],
-	["smoke", "meteors", "summon"]
+	["smoke", "meteors", "summon", "fire_shield", "fire_aura"]
 ]
 
 

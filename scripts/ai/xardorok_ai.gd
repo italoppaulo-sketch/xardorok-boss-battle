@@ -3,6 +3,8 @@ extends RefCounted
 
 ## Pontuação contextual sobre alvos percebidos; memória não é visão atual.
 static func choose(b: RefCounted) -> Dictionary:
+	if not b.initial_summon_done and b.can_use(5, "summon", b.units[5].cell).is_empty():
+		return {"id": "summon", "cell": b.units[5].cell}
 	var target: int = nearest_hero(b, 5)
 	if target < 0:
 		# Invocação e cobertura não precisam de uma vítima percebida.
@@ -40,7 +42,15 @@ static func choose(b: RefCounted) -> Dictionary:
 			if b.can_observe(5, hero):
 				perceived_cluster += 1
 		cluster = maxi(cluster, perceived_cluster)
+	var nearby: int = b.heroes_in_area(b.units[5].cell, 2).size()
 	var scores := {
+		"fire_shield":
+		(
+			80
+			+ nearby * 15
+			+ mini(70, b.boss_damage_since_turn)
+			+ (30 if b.units[5].hp < b.units[5].max_hp * 0.8 else 0)
+		),
 		"meteors":
 		b.Config.AI_WEIGHTS.meteors + ranged * 6 + cluster * 20 + (14 if b.boss_phase == 2 else 0),
 		"summon":
@@ -48,7 +58,8 @@ static func choose(b: RefCounted) -> Dictionary:
 		"smoke":
 		(
 			b.Config.AI_WEIGHTS.smoke
-			+ ranged * 6
+			+ ranged * 14
+			+ b.living_minions() * 12
 			+ (25 if b.units[5].hp < b.units[5].max_hp * 0.7 else 0)
 			+ (35 if b.boss_phase == 2 else 0)
 		)
@@ -63,6 +74,13 @@ static func choose(b: RefCounted) -> Dictionary:
 			options.append({"id": id, "cell": destination, "score": scores[id]})
 	options.sort_custom(func(a: Dictionary, c: Dictionary): return a.score > c.score)
 	return options[0] if not options.is_empty() else {}
+
+
+static func wants_aura(b: RefCounted) -> bool:
+	return (
+		b.can_use(5, "fire_aura", b.units[5].cell).is_empty()
+		and not b.heroes_in_area(b.units[5].cell, 2).is_empty()
+	)
 
 
 static func nearest_hero(b: RefCounted, index: int) -> int:
