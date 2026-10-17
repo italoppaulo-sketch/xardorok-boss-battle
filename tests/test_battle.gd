@@ -13,6 +13,7 @@ func expect(value: bool, description: String) -> void:
 
 func _initialize() -> void:
 	var battle := Battle.new()
+	battle.random_outcomes = false
 	expect(battle.units.size() == 6, "Cinco heróis e um chefe")
 	expect(not battle.move_unit(0, Vector2i(-1, 2)), "Limites da arena")
 	expect(not battle.move_unit(0, battle.units[1].cell), "Ocupação bloqueia movimento")
