@@ -63,11 +63,11 @@ func _test_grosso() -> void:
 	expect(b.units[5].hp < boss_hp, "Pele devolve dano de contato")
 	b = fixture()
 	cast(b, 0, "skin")
+	b.apply_status(5, "fire_aura", 3)
 	b.apply_status(5, "silenced", 1)
-	b.active_index = 5
-	b.act_enemy()
+	b.active_index = 0
 	b.end_turn()
-	expect(b.units[0].hp < 150, "Armadura incandescente fere Grosso protegido, mesmo sob silêncio")
+	expect(b.units[0].hp < 150, "Aura já ativada fere Grosso protegido mesmo sob silêncio")
 	b = fixture()
 	expect(cast(b, 0, "hammer"), "Martelo Glacial selecionável")
 	expect(cast(b, 0, "double", 5), "Ataque Duplo combina com bônus de martelo")
@@ -271,6 +271,11 @@ func _test_boss() -> void:
 	expect(not newborn_acted, "Lacaios não agem na rodada de nascimento")
 	b.events.clear()
 	for step in 20:
+		while b.meteor_window:
+			if b.response_index < 0:
+				b.resolve_meteor_window()
+			else:
+				b.meteor_response(b.response_index, "stay", b.units[b.response_index].cell)
 		b.end_turn()
 		if b.active_index == 6:
 			break
@@ -291,17 +296,15 @@ func _test_boss() -> void:
 		not b.meteors.is_empty() and b.units[0].hp == 150,
 		"Meteoro é telegrafado e não causa dano imediato"
 	)
-	var marked: Array[Dictionary] = b.meteors.duplicate(true)
-	b.active_index = 0
-	b.units[0].cell = Vector2i(14, 8)
-	b.units[1].cell = marked[0].cell
-	var hp: int = b.units[1].hp
-	b.active_index = 5
-	b.round_number = 2
-	b._resolve_world()
-	expect(b.units[0].hp == 150, "Fuga da área marcada evita meteoro")
-	expect(b.units[1].hp == hp - 40, "Meteoro fere personagem dentro da área prevista")
-	expect(b.meteors.is_empty(), "Marcas são removidas após impacto")
+	var first: int = b.response_index
+	var hp: int = b.units[first].hp
+	while b.meteor_window:
+		if b.response_index < 0:
+			b.resolve_meteor_window()
+		else:
+			b.meteor_response(b.response_index, "stay", b.units[b.response_index].cell)
+	expect(b.units[first].hp < hp, "Meteoro fere personagem dentro da área prevista")
+	expect(b.meteors.is_empty(), "Marcas são removidas após oportunidade limitada")
 	b = fixture()
 	b.active_index = 5
 	b.apply_status(5, "silenced", 1)
@@ -311,6 +314,9 @@ func _test_boss() -> void:
 	)
 	b = fixture()
 	b.active_index = 5
+	b.initial_summon_done = true
+	b.units[5].cooldowns.fire_shield = 9
+	b.units[5].cooldowns.smoke = 9
 	b.units[0].hp = 1
 	var adjacent: Dictionary = Battle.BossAI.choose(b)
 	b.units[0].cell = Vector2i(1, 0)

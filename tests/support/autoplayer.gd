@@ -1,3 +1,4 @@
+# gdlint: disable=max-returns
 extends RefCounted
 ## Políticas de teste, externas à IA de produção; não alteram HP, recursos ou RNG.
 const POLICIES := [
@@ -9,7 +10,10 @@ const POLICIES := [
 	"ignora_lacaios",
 	"mau_posicionamento",
 	"evita_meteoros",
-	"enfrenta_fumaca"
+	"enfrenta_fumaca",
+	"evasao_excessiva",
+	"ignora_meteoros",
+	"corpo_a_corpo"
 ]
 var policy := "agressivo"
 var casts := {}
@@ -34,6 +38,12 @@ func play_hero(b: RefCounted, hero: int) -> void:
 			break
 	if hero == 2:
 		if policy in ["antimagia", "defensivo", "evita_meteoros"]:
+			if (
+				b.has_status(5, "fire_shield")
+				and b.can_use(hero, "antispell", known_cells[5]).is_empty()
+			):
+				use(b, hero, "antispell", known_cells[5])
+				return
 			for zone in b.smoke:
 				if b.can_use(hero, "antispell", zone.cell).is_empty():
 					use(b, hero, "antispell", zone.cell)
@@ -90,12 +100,16 @@ func play_hero(b: RefCounted, hero: int) -> void:
 			score += 100
 		if reach > 2 and d <= 1 and policy != "mau_posicionamento":
 			score += 50
-		if policy == "mau_posicionamento":
+		if policy in ["mau_posicionamento", "corpo_a_corpo"]:
 			score += d * 20
 		if policy in ["evita_meteoros", "defensivo", "cura", "antimagia", "lacaios"]:
 			for mark in b.meteors:
 				if b.distance(cell, mark.cell) <= mark.radius:
 					score += 250
+		if policy in ["evita_meteoros", "defensivo", "cura", "antimagia", "lacaios"]:
+			for zone in b.fire_zones:
+				if zone.cell == cell:
+					score += 150
 		if score < best_score:
 			best_score = score
 			destination = cell
@@ -114,6 +128,45 @@ func play_hero(b: RefCounted, hero: int) -> void:
 		if b.can_observe(hero, enemy) and b.can_use(hero, "basic", b.units[enemy].cell).is_empty():
 			use(b, hero, "basic", b.units[enemy].cell)
 			return
+
+
+func respond_meteor(b: RefCounted) -> void:
+	var hero: int = b.response_index
+	if hero < 0:
+		b.resolve_meteor_window()
+		return
+	var evade := (
+		policy
+		in ["evita_meteoros", "evasao_excessiva", "defensivo", "cura", "antimagia", "lacaios"]
+	)
+	# Defesa usa bônus/PM quando a política prefere preservar sua ação ofensiva.
+	var prefer_guard := policy == "defensivo"
+	prefer_guard = prefer_guard or (policy == "agressivo" and b.units[hero].mana >= 80)
+	if policy == "evita_meteoros" and b.units[hero].hp >= 65 and b.can_observe(hero, 5):
+		prefer_guard = b.distance(b.units[hero].cell, b.units[5].cell) <= b.units[hero].range
+	if prefer_guard and b.can_meteor_response(hero, "guard", b.units[hero].cell).is_empty():
+		b.meteor_response(hero, "guard", b.units[hero].cell)
+		return
+	if evade:
+		var destinations: Dictionary = b.emergency_destinations(hero)
+		var best := Vector2i(-1, -1)
+		var score := 99999
+		for cell in destinations:
+			var danger: int = b.distance(cell, b.units[5].cell)
+			# Usa somente o chefe observado; sem rastrear posição oculta.
+			if not b.can_observe(hero, 5):
+				danger = 0
+			var value: int = int(destinations[cell]) * 10 - danger
+			for zone in b.fire_zones:
+				if zone.cell == cell:
+					value += 200
+			if value < score:
+				score = value
+				best = cell
+		if best != Vector2i(-1, -1) and b.can_meteor_response(hero, "evade", best).is_empty():
+			b.meteor_response(hero, "evade", best)
+			return
+	b.meteor_response(hero, "stay", b.units[hero].cell)
 
 
 func use(b: RefCounted, hero: int, id: String, cell: Vector2i) -> void:

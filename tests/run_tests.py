@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-SUITES = ["test_battle", "test_marco4", "test_abilities", "test_scene", "test_input", "test_encounters", "test_visuals"]
+SUITES = ["test_battle", "test_marco4", "test_marco5", "test_visibility_marco5", "test_abilities", "test_scene", "test_input", "test_input_marco5", "test_encounters", "test_visuals", "test_presentation_marco5"]
 
 
 def main():

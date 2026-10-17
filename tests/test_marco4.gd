@@ -18,6 +18,18 @@ func fresh() -> RefCounted:
 	return b
 
 
+func advance(b: RefCounted) -> void:
+	# Decisão explícita antes de avançar; não ignora a nova janela de reação.
+	for response in 10:
+		if not b.meteor_window:
+			break
+		if b.response_index < 0:
+			b.resolve_meteor_window()
+		else:
+			b.meteor_response(b.response_index, "stay", b.units[b.response_index].cell)
+	b.end_turn()
+
+
 func _initialize() -> void:
 	initiative_checks()
 	geometry_checks()
@@ -45,28 +57,28 @@ func initiative_checks() -> void:
 	expect(not b.use_ability(1, "dodge", b.units[1].cell), "Não duplica bônus")
 	b.units[1].cooldowns.fushigiri = 3
 	b.apply_status(1, "rooted", 2)
-	b.end_turn()
+	advance(b)
 	expect(b.active_index == 3, "Encerrar avança ao próximo combatente")
 	expect(b.units[1].statuses.rooted == 1, "Estado conta fim de turno do portador")
 	expect(b.units[1].cooldowns.fushigiri == 3, "Recarga não conta no fim do turno")
 	b.units[4].hp = 0
-	b.end_turn()
+	advance(b)
 	expect(b.active_index == 0, "Iniciativa pula unidade derrotada")
 	for turn in 12:
 		if b.active_index == 1:
 			break
-		b.end_turn()
+		advance(b)
 	expect(b.active_index == 1 and b.round_number == 2, "Ordem cíclica avança rodada")
 	expect(b.units[1].cooldowns.fushigiri == 2, "Recarga conta início do portador")
 	expect(b.units[1].actions == 1 and b.units[1].bonus == 1, "Recursos renovam início do portador")
 	expect(b.has_status(1, "rooted"), "Outros turnos não expiram estado do portador")
-	b.end_turn()
+	advance(b)
 	expect(not b.has_status(1, "rooted"), "Segundo fim do portador expira estado")
 	b = fresh()
 	for step in 6:
 		if b.active_index == 5:
 			break
-		b.end_turn()
+		advance(b)
 	b.units[0].cell = Vector2i(11, 4)
 	b.act_enemy()
 	var once_hp: int = b.units[0].hp
@@ -83,12 +95,12 @@ func initiative_checks() -> void:
 	var acted_early := false
 	for turn in 6:
 		acted_early = acted_early or b.active_index >= 6
-		b.end_turn()
+		advance(b)
 	expect(not acted_early, "Lacaios aguardam próxima rodada")
 	var entered := false
 	for turn in 10:
 		entered = entered or b.active_index >= 6
-		b.end_turn()
+		advance(b)
 	expect(entered, "Lacaios entram na iniciativa seguinte")
 
 
@@ -187,10 +199,10 @@ func reaction_checks() -> void:
 	for i in 5:
 		hp.append(b.units[i].hp)
 	var boss_actions: int = b.units[5].actions
-	b.end_turn()
+	advance(b)
 	expect(b.reactions_used == 0, "Primeiro herói não dispara reação")
 	b.events.clear()
-	b.end_turn()
+	advance(b)
 	expect(b.reactions_used == 1, "Segundo turno de herói dispara preparação")
 	expect(b.units[5].actions == boss_actions, "Reação não gasta ação principal do chefe")
 	var warnings := 0
@@ -198,20 +210,34 @@ func reaction_checks() -> void:
 		if event.kind == "reaction":
 			warnings += 1
 	expect(warnings == 1, "Reação registra um aviso")
-	for i in 5:
-		expect(b.units[i].hp == hp[i], "Preparação não causa dano imediato")
-	for turn in 3:
-		b.end_turn()
-	expect(b.reactions_used == 2, "Exatamente duas reações após quatro heróis, sem terceira")
-	b.end_turn()
+	# Marco5 substitui preparação vazia por reação tática com janela explícita.
+	if b.meteor_window:
+		for step in 10:
+			if not b.meteor_window:
+				break
+			if b.response_index < 0:
+				b.resolve_meteor_window()
+			else:
+				b.meteor_response(b.response_index, "stay", b.units[b.response_index].cell)
+	for turn in 12:
+		if b.round_number >= 2:
+			break
+		if b.meteor_window:
+			if b.response_index < 0:
+				b.resolve_meteor_window()
+			else:
+				b.meteor_response(b.response_index, "stay", b.units[b.response_index].cell)
+			continue
+		expect(b.reactions_used <= 2, "Limite configurado de duas reações respeitado")
+		advance(b)
 	expect(b.round_number == 2 and b.reactions_used == 0, "Nova rodada renova limite de reações")
 	b = fresh()
 	b.apply_status(5, "frozen", 4)
-	b.end_turn()
-	b.end_turn()
+	advance(b)
+	advance(b)
 	expect(b.reactions_used == 0, "Congelamento bloqueia reação")
 	b = fresh()
 	b.apply_status(5, "silenced", 4)
-	b.end_turn()
-	b.end_turn()
+	advance(b)
+	advance(b)
 	expect(b.reactions_used == 0, "Silêncio bloqueia preparação mágica")

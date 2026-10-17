@@ -1,26 +1,50 @@
-# Xardorok Boss Battle — Marco 4: O Trono das Cinzas
+# Xardorok Boss Battle — Marco 5: A Ira do Rei das Cinzas
 
-RPG tático em **Godot 4.7.2**, continuando os Marcos 1–3. Esta versão traz iniciativa individual, reações anunciadas, duas fases de Xardorok, fumaça com ocultação real, arena de ruínas e tempestade e HUD com retratos e ícones. Os sprites aprovados dos cinco heróis e de Dalamud foram preservados.
+RPG tático em **Godot 4.7.2 / GDScript**, continuando o Marco 4. Corrige o desaparecimento indevido perto das ruínas e acrescenta escudo, aura ativável, meteoros com resposta limitada, incêndios, IA contextual e vitória cinematográfica. Os sprites aprovados dos cinco heróis e de Dalamud permanecem preservados.
 
-## Abrir no Windows
+## Executar no computador
 
-1. No GitHub Desktop, use **Fetch origin** e escolha **feature/marco-4-boss-hud**. Use Pull se houver atualização.
-2. Abra `project.godot` no Godot 4.7.2, aguarde a importação e pressione **F5**.
-3. Se usar o pacote ZIP, extraia tudo em uma pasta separada e importe seu `project.godot`.
+1. No GitHub Desktop, use **Fetch origin**, escolha **feature/marco-5-polish** e atualize a branch.
+2. Abra `project.godot` no **Godot 4.7.2**, aguarde a importação e pressione **F5**.
+3. Se usar o ZIP, extraia o pacote inteiro em uma pasta separada e importe `project.godot`. Não copie apenas os scripts.
 
-O PR desta versão parte de `feature/marco-3-visual`; os PRs anteriores ainda aguardavam revisão na entrega. Não há merge automático na `main`.
+O PR parte de `feature/marco-4-boss-hud`, pois o Marco 4 ainda aguarda revisão. Nenhuma alteração é incorporada automaticamente à `main`. Não há plugins ou dependências de execução externos.
 
 ## Jogar
 
-- A faixa superior mostra a ordem, o combatente ativo e o próximo. Cada combatente tem seu próprio turno: **5 passos, 1 ação e 1 bônus** para cada herói. Só o ativo pode agir.
-- Iniciativa fixa: Kodokami 18, Thomas 16, Thuxil 15, Grosso 14, Xardorok 13, Cassandra 12. Acólitos têm 17, desempate pela ordem de invocação, e só entram na rodada seguinte ao nascimento.
-- **1–5** ou retratos: inspecionar Grosso, Kodokami, Cassandra, Thomas e Thuxil. Inspecionar outro herói não transfere o turno.
-- **Esc / Mover:** clique nos pontos previstos do piso para se deslocar. Na fumaça, ocupantes não vistos podem tornar um trajeto previsto inviável. Não há obstáculos invisíveis fixos.
-- **A:** ataque básico. **Q / W / E / T:** habilidades da barra. Clique no alvo/chão indicado. Habilidades pessoais são executadas ao escolher seu ícone.
-- **Espaço:** encerrar o turno individual. Os inimigos agem automaticamente quando chega a vez deles. **R:** reiniciar, inclusive durante animações.
-- Passe o mouse sobre ícones para nome completo, descrição, custo, tipo de ação, alcance, recarga e impedimentos. O registro de combate abre/fecha pelo botão inferior direito.
+- A faixa superior mostra a iniciativa individual. Cada herói recebe **5 passos, 1 ação principal e 1 bônus** no próprio turno.
+- **1–5** ou retratos: inspecionar Grosso, Kodokami, Cassandra, Thomas e Thuxil. Só o combatente ativo pode agir.
+- **Esc / Mover:** clique nos pontos do piso. Movimento comum gasta passos, preservando a ação principal.
+- **A:** ataque básico. **Q / W / E / T:** habilidades da barra; clique no alvo ou no chão. Habilidades pessoais executam ao selecionar o ícone.
+- **Espaço:** encerrar turno; os inimigos agem automaticamente. Durante resposta de meteoro, confirma **manter posição**.
+- Durante o aviso de meteoro, **E** seleciona evasão e depois um destino marcado; **D** usa defesa. **Esc** volta às opções sem fechar a janela.
+- **R:** reiniciar inclusive durante animações, resposta de meteoro e vitória. **Espaço** pula a sequência de vitória depois que ela começar.
+- Passe o mouse sobre ícones para descrição, custo, alcance, estados e recargas. O botão inferior direito abre o registro de combate.
 
-Comandos ficam bloqueados durante a apresentação de uma ação. O modelo resolve o efeito uma única vez; animações e barras da arena acompanham os eventos de impacto. HP/PM no painel reconciliam ao término da sequência.
+A iniciativa fixa começa com Kodokami 18, Thomas 16, Thuxil 15, Grosso 14, Xardorok 13 e Cassandra 12. Acólitos têm 17 e entram na rodada seguinte à invocação. Inspecionar outro herói não transfere o turno.
+
+## Combate e regras do Marco 5
+
+| Recurso | Regra |
+| --- | --- |
+| Abertura do chefe | Primeira ação principal válida invoca até 2 magos. Silêncio, congelamento, falta de espaço/recursos ou limite podem impedir; a IA tenta novamente. |
+| IA posterior | Pontua distâncias, concentração, HP, pressão recebida, lacaios, fases, visão e recargas. Não segue ciclo fixo. |
+| Escudo de Fogo | Ação principal; 2 fins de turno do portador, incluindo ativação. Reduz dano em 40% além da armadura; devolve 6 fogo somente em contato que cause dano. Não acumula. |
+| Recarga do escudo | Começa em 3 ao terminar ou ser dissipado; diminui nos inícios dos próximos turnos próprios. Não pode ser reativado enquanto ativo ou em recarga. |
+| Aura de Fogo | Começa desligada. Ativação custa bônus; dura 3 fins de turno próprios. Herói adjacente recebe 16 fogo (20 na fase 2) ao encerrar seu turno, uma vez por evento, com 35% de queimadura. |
+| Antimagia | Dissipa fumaça e buffs mágicos compatíveis, inclusive escudo e aura. Não remove a armadura intrínseca. |
+| Silêncio | Impede novas conjurações/reação mágica; ataques físicos continuam. Aura já ativada e escudo já lançado permanecem até expirar/dissipar. |
+| Meteoros | Marcam até 2 áreas Manhattan de raio 1. A iniciativa pausa para uma resposta de cada herói ameaçado; o impacto vem após a última, sem rodadas extras. Reações usam raio 0 e menor dano. |
+| Evasão emergencial | Exige ação disponível e destino livre fora de todas as marcas em até 2 passos. Gasta a ação. Fora do turno ativo, reserva também a próxima ação principal: esse turno começa com 0 ações; o seguinte volta a 1. Congelamento/enraizamento impedem. |
+| Defesa de meteoro | Custa 1 bônus + 8 PM atuais; reduz somente o dano dos impactos desta janela em 50%. Congelamento impede. Não renova recursos. |
+| Permanecer | Não custa recursos; recebe o dano caso continue na área. |
+| Incêndio | Impacto anuncia e incendeia células válidas por 2 rodadas. Entrar ou encerrar turno nelas causa 8 fogo, no máximo uma vez por combatente/turno lógico. Voo evita travessia intermediária, mas não o pouso no fogo. Não bloqueia movimento. |
+| Navegação inimiga | Considera risco de incêndio e busca caminhos alternativos. Acólitos procuram sair do fogo quando podem. |
+| Fases e reações | 900 HP; fase 2 a 450 HP, sem cura ou turno adicional. Até 2 reações por rodada, após cada 2 turnos de heróis. Brasa usa a mesma janela curta; comando fortalece magos. |
+
+Estados expiram ao fim do turno do portador, incluindo o atual para buffs pessoais; recargas diminuem e 8 PM regeneram no início do turno próprio. Custos inválidos não são debitados. Ações normais ficam bloqueadas na janela de resposta e durante animações.
+
+Se Xardorok morrer, as marcas pendentes se dissipam e a vitória não fica bloqueada. Mudança de fase mantém marcas e seus valores já anunciados. Resolver uma janela novamente não reaplica impactos. O movimento comum preserva as regras aprovadas.
 
 ## Habilidades preservadas
 
@@ -31,58 +55,42 @@ Comandos ficam bloqueados durante a apresentação de uma ação. O modelo resol
 | Cassandra | Antimagia, Cura, Raio de Fogo Roxo |
 | Thomas | Flecha Enraizante, Flecha de Gelo em área, Flecha Energizada, Botas Mágicas |
 | Thuxil | Duplicata Ilusória, Raio Azul Encadeado, Silêncio |
-| Xardorok | Ataque físico, fumaça, meteoros, invocação e aura passiva; duas fases e reações |
-| Acólitos | Laser vermelho arcano; alternativa física sob silêncio |
+| Xardorok | Ataque físico, fumaça, meteoros, invocação, Escudo de Fogo e Aura de Fogo |
+| Acólitos | Laser vermelho arcano e alternativa física sob silêncio |
 
-Custos e efeitos vêm do catálogo `scripts/data/abilities.gd`. Antispell foi renomeada na interface para **Antimagia**, mantendo o identificador estável `antispell`.
+Armadura intrínseca do rei: multiplicador de dano 0,72, resistências físico 30%, sombra/raio 20%, violeta 15%, fogo 45%, vulnerabilidade a gelo 25%. Pele Glacial ajuda Grosso, mas não o imuniza contra fogo. Voo e forma gigante mantêm pouso/ocupação válidos e não conferem invulnerabilidade.
 
-## Regras novas e interações
+**Dalamud é um espírito ancestral aliado.** A integração para futuros buffs permanece em `scripts/support/spirit_support.gd`; não é um dragão físico nem um sexto combatente permanente. Não foi produzida a cinematografia final de Dalamud.
 
-- **Duração:** estados expiram no fim do turno do portador, incluindo o turno atual para buffs pessoais. Recargas diminuem e 8 PM regeneram no início do próximo turno do portador. Ações inválidas não gastam recursos.
-- **Chefe:** 900 HP; transição única a 450 HP. Fase 2 intensifica apresentação/aura e escolhas de pressão, sem restaurar HP, apagar estados ou conceder outro turno.
-- **Armadura:** Xardorok reduz dano final recebido em 28%, além de resistir a físico 30%, sombra/raio 20%, violeta 15%, fogo 45%. Gelo mantém vulnerabilidade de 25%. Pele Glacial reduz dano recebido, mas não neutraliza a aura.
-- **Reações:** após cada dois turnos de heróis encerrados, até duas por rodada. São preparações de brasa ou comando contextual dos acólitos; não consomem a ação regular. Silêncio e congelamento impedem sua preparação mágica. Uma brasa anuncia uma célula para a rodada seguinte: mova-se ou use Antimagia.
-- **Meteoros:** marcam áreas Manhattan de raio 1, que só impactam quando Xardorok age na rodada seguinte. Marcas das reações usam raio 0. Há oportunidade de ação para todos os heróis antes do impacto; silêncio/congelamento não apagam uma preparação anterior.
-- **Fumaça:** raio 3, duração de duas rodadas. A visão corresponde ao herói ativo ou ao último herói ativo vivo durante os turnos inimigos. Quem está na mesma região pode se perceber; de fora, sprites, nomes, HP, seleção, retratos e informações de alvo ficam ocultos. Não há visão coletiva atravessando a nuvem.
-- **Área e memória:** Flecha de Gelo pode mirar o chão sem visão direta e atingir ocultos sem revelá-los. Ataques direcionados e saltos elétricos exigem visão. A IA procura posições vistas anteriormente quando perde o alvo; não acompanha posições ocultas atuais.
-- **Antimagia:** dissipa fumaça e marcas, remove debuffs de aliados ou buffs de inimigos conforme o catálogo; não ressuscita, não remove a armadura/aura passivas e não revela alvos que continuem sem linha de visão.
-- **Voo/Gigante:** voo cruza ruínas/unidades e exige pouso livre; não é invulnerabilidade. Gigante muda escala, força e alcance, mantendo uma célula lógica e colisões. O chefe e o gigante têm base de seleção ligada aos pés.
-- **Fim:** derrotar Xardorok vence mesmo com acólitos vivos. A queda dos cinco heróis causa derrota. Reinício remove iniciativa anterior, regiões, estados, efeitos, reações e invocações.
+## Visibilidade e apresentação
 
-**Dalamud é um espírito ancestral aliado.** Sua manifestação e buffs permanecem no ponto de integração `scripts/support/spirit_support.gd`, sem unidade física ou regra nova de invocação pelo jogador. A cinematografia final continua fora do escopo.
+A fumaça mantém ocultação real de corpo, nome, HP, retrato e inspeção para quem está fora da região; personagens na mesma nuvem podem se perceber. Ataques e IA mantêm LOS das ruínas. A apresentação dos sprites usa separadamente a ocultação de fumaça, evitando que uma ruína baixa apague o ator inteiro.
 
-## Organização
+A arena tem 119 células visuais, quatro obstáculos periféricos e 115 células transitáveis. Braseiros ocupam esses suportes; ruínas externas não alteram a navegação. O gelo decorativo foi retirado; gelo temporário das habilidades permanece. Fogo ativo do piso tem chamas animadas, distintas das texturas queimadas decorativas.
 
-| Módulo | Função |
-| --- | --- |
-| `scripts/combat/battle.gd` | Estado, validações, turno individual, dano e resultado |
-| `scripts/combat/initiative.gd` | Ordem explícita e entrada de lacaios |
-| `scripts/combat/reactions.gd` | Reações limitadas, sem cadeia recursiva de turnos |
-| `scripts/combat/perception.gd` | Visão compartilhada entre regras, IA e apresentação |
-| `scripts/combat/arena_geometry.gd` | Recorte da plataforma e ruínas bloqueantes |
-| `scripts/data/boss_config.gd` | HP, dano, armadura, resistências, pesos, recargas, fases e limites |
-| `scripts/ai/` | Escolhas contextuais e busca de última posição vista |
-| `scripts/visuals/` | Sprites, cronologia, fumaça, efeitos e cenário |
-| `scripts/ui/battle_hud.gd`, `scenes/ui/` | Iniciativa, retratos, habilidades e registro |
-| `assets/ui/ability_icons/` | Ícones originais e manifesto de associação |
+A vitória começa após o impacto final, com queda desacelerada visualmente, coroa desprendida e faixa dourada original. Dura 3,6 segundos e pode ser pulada. Não altera o relógio lógico do combate.
 
-A plataforma tem 119 células visuais, quatro ruínas físicas periféricas e 115 células transitáveis. As antigas colunas centrais foram removidas também das regras. Ruínas exteriores, tochas com pedestal e gelo nas fissuras não criam bloqueios sem representação.
+## Arquitetura e validação
 
-## Testar e revisar
+- `scripts/combat/battle.gd`: estado, recursos, dano, turnos e resultado.
+- `scripts/combat/meteor_resolution.gd`: subfase de resposta; `fire_fields.gd`: incêndios e deduplicação.
+- `scripts/combat/navigation.gd`: BFS de movimento e busca de menor risco para IA.
+- `scripts/ai/`, `scripts/data/boss_config.gd`: decisões e parâmetros configuráveis.
+- `scripts/world/arena.gd`, `scripts/visuals/`: apresentação sequenciada por eventos reais.
+- `scripts/ui/battle_hud.gd`: iniciativa, recursos, ícones e respostas.
 
 ```text
 python tests/run_tests.py --godot CAMINHO_DO_GODOT
 python tests/report_balance.py
 ```
 
-Com display, sem `--headless`:
+Testes gráficos requerem display, sem `--headless`:
 
 ```text
-godot --path . --script tests/test_render.gd
-godot --path . --script tests/test_render_marco4.gd
-godot --path . --script tests/test_showcase.gd
+godot --path . --rendering-method gl_compatibility --script tests/test_render_marco5.gd
+godot --path . --rendering-method gl_compatibility --script tests/test_match_visual_marco5.gd
 ```
 
-[Validação e capturas reais](docs/VALIDACAO_MARCO4.md) · [Balanceamento](docs/BALANCEAMENTO_MARCO4.md) · [Arte e prompts](docs/ARTE_MARCO4.md) · [Demonstração curta](docs/demos/marco4_demo.mp4).
+Consulte [validação](docs/VALIDACAO_MARCO5.md), [balanceamento](docs/BALANCEAMENTO_MARCO5.md), [diagnóstico do bug](docs/BUG_VISIBILIDADE_MARCO5.md), [arte e licença](docs/ARTE_MARCO5.md) e [capturas reais](docs/capturas/).
 
-Testes executados no Godot 4.7.2 Linux/OpenGL por software. Windows, exportação executável, GPU física e áudio não foram testados/entregues. Os novos recursos artísticos aguardam revisão. As 27 simulações venceram em 5–7 rodadas; a dificuldade permanece permissiva nesse lote e precisa de partidas humanas, conforme o relatório. Os relatórios dos marcos anteriores ficam preservados como histórico, não como descrição do sistema atual.
+Validação realizada em Linux com Godot 4.7.2 oficial. Windows, exportação executável e dificuldade definitiva para jogadores humanos continuam sujeitos a teste no computador do usuário. Os três seeds por política não equivalem a uma pesquisa com jogadores. Trilha e efeitos sonoros permanecem para a próxima etapa.

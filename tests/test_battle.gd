@@ -39,7 +39,11 @@ func _initialize() -> void:
 	var hero_hp: int = battle.units[0].hp
 	battle.active_index = 5
 	battle.act_enemy()
-	expect(battle.units[0].hp < hero_hp, "IA ataca herói adjacente")
+	expect(
+		battle.initial_summon_done and battle.living_minions() == 2,
+		"IA abre invocando mesmo com herói adjacente"
+	)
+	expect(battle.units[0].hp == hero_hp, "Invocação não inventa dano físico")
 	battle.active_index = 0
 	battle._refresh_resources(0, 5)
 	expect(battle.units[0].actions == 1, "Início do turno renova ação")
@@ -56,6 +60,14 @@ func _initialize() -> void:
 	for turn in 1500:
 		if not pursuit.outcome.is_empty():
 			break
+		if pursuit.meteor_window:
+			if pursuit.response_index < 0:
+				pursuit.resolve_meteor_window()
+			else:
+				pursuit.meteor_response(
+					pursuit.response_index, "stay", pursuit.units[pursuit.response_index].cell
+				)
+			continue
 		if pursuit.units[pursuit.active_index].enemy:
 			pursuit.act_enemy()
 		pursuit.end_turn()
