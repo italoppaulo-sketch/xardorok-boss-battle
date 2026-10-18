@@ -377,6 +377,8 @@ func deal_damage(
 		and units[source].hp > 0
 	):
 		deal_damage(5, source, Config.SHIELD_RETALIATION, "fire", false, false, delay, "shield")
+	if target >= 6 and victim.hp <= 0:
+		remove_from_initiative(target)
 	_update_boss_phase()
 	check_outcome()
 	return amount
@@ -458,9 +460,9 @@ func spawn_minions() -> void:
 				minion.merge(
 					{
 						"name": "Acólito %d" % (units.size() - 5),
-						"hp": 60,
-						"max_hp": 60,
-						"damage": 14,
+						"hp": Config.MINION_HP,
+						"max_hp": Config.MINION_HP,
+						"damage": Config.MINION_DAMAGE,
 						"cell": cell,
 						"color": Color("e74b55"),
 						"statuses": {},
@@ -529,8 +531,12 @@ func _tick_statuses(index: int) -> void:
 func _refresh_resources(index: int, movement: int) -> void:
 	var unit: Dictionary = units[index]
 	unit.move = movement + (2 if has_status(index, "flight") else 0)
-	unit.actions = 0 if emergency_action_debt.has(index) else 1
-	emergency_action_debt.erase(index)
+	var debt: int = int(emergency_action_debt.get(index, 0))
+	unit.actions = 0 if debt > 0 else 1
+	if debt > 1:
+		emergency_action_debt[index] = debt - 1
+	else:
+		emergency_action_debt.erase(index)
 	unit.bonus = 1
 	unit.mana = mini(unit.max_mana, unit.mana + 8)
 	for id in unit.cooldowns.keys():
@@ -661,6 +667,7 @@ func end_turn() -> String:
 		guard += 1
 		if turn_cursor >= initiative.size():
 			round_number += 1
+			renew_defensive_reactions()
 			_resolve_world()
 			fire_ticks.clear()
 			aura_ticks.clear()
@@ -729,3 +736,37 @@ func act_enemy() -> void:
 func enemy_turn() -> String:
 	# Compatibilidade de API; agora encerra somente o turno individual ativo.
 	return end_turn()
+
+
+func renew_defensive_reactions() -> void:
+	for i in 5:
+		units[i].defensive_reaction = Config.DEFENSIVE_REACTIONS_PER_ROUND
+
+
+func remove_from_initiative(index: int) -> void:
+	var position := initiative.find(index)
+	if position < 0:
+		return
+	initiative.remove_at(position)
+	if position <= turn_cursor:
+		turn_cursor -= 1
+
+
+func reaction_preview(index: int, choice: String) -> Dictionary:
+	var amount := 0
+	if valid_unit(index) and choice != "evade":
+		for mark in meteors:
+			if distance(units[index].cell, mark.cell) > mark.radius:
+				continue
+			var power: int = roundi(mark.power * (0.5 if choice == "guard" else 1.0))
+			var value := float(power) * (1.35 if has_status(5, "attack") else 1.0)
+			value *= 1.0 - float(units[index].resistances.get("fire", 0.0))
+			if has_status(index, "defense"):
+				value *= 0.65
+			amount += maxi(1, roundi(value))
+	return {
+		"damage": amount,
+		"reaction_cost": 0 if choice == "stay" else 1,
+		"distance": Config.EMERGENCY_DISTANCE,
+		"current_action": index == active_index and valid_unit(index) and units[index].actions > 0
+	}

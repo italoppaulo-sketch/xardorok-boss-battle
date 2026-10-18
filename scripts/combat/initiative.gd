@@ -5,7 +5,7 @@ extends RefCounted
 static func order(units: Array[Dictionary], round_number: int) -> Array[int]:
 	var result: Array[int] = []
 	for i in units.size():
-		if units[i].get("spawn_round", 0) < round_number:
+		if units[i].hp > 0 and units[i].get("spawn_round", 0) < round_number:
 			result.append(i)
 	result.sort_custom(
 		func(a: int, b: int):

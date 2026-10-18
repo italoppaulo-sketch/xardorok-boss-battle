@@ -26,7 +26,11 @@ static func prepare(b: RefCounted, centers: Array[Vector2i], radius: int, power:
 
 static func destinations(b: RefCounted, index: int) -> Dictionary:
 	var result := {}
-	if not b.valid_unit(index) or b.units[index].hp <= 0 or b.units[index].actions < 1:
+	if (
+		not b.valid_unit(index)
+		or b.units[index].hp <= 0
+		or b.units[index].get("defensive_reaction", 0) < 1
+	):
 		return result
 	var search: Dictionary = b.Navigation.search(b, index, b.Config.EMERGENCY_DISTANCE)
 	for cell in search.costs:
@@ -49,23 +53,20 @@ static func can_respond(b: RefCounted, index: int, choice: String, destination: 
 		or b.units[index].hp <= 0
 	):
 		return "Aguarde sua resposta ao meteoro."
+	if choice != "stay" and b.units[index].get("defensive_reaction", 0) < 1:
+		return "Sem Reação Defensiva: renova no início da próxima rodada."
 	match choice:
 		"stay":
 			return ""
 		"guard":
-			if (
-				b.has_status(index, "frozen")
-				or b.units[index].bonus < 1
-				or b.units[index].mana < b.Config.GUARD_MANA
-			):
-				return "Defesa exige bônus e 8 PM; indisponível sob congelamento."
-			return ""
+			return "Congelamento impede defesa." if b.has_status(index, "frozen") else ""
 		"evade":
 			return (
 				""
 				if destinations(b, index).has(destination)
-				else "Evasão exige ação principal e destino livre fora das marcas a até 2 passos."
+				else "Evasão exige destino livre fora das marcas em até 2 passos; raiz/gelo impedem."
 			)
+
 	return "Resposta desconhecida."
 
 
@@ -73,15 +74,39 @@ static func respond(b: RefCounted, index: int, choice: String, destination: Vect
 	if not can_respond(b, index, choice, destination).is_empty():
 		return false
 	if choice == "guard":
-		b.units[index].bonus -= 1
-		b.units[index].mana -= b.Config.GUARD_MANA
+		b.units[index].defensive_reaction -= 1
+		b.record(
+			{
+				"kind": "guard",
+				"source": index,
+				"target": index,
+				"color": "84cfee",
+				"text":
+				"%s assume defesa emergencial: impacto reduzido em 50%%." % b.units[index].name
+			}
+		)
 		b.meteor_guards[index] = true
 	elif choice == "evade":
 		var origin: Vector2i = b.units[index].cell
 		var steps: Array[Vector2i] = b.Navigation.path(b, index, destination)
-		b.units[index].actions -= 1
-		if index != b.active_index:
-			b.emergency_action_debt[index] = true
+		b.units[index].defensive_reaction -= 1
+		var consumed_now: bool = index == b.active_index and b.units[index].actions > 0
+		if consumed_now:
+			b.units[index].actions -= 1
+		else:
+			b.emergency_action_debt[index] = int(b.emergency_action_debt.get(index, 0)) + 1
+		b.record(
+			{
+				"kind": "action_sacrifice",
+				"source": index,
+				"when": "current" if consumed_now else "next",
+				"text":
+				(
+					"%s compromete %s ação principal."
+					% [b.units[index].name, "a atual" if consumed_now else "a próxima"]
+				)
+			}
+		)
 		b.units[index].cell = destination
 		b.record(
 			{
