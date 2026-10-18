@@ -16,7 +16,7 @@ func _initialize() -> void:
 	for policy in Strategy.POLICIES:
 		for seed_value in [17, 42, 99]:
 			results.append(play(policy, seed_value))
-	var file := FileAccess.open("res://docs/balanceamento_marco5.json", FileAccess.WRITE)
+	var file := FileAccess.open("res://docs/balanceamento_marco52.json", FileAccess.WRITE)
 	file.store_string(
 		JSON.stringify(
 			{
@@ -64,9 +64,19 @@ func play(policy: String, seed_value: int) -> Dictionary:
 		"aura_damage": 0,
 		"shield_damage": 0,
 		"floor_damage": 0,
-		"hero_casts": {}
+		"hero_casts": {},
+		"minions_spawned": 0,
+		"minions_defeated": 0,
+		"minion_moves": 0,
+		"minion_attacks": 0,
+		"meteor_damage": 0,
+		"defensive_reactions_spent": 0,
+		"decision_steps": 0,
+		"elapsed_ms": 0
 	}
+	var started := Time.get_ticks_msec()
 	for step in 1800:
+		stats.decision_steps = step + 1
 		if not b.outcome.is_empty() or b.round_number > 80:
 			break
 		b.events.clear()
@@ -87,6 +97,11 @@ func play(policy: String, seed_value: int) -> Dictionary:
 			b.end_turn()
 		collect(stats, b.events)
 		check_integrity(b)
+	stats.elapsed_ms = Time.get_ticks_msec() - started
+	stats.minions_defeated = 0
+	for index in range(6, b.units.size()):
+		if b.units[index].hp <= 0:
+			stats.minions_defeated += 1
 	stats.rounds = b.round_number
 	stats.result = b.outcome if not b.outcome.is_empty() else "LIMITE_80_RODADAS"
 	stats.boss_hp = b.units[5].hp
@@ -99,8 +114,14 @@ func play(policy: String, seed_value: int) -> Dictionary:
 func collect(stats: Dictionary, events: Array[Dictionary]) -> void:
 	for event in events:
 		var kind: String = event.kind
+		if kind == "spawn":
+			stats.minions_spawned += 1
+		if kind == "move" and event.get("source", -1) >= 6:
+			stats.minion_moves += 1
 		if kind == "cast":
 			stats.actions += 1
+			if event.source >= 6:
+				stats.minion_attacks += 1
 			var id: String = event.ability
 			stats.casts[id] = int(stats.casts.get(id, 0)) + 1
 			if event.source < 5:
@@ -123,15 +144,18 @@ func collect(stats: Dictionary, events: Array[Dictionary]) -> void:
 		if kind == "meteor_response":
 			if event.get("response", "") == "evade":
 				stats.evades += 1
+				stats.defensive_reactions_spent += 1
 				stats.actions_sacrificed += 1
 			elif event.get("response", "") == "guard":
 				stats.guards += 1
+				stats.defensive_reactions_spent += 1
 		if kind == "reaction":
 			stats.reactions += 1
 		if kind == "damage" and event.target < 5:
 			match event.get("cause", ""):
 				"meteor":
 					stats.meteor_hits += 1
+					stats.meteor_damage += event.amount
 				"aura":
 					stats.aura_damage += event.amount
 				"shield":
@@ -159,4 +183,4 @@ func check_integrity(b: RefCounted) -> void:
 		occupied[unit.cell] = true
 		for id in unit.statuses:
 			invariant(unit.statuses[id] > 0, "Não restam estados expirados")
-	invariant(b.living_minions() <= 3, "Limite de lacaios")
+	invariant(b.living_minions() <= 4, "Limite de lacaios")

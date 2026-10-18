@@ -151,7 +151,7 @@ func _test_thomas() -> void:
 	var before: int = b.units[5].hp
 	expect(cast(b, 3, "ice_arrow", 5), "Flecha de Gelo executa")
 	expect(b.units[5].hp == before - 34, "Chefe é vulnerável a gelo")
-	expect(b.units[6].hp == 22 and b.units[7].hp == 22, "Espinhos atingem dois lacaios em área")
+	expect(b.units[6].hp == 52 and b.units[7].hp == 52, "Espinhos atingem dois lacaios em área")
 	expect(b.units[0].hp == 150, "Gelo em área não causa fogo amigo")
 	b = fixture()
 	expect(cast(b, 3, "energy_arrow", 5), "Flecha Energizada executa")
@@ -229,7 +229,10 @@ func _test_thuxil() -> void:
 		"Ilusão não cria unidade permanente nem gasta ação"
 	)
 	expect(cast(b, 4, "chain", 5), "Raio Encadeado combina com duplicata no mesmo turno")
-	expect(b.units[6].hp == 0 and b.units[7].hp == 0, "Raio com crítico elimina múltiplos lacaios")
+	expect(
+		b.units[6].hp == 15 and b.units[7].hp == 15,
+		"Raio crítico mantém 75 de dano contra lacaios agora mais resistentes"
+	)
 	expect(b.units[5].hp == b.units[5].max_hp - 43, "Ilusão garante crítico no chefe")
 	expect(not b.has_status(4, "illusion"), "Ilusão é consumida pelo ataque")
 	var links := 0
@@ -288,7 +291,7 @@ func _test_boss() -> void:
 	expect(acted, "Lacaios movem e atacam no turno seguinte")
 	b.spawn_minions()
 	b.spawn_minions()
-	expect(b.living_minions() == 3, "Invocações respeitam máximo de três vivos")
+	expect(b.living_minions() == 4, "Invocações respeitam máximo de quatro vivos")
 	b = fixture()
 	b.active_index = 5
 	expect(b.use_ability(5, "meteors", Vector2i(9, 4)), "Chuva de Meteoros cria marcas")
@@ -317,6 +320,7 @@ func _test_boss() -> void:
 	b.initial_summon_done = true
 	b.units[5].cooldowns.fire_shield = 9
 	b.units[5].cooldowns.smoke = 9
+	b.units[5].cooldowns.summon = 9
 	b.units[0].hp = 1
 	var adjacent: Dictionary = Battle.BossAI.choose(b)
 	b.units[0].cell = Vector2i(1, 0)

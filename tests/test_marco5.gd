@@ -170,7 +170,10 @@ func meteor_checks() -> void:
 	if not destinations.is_empty():
 		var dest: Vector2i = destinations.keys()[0]
 		expect(b.meteor_response(first, "evade", dest), "Evasão emerge pela API real")
-		expect(b.units[first].actions == actions - 1, "Evasão sacrifica ação principal")
+		expect(
+			b.units[first].actions == actions and b.emergency_action_debt.has(first),
+			"Evasão fora do turno compromete a próxima ação"
+		)
 		expect(b.units[first].bonus == bonus, "Evasão não renova nem consome bônus")
 		expect(b.units[first].cell == dest, "Evasão move para célula escolhida")
 		for mark in b.meteors:
@@ -183,8 +186,8 @@ func meteor_checks() -> void:
 	first = b.response_index
 	b.units[first].actions = 0
 	expect(
-		not b.can_meteor_response(first, "evade", Vector2i(6, 4)).is_empty(),
-		"Sem ação não há evasão gratuita"
+		not b.emergency_destinations(first).is_empty(),
+		"Reação Defensiva permite evasão com ação já utilizada"
 	)
 	b.apply_status(first, "rooted", 1)
 	b.units[first].actions = 1
@@ -207,7 +210,12 @@ func meteor_checks() -> void:
 		b.meteor_response(first, "guard", b.units[first].cell), "Defesa disponível resolve reação"
 	)
 	expect(
-		b.units[first].mana == pm - 8 and b.units[first].bonus == 0, "Defesa custa oito PM e bônus"
+		(
+			b.units[first].mana == pm
+			and b.units[first].bonus == bonus
+			and b.units[first].defensive_reaction == 0
+		),
+		"Defesa custa somente Reação Defensiva"
 	)
 	expect(b.units[first].actions == actions, "Defesa preserva ação sem conceder nova")
 	close_window(b)

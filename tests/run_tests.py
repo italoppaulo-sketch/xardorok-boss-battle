@@ -5,15 +5,16 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-SUITES = ["test_battle", "test_marco4", "test_marco5", "test_visibility_marco5", "test_abilities", "test_scene", "test_input", "test_input_marco5", "test_encounters", "test_visuals", "test_presentation_marco5"]
+SUITES = ["test_battle", "test_marco4", "test_marco5", "test_visibility_marco5", "test_abilities", "test_scene", "test_input", "test_input_marco5", "test_encounters", "test_visuals", "test_presentation_marco5", "test_marco52", "test_input_marco52", "test_terrain_marco52", "test_victory_marco52"]
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--godot", default="godot", help="Godot 4.7.2 executable")
+    parser.add_argument("--skip-encounters", action="store_true", help="Reuse the already executed 36-match balance run")
     args = parser.parse_args()
     commands = [["--headless", "--editor", "--quit"]]
-    commands += [["--headless", "--script", f"tests/{name}.gd"] for name in SUITES]
+    commands += [["--headless", "--script", f"tests/{name}.gd"] for name in SUITES if not (args.skip_encounters and name == "test_encounters")]
     commands.append(["--headless", "--quit-after", "120"])
     failed = False
     for command in commands:

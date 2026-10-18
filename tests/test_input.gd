@@ -44,6 +44,7 @@ func key(code: int) -> void:
 
 
 func run() -> void:
+	root.size = Vector2i(1200, 700)
 	var scene: Node = load("res://scenes/main.tscn").instantiate()
 	tested_scene = scene
 	root.add_child(scene)
