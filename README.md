@@ -1,19 +1,20 @@
-# Xardorok Boss Battle — Marco 5.2
+# Xardorok Boss Battle — Marco 6: identidade sonora integrada
 
-RPG tático 2D em **Godot 4.7.2 / GDScript**, baseado exclusivamente no Marco 5 aprovado, commit `b437d480c37b3834aa944b15c4e95385d567832d`. Acrescenta zoom 2D, seleção contextual, magos móveis com 90 HP, reposição de lacaios, Reação Defensiva e piso vulcânico contínuo. Os sprites aprovados permanecem preservados. Nenhum código ou ativo do Marco 5.1 foi incorporado.
+RPG tático 2D em **Godot 4.7.2 / GDScript**, continuando o Marco 5.2 aprovado (`2db39f1a0f600e7e5cfc4a6d269d06c03ca90aa4`). Música de batalha/fase 2, vitória, derrota e efeitos de todas as habilidades estão integrados à apresentação. Balanceamento, IA, câmera, sprites e regras permanecem os do Marco 5.2.
 
 ## Executar no computador
 
-1. No GitHub Desktop, use **Fetch origin**, escolha **feature/marco-5-2-combat-refinement** e atualize a branch.
+1. No GitHub Desktop, use **Fetch origin**, escolha **feature/marco-6-complete-audio** e atualize a branch.
 2. Abra `project.godot` no **Godot 4.7.2**, aguarde a importação e pressione **F5**.
 3. Se usar o ZIP, extraia o pacote inteiro em uma pasta separada e importe `project.godot`. Não copie apenas os scripts.
 
-O PR parte de `feature/marco-5-polish`, preservando sua versão aprovada. Nenhuma alteração é incorporada automaticamente à `main`. Não há plugins ou dependências de execução externos.
+O PR parte de `feature/marco-5-2-combat-refinement`, preservando sua versão jogável. Nenhuma alteração é incorporada automaticamente à `main`. Não há plugins ou dependências de execução externos.
 
 ## Jogar
 
 - A faixa superior mostra a iniciativa individual. Cada herói recebe **5 passos, 1 ação principal e 1 bônus** no próprio turno.
 - **1–5** ou retratos: inspecionar Grosso, Kodokami, Cassandra, Thomas e Thuxil. Só o combatente ativo pode agir.
+- **F10:** volumes independentes de Geral, Música, Efeitos, Ambiência e Interface; **M:** mudo geral. Preferências persistem ao reiniciar.
 - **Roda do mouse:** zoom suave (0,85–1,8); **Home:** enquadramento original imediato; **botão do meio:** arrastar; **F:** centralizar no herói selecionado. O HUD permanece fixo.
 - **Tab / Shift+Tab:** alternar alvos elegíveis; **Enter:** confirmar; **Esc:** cancelar a lista contextual. Clique em uma região congestionada para abrir retratos, nomes, HP e indicação de aliado/inimigo.
 - **Esc / Mover:** clique nos pontos do piso. Movimento comum gasta passos, preservando a ação principal.
@@ -73,7 +74,7 @@ A fumaça mantém ocultação real de corpo, nome, HP, retrato e inspeção para
 
 A arena tem 119 células visuais, quatro obstáculos periféricos e 115 células transitáveis. Braseiros ocupam esses suportes; ruínas externas não alteram a navegação. O gelo decorativo foi retirado; gelo temporário das habilidades permanece. Fogo ativo usa textura de rocha negra e lava da referência original, amostrada continuamente entre células com máscara limitada às zonas realmente incendiadas. As bordas artísticas ficam dentro da célula; toda célula marcada continua perigosa. Veja as capturas comparativas em [terreno](docs/TERRENO_MARCO52.md).
 
-A vitória começa após o impacto final, com queda desacelerada visualmente, coroa desprendida e faixa dourada original. Dura 3,6 segundos e pode ser pulada. Não altera o relógio lógico do combate.
+A vitória começa após o impacto final, com queda desacelerada visualmente, coroa desprendida e faixa dourada original. Dura 7,2 segundos para acomodar a fanfarra e pode ser pulada. Coroa e título preservam seus tempos visuais originais. Não altera o relógio lógico do combate.
 
 ## Arquitetura e validação
 
@@ -98,4 +99,9 @@ godot --path . --rendering-method gl_compatibility --script tests/test_match_vis
 
 Consulte [validação 5.2](docs/VALIDACAO_MARCO52.md), [balanceamento 5.2](docs/BALANCEAMENTO_MARCO52.md), [interface](docs/INTERFACE_MARCO52.md), [terreno e antes/depois](docs/TERRENO_MARCO52.md), [arte e licença preservadas](docs/ARTE_MARCO5.md) e [capturas reais](docs/capturas/). Os relatórios antigos documentam somente seus respectivos marcos.
 
-Validação realizada em Linux com Godot 4.7.2 oficial. Windows, exportação executável e dificuldade definitiva para jogadores humanos continuam sujeitos a teste no computador do usuário. Os três seeds por política não equivalem a uma pesquisa com jogadores. Trilha e efeitos sonoros permanecem para a próxima etapa.
+Validação realizada em Linux com Godot 4.7.2 oficial. Windows, exportação executável e dificuldade definitiva para jogadores humanos continuam sujeitos a teste no computador do usuário. Os três seeds por política não equivalem a uma pesquisa com jogadores. O áudio integrado e seus limites de validação estão em [Marco 6](docs/audio/README.md).
+
+
+## Áudio — Marco 6
+
+[Guia de áudio](docs/audio/README.md) · [Matriz completa](docs/audio/MATRIZ_AUDIO.md) · [Validação](docs/audio/VALIDACAO_MARCO6.md) · [Fontes e condições de uso](docs/audio/FONTES_E_LICENCAS.md). A gravação de gameplay e o pacote de fontes foram entregues separadamente para não inflar o histórico git.

@@ -259,4 +259,8 @@ func run() -> void:
 	)
 	Engine.time_scale = 1
 	print("Marco 5.2 entrada/cena: %d verificações; %d falhas" % [checks, failures])
+	scene.audio.shutdown()
+	await create_timer(.15).timeout
+	scene.queue_free()
+	await process_frame
 	quit(1 if failures else 0)

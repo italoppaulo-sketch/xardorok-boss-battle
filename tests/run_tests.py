@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-SUITES = ["test_battle", "test_marco4", "test_marco5", "test_visibility_marco5", "test_abilities", "test_scene", "test_input", "test_input_marco5", "test_encounters", "test_visuals", "test_presentation_marco5", "test_marco52", "test_input_marco52", "test_terrain_marco52", "test_victory_marco52"]
+SUITES = ["test_battle", "test_marco4", "test_marco5", "test_visibility_marco5", "test_abilities", "test_scene", "test_input", "test_input_marco5", "test_encounters", "test_visuals", "test_presentation_marco5", "test_marco52", "test_input_marco52", "test_terrain_marco52", "test_victory_marco52", "test_audio_marco6", "test_audio_ui_marco6"]
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     args = parser.parse_args()
     commands = [["--headless", "--editor", "--quit"]]
     commands += [["--headless", "--script", f"tests/{name}.gd"] for name in SUITES if not (args.skip_encounters and name == "test_encounters")]
-    commands.append(["--headless", "--quit-after", "120"])
+    commands.append(["--headless", "--script", "tests/test_startup_marco6.gd"])
     failed = False
     for command in commands:
         result = subprocess.run(

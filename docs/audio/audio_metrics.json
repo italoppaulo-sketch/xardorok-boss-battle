@@ -1,0 +1,506 @@
+[
+  {
+    "cue": "hammer_swing",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -26.684955596923828,
+    "sha256": "38a89b15ad10bb4e25e76f78f4d1c0aec9463e126e5ecf86756b0daa0a0274de",
+    "bytes": 176478
+  },
+  {
+    "cue": "hammer_hit",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -24.24477767944336,
+    "sha256": "66f8d92ed91a87b386b50a7497dfb2bce8fb843ad8619cc6b3283e5c7e9454a8",
+    "bytes": 176478
+  },
+  {
+    "cue": "ice_form",
+    "seconds": 1.8984580498866213,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -32.35919189453125,
+    "sha256": "5d689d49db17c364a17afb168fc5af0d38d9a678bb19d4ef47e9d001c85fee01",
+    "bytes": 334966
+  },
+  {
+    "cue": "ice_shards",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -37.7833251953125,
+    "sha256": "b344d1780188896c7087caf6ec067e55f5cf9f378aca86ca4923610bec370452",
+    "bytes": 176478
+  },
+  {
+    "cue": "giant",
+    "seconds": 2.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -22.322349548339844,
+    "sha256": "286aa4d9ded8a5bfc657a41db728a7a7c0ef4eea72b878cf23f37e3374701c05",
+    "bytes": 352878
+  },
+  {
+    "cue": "punch",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -29.63402557373047,
+    "sha256": "eb7f42af972e840d17f3a6af19ba586aea8eb4b072c63922cc49041ae756f78f",
+    "bytes": 176478
+  },
+  {
+    "cue": "dodge",
+    "seconds": 0.7529478458049886,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -28.134977340698242,
+    "sha256": "8812e8bd678af0146f11c12eb1b0268e0c42cda135828b136a1bbc659836989e",
+    "bytes": 132898
+  },
+  {
+    "cue": "shadow_charge",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -24.28739356994629,
+    "sha256": "f8cf18fc12c83b4765d66d2850eca81868837cbd3ffa14645b91dfecc7a029b0",
+    "bytes": 176478
+  },
+  {
+    "cue": "sword_slash",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -26.51592254638672,
+    "sha256": "142e145f8f386babe15e8b2b078c3e314d34ce36dfa0c2ef7b52953ea05b7617",
+    "bytes": 176478
+  },
+  {
+    "cue": "shadow_rupture",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -25.59371566772461,
+    "sha256": "b989b0db97cefc6444457c50b1b8745ac522254b51ab03ef8a9b381ba0d6fd9a",
+    "bytes": 176478
+  },
+  {
+    "cue": "sacrifice",
+    "seconds": 0.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -19.33204460144043,
+    "sha256": "f4c80857284675e2592389e5c728e8a524200d7424e6ffe8c5c21f46029e1130",
+    "bytes": 84750
+  },
+  {
+    "cue": "bow_release",
+    "seconds": 0.7856916099773242,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -35.84458923339844,
+    "sha256": "e17b7cbbaba196e6beef0c03d9e493f746dd871b14c0719735b32dac1fe3b5e6",
+    "bytes": 138674
+  },
+  {
+    "cue": "arrow_hit",
+    "seconds": 0.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -26.672637939453125,
+    "sha256": "706555b3084b9a944b442adb355ac3dd6ebe80caaf640a72deeeb678379b9efe",
+    "bytes": 84750
+  },
+  {
+    "cue": "roots",
+    "seconds": 1.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -30.091249465942383,
+    "sha256": "07e9285537d9eb071bd85d5c70e7cec92da78ef206ebd35aa19c719c9d1639ce",
+    "bytes": 261150
+  },
+  {
+    "cue": "energy_charge",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -27.311098098754883,
+    "sha256": "e009b7993777db3afa84648e3ec1ea62b6cee1da7cf1db3c3ed12b3853f5722a",
+    "bytes": 176478
+  },
+  {
+    "cue": "energy_impact",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -25.9158878326416,
+    "sha256": "8e0980c68c1387bba6a9d70cfc60b5f7b41b100e32d9aed86ccc9856e94c69e6",
+    "bytes": 176478
+  },
+  {
+    "cue": "flight",
+    "seconds": 1.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -28.145246505737305,
+    "sha256": "1ba7983d7335938591562ece13ed65575935557f552b5f76f538262fa9e61acf",
+    "bytes": 261150
+  },
+  {
+    "cue": "arcane_cast",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -23.542495727539062,
+    "sha256": "f59a855f2cf59d334c44c3b2d17d57ec3f4a92efc5d208ebee35055ab5f4e017",
+    "bytes": 176478
+  },
+  {
+    "cue": "arcane_hit",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -28.19462013244629,
+    "sha256": "ab319732bcd2de073cdd6502a9320465fa0e87155d0eb31fca7f19755cc8d3ad",
+    "bytes": 176478
+  },
+  {
+    "cue": "dispel",
+    "seconds": 1.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -24.979759216308594,
+    "sha256": "71b5495398aa23c968a43fe8d92a9537110aa0848add67c79652fc9864dc4625",
+    "bytes": 261150
+  },
+  {
+    "cue": "heal",
+    "seconds": 2.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -20.872249603271484,
+    "sha256": "8b957b6008930f4ffb50ba1c58760bca0c03146548f9e3b5a873cb5dee56d02a",
+    "bytes": 352878
+  },
+  {
+    "cue": "violet_beam",
+    "seconds": 1.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -20.953418731689453,
+    "sha256": "1958f56fd2ec9042be920f5eada64305df786c460ff6c43263c2f5bab0a01b56",
+    "bytes": 261150
+  },
+  {
+    "cue": "illusion",
+    "seconds": 1.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -22.516643524169922,
+    "sha256": "003ac36cb1e7ab9ab6676bfe8f373bad2c112523e4421bccc3546cc85d937542",
+    "bytes": 261150
+  },
+  {
+    "cue": "silence",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -26.95489501953125,
+    "sha256": "2288393b4686f1a917e701811e7e956cf1e8cd5b053bd9ced30d01f69ed10e7c",
+    "bytes": 176478
+  },
+  {
+    "cue": "boss_hit",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -24.985807418823242,
+    "sha256": "a8304e7f331d04fb0860e70728d628647f59b288cf355528d2fa0dff8774af62",
+    "bytes": 176478
+  },
+  {
+    "cue": "smoke",
+    "seconds": 2.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -27.084030151367188,
+    "sha256": "014923595cc09a1fea860bcd78cfa0edd39f1e79087767cf5b6426945fab4b6a",
+    "bytes": 352878
+  },
+  {
+    "cue": "summon",
+    "seconds": 2.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -22.41513442993164,
+    "sha256": "a481b3a49b11d998443993a70d384f790d52b7a6e3fea5e87f9f4ca47559360a",
+    "bytes": 352878
+  },
+  {
+    "cue": "fire_ignite",
+    "seconds": 0.9996145124716553,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -26.69355010986328,
+    "sha256": "74050395bb80efb0b3b83cfdfbe1a88b1414c8b2b90de51f22582a0fe8d45b97",
+    "bytes": 176410
+  },
+  {
+    "cue": "fire_hit",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -29.57937240600586,
+    "sha256": "67b0d5054c4b9bedf989dcbdeae2fdc4ec2c322a0975187fd3f462bd731d1418",
+    "bytes": 176478
+  },
+  {
+    "cue": "phase",
+    "seconds": 2.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -22.526851654052734,
+    "sha256": "687fa132a44f26370b913b81e14cd6d328c7b3a7156e60c0b83f4b7406bbd8ff",
+    "bytes": 352878
+  },
+  {
+    "cue": "crown",
+    "seconds": 0.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -25.342771530151367,
+    "sha256": "592bb4a0adce7bd808f3bc0508fbd5a40c21d61ce2fef11b8f795b08e85d27a8",
+    "bytes": 84750
+  },
+  {
+    "cue": "minion_spawn",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -24.489992141723633,
+    "sha256": "259c6d3d1048e5aaa3e6fac16dcfe65be424673218b213ce2192f5ef6c2a596c",
+    "bytes": 176478
+  },
+  {
+    "cue": "minion_death",
+    "seconds": 1.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -22.942312240600586,
+    "sha256": "053b9543b1e060190dd91a07d33b7e7d6ac2d36e6b9710833a29019734bf174e",
+    "bytes": 261150
+  },
+  {
+    "cue": "footsteps",
+    "seconds": 1.8873242630385487,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -33.88926696777344,
+    "sha256": "d592da858f2cfb6a8e0824545966809e12e40741c06e544a674f7a0df5710342",
+    "bytes": 333002
+  },
+  {
+    "cue": "body_hit",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -28.208290100097656,
+    "sha256": "fac9a2046175df2c842e03a9916635b300bb114aa342e7009de59a065b1159ec",
+    "bytes": 176478
+  },
+  {
+    "cue": "hero_death",
+    "seconds": 1.0,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -26.681808471679688,
+    "sha256": "0ead4ac59f5fc9cbba6fbbdbb06f99b827e5bece5ce43cf0417b27f615350cca",
+    "bytes": 176478
+  },
+  {
+    "cue": "critical",
+    "seconds": 0.48,
+    "sample_peak_db": -6.99995756149292,
+    "rms_db": -22.394315719604492,
+    "sha256": "f8812a3c38c8cbd22f055cbeb093959b78a626fbe7ce267019d0fb90e2ab81cf",
+    "bytes": 84750
+  },
+  {
+    "cue": "ui",
+    "seconds": 2.0,
+    "sample_peak_db": -11.999946594238281,
+    "rms_db": -34.1713752746582,
+    "sha256": "8d466d58f96c38fcc2e60f03004c80b6523d4a12748677ad89348c3e5c329534",
+    "bytes": 352878
+  },
+  {
+    "cue": "ui_select",
+    "seconds": 0.18,
+    "sample_peak_db": -15.000099182128906,
+    "rms_db": -31.21135711669922,
+    "sha256": "dca0b05dce4c11fdb25a71c30110320ac890bb9e2546c1bb1fffe5f09aecccd1",
+    "bytes": 31830
+  },
+  {
+    "cue": "ui_confirm",
+    "seconds": 0.23,
+    "sample_peak_db": -15.000099182128906,
+    "rms_db": -30.73558807373047,
+    "sha256": "9439b3eb1dcdbc02adfc7bb47e4673bc51234f8584e64f140d96a11ad9a9296d",
+    "bytes": 40650
+  },
+  {
+    "cue": "ui_invalid",
+    "seconds": 0.2,
+    "sample_peak_db": -15.000099182128906,
+    "rms_db": -28.802993774414062,
+    "sha256": "513aa5ace739b5278b75d6eb6c36be7ce6bee3097d0ec8c85d1528dbe83138aa",
+    "bytes": 35358
+  },
+  {
+    "cue": "ui_open",
+    "seconds": 0.25,
+    "sample_peak_db": -15.000099182128906,
+    "rms_db": -33.44643783569336,
+    "sha256": "0c06e1a3c221a1f9ae23bd6850b848cb4ab461f3fda8634a9be9329203cc2d00",
+    "bytes": 44178
+  },
+  {
+    "cue": "step",
+    "seconds": 0.27,
+    "sample_peak_db": -15.000099182128906,
+    "rms_db": -36.11288833618164,
+    "sha256": "6f0afcd45948d0b469aef29d5f585e9638ce376390575391c0a92463f057f4cc",
+    "bytes": 47706
+  },
+  {
+    "cue": "land",
+    "seconds": 0.32,
+    "sample_peak_db": -11.999946594238281,
+    "rms_db": -26.115571975708008,
+    "sha256": "ddc7a84eb7be9093e7c33aae9ac485c6376245dd845b2687aa76507b6ffe2ddd",
+    "bytes": 56526
+  },
+  {
+    "cue": "punch_air",
+    "seconds": 0.16,
+    "sample_peak_db": -11.999946594238281,
+    "rms_db": -21.87285614013672,
+    "sha256": "97d513b1d0679a8766e14473794d28eaca5876d7076f3d924a2e06666014a9a6",
+    "bytes": 28302
+  },
+  {
+    "cue": "ice_hit",
+    "seconds": 0.42,
+    "sample_peak_db": -8.000117301940918,
+    "rms_db": -33.67007827758789,
+    "sha256": "b5922caa18db5281dd3fd194553724d8f173b3c67da85b05a0d9a2d006a21b54",
+    "bytes": 74166
+  },
+  {
+    "cue": "minion_dissolve",
+    "seconds": 0.65,
+    "sample_peak_db": -14.000101089477539,
+    "rms_db": -27.495344161987305,
+    "sha256": "b011e28d744440be7f37848df338bb14f56155ae05c65624aa33e465628cc3b2",
+    "bytes": 114738
+  },
+  {
+    "cue": "chain_charge",
+    "seconds": 0.25,
+    "sample_peak_db": -12.999812126159668,
+    "rms_db": -21.823650360107422,
+    "sha256": "a7a79d3c60654efb943d5f15b8ee89b43e965c0b99860a0858c679066dc5a630",
+    "bytes": 44178
+  },
+  {
+    "cue": "chain_jump",
+    "seconds": 0.21,
+    "sample_peak_db": -10.000127792358398,
+    "rms_db": -14.950204849243164,
+    "sha256": "483a4e0e5dbb363b249de91bfff4b27acd4b574991f5edc0fe9b7760690dfc3e",
+    "bytes": 37122
+  },
+  {
+    "cue": "laser_charge",
+    "seconds": 0.13,
+    "sample_peak_db": -14.000101089477539,
+    "rms_db": -25.465930938720703,
+    "sha256": "080c3233dea3e5f042d9a3cdf116455eaf5bd2f791f917bda209dcf5fc05ac0a",
+    "bytes": 23010
+  },
+  {
+    "cue": "laser_emit",
+    "seconds": 0.37,
+    "sample_peak_db": -8.000117301940918,
+    "rms_db": -19.916105270385742,
+    "sha256": "643bf7fa16d1ccb224151f8db430a865f873ccb01fbd89da0c96f7b6d82c5938",
+    "bytes": 65346
+  },
+  {
+    "cue": "laser_hit",
+    "seconds": 0.35,
+    "sample_peak_db": -10.000127792358398,
+    "rms_db": -24.95124053955078,
+    "sha256": "7feee696140b027b2ee2b462445f6b84a09eded85b7211ffb83cc0c0a82381ed",
+    "bytes": 61818
+  },
+  {
+    "cue": "meteor_fall",
+    "seconds": 0.3,
+    "sample_peak_db": -10.000127792358398,
+    "rms_db": -22.649946212768555,
+    "sha256": "8f80df440f87c1e34c7fd0dfbd7a07e215225af5ce648b045d6033277abe81ba",
+    "bytes": 52998
+  },
+  {
+    "cue": "meteor_hit",
+    "seconds": 2.1,
+    "sample_peak_db": -4.999906063079834,
+    "rms_db": -19.583354949951172,
+    "sha256": "6bd74e31a3d86e9a5ef24561f74308df3cea7718fba521717ebd6205ba6f468c",
+    "bytes": 370518
+  },
+  {
+    "cue": "guard",
+    "seconds": 0.32,
+    "sample_peak_db": -16.00063133239746,
+    "rms_db": -29.290740966796875,
+    "sha256": "2c89c9993a020a20aa9f054b714546d8b8415ed29f03e43e457868be4d24e086",
+    "bytes": 56526
+  },
+  {
+    "cue": "guard_hit",
+    "seconds": 0.23,
+    "sample_peak_db": -16.999256134033203,
+    "rms_db": -31.826061248779297,
+    "sha256": "ada9a2b7ecaf3c4cf59a66e313b3c843fb66800601b22ddee642ff0980961753",
+    "bytes": 40650
+  },
+  {
+    "cue": "warning",
+    "seconds": 0.25,
+    "sample_peak_db": -11.999946594238281,
+    "rms_db": -25.114479064941406,
+    "sha256": "ad92b71d61f00afcf10916094b00a8c798853a19b2fc0d1950e43950574f8b43",
+    "bytes": 44178
+  },
+  {
+    "cue": "battle",
+    "seconds": 87.20061224489795,
+    "sample_peak_db": -4.890017986297607,
+    "rms_db": -19.637792587280273,
+    "sha256": "bd51a94219fda45e20df17acd3185607b5c1c760f3e97df16921316a5334202b",
+    "bytes": 1673329
+  },
+  {
+    "cue": "phase_two",
+    "seconds": 87.20061224489795,
+    "sample_peak_db": -5.031940937042236,
+    "rms_db": -20.491710662841797,
+    "sha256": "520e9186ce519d75f84309aeed9a5189f91ff4376095339049a148ac7409c143",
+    "bytes": 1671704
+  },
+  {
+    "cue": "victory",
+    "seconds": 6.0,
+    "sample_peak_db": -5.004702091217041,
+    "rms_db": -21.73137855529785,
+    "sha256": "d1eac92afe3c015df75620164f1d39bfac4891c4255681906f6605776c87cdc3",
+    "bytes": 120734
+  },
+  {
+    "cue": "defeat",
+    "seconds": 6.5,
+    "sample_peak_db": -4.6199798583984375,
+    "rms_db": -18.684337615966797,
+    "sha256": "ffd752e342b47d3be6895877f31530218f5bbacf6e9950e8953a92a25b8d1749",
+    "bytes": 138758
+  },
+  {
+    "cue": "ruins",
+    "seconds": 22.5,
+    "sample_peak_db": -11.9501953125,
+    "rms_db": -27.50757598876953,
+    "sha256": "fe0da91344dc5dfa6c0e494cf852f5bbec866fb050e482be78e413725a1a2650",
+    "bytes": 278513
+  },
+  {
+    "cue": "aura_presence",
+    "seconds": 0.42709750566893423,
+    "sample_peak_db": -17.538721084594727,
+    "rms_db": -35.61957550048828,
+    "sha256": "eaa4132077780f1589622b6fc3740fc373d9fc4efcb67b01da24a4369ebdc607",
+    "bytes": 11511
+  }
+]

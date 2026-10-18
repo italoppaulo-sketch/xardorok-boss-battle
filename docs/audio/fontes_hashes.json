@@ -1,0 +1,232 @@
+[
+  {
+    "file": "ambience.mp3",
+    "bytes": 193140,
+    "sha256": "7c71d8f54332305acf61c473d1c94764d699e66628e1df5fd7dee179279aed95"
+  },
+  {
+    "file": "approved_chain.mp3",
+    "bytes": 48944,
+    "sha256": "9489358c6b86f15f76f67c9f8e7bc213b9907aee73fd6fcc5bdabb97c6279958"
+  },
+  {
+    "file": "approved_laser.mp3",
+    "bytes": 17179,
+    "sha256": "cb4f63a3edb4cdf68ee3ff647d0e520d452117d4e3e45c9565b8381d682090f4"
+  },
+  {
+    "file": "approved_meteor.mp3",
+    "bytes": 65244,
+    "sha256": "759537003e7ff1a1fa79dbfa83b2162df6f3c9b48f40d7ea5d4934ae5385df56"
+  },
+  {
+    "file": "arcane_cast.mp3",
+    "bytes": 17179,
+    "sha256": "be8e174eaf0c1b59c5e7366f09023488d4987915a07a4c61f441ab0c912f7d97"
+  },
+  {
+    "file": "arcane_hit.mp3",
+    "bytes": 17179,
+    "sha256": "40ea63bb4cb5e320fef6235c73ca888de6de33afd14d7ba812b20ac65cbccf29"
+  },
+  {
+    "file": "arrow_hit.mp3",
+    "bytes": 8820,
+    "sha256": "8bac64423dff8356be320713fc5883fcd82196e162ef4e11e70736895c97da30"
+  },
+  {
+    "file": "battle_original.mp3",
+    "bytes": 2130531,
+    "sha256": "a315d8cd76f391b4415d8ede0392a2396c8e6798602cb50a69c057604c6ce723"
+  },
+  {
+    "file": "body_hit.mp3",
+    "bytes": 17179,
+    "sha256": "065ec61f5c617578fd3f54ccdb745b48258abc11ba26bffb85accd1a5f0d63dc"
+  },
+  {
+    "file": "boss_hit.mp3",
+    "bytes": 17179,
+    "sha256": "13e8ca85615395dc29e58232768f889a1de9499bed0c98b1c953c193e48d235f"
+  },
+  {
+    "file": "bow_release.mp3",
+    "bytes": 17179,
+    "sha256": "ef4e516ba951b6f5ddcba4a1d338acc68db2294cdfc37ed4edc83390ddd5c439"
+  },
+  {
+    "file": "critical.mp3",
+    "bytes": 8820,
+    "sha256": "f28ddd5fcf8645f2c2892f7f468a61aaaee520f1d7201af7fac34493e199a82e"
+  },
+  {
+    "file": "crown.mp3",
+    "bytes": 8820,
+    "sha256": "5305f0a1b73790470eb7f7e5a399923b42c2f1e5885a7be97d442e8461365b46"
+  },
+  {
+    "file": "defeat.mp3",
+    "bytes": 445947,
+    "sha256": "2bb886ece2b59398decd6f715ef97d3024a31f73018d359198ec866049ef6865"
+  },
+  {
+    "file": "dispel.mp3",
+    "bytes": 24702,
+    "sha256": "db9e198fd3f684920892a8287d4e98aee795cee682d8cee006a7e22cd74d3327"
+  },
+  {
+    "file": "dodge.mp3",
+    "bytes": 17179,
+    "sha256": "749bd43ed474b51ea5ff2da1317d4061377aa583d442c1ae0a2afae46093235a"
+  },
+  {
+    "file": "energy_charge.mp3",
+    "bytes": 17179,
+    "sha256": "8b524c8a8baba58faa3f90c37e797c862b48e764fc14ed9038a914c34be3cd10"
+  },
+  {
+    "file": "energy_impact.mp3",
+    "bytes": 17179,
+    "sha256": "d69c48ce4bf0c36d3cca402907107d516ad7c9702af8163673577c1970a914cf"
+  },
+  {
+    "file": "fire_hit.mp3",
+    "bytes": 17179,
+    "sha256": "ac9a2c138666a88ae0533a79517795c1d0bbf4e9dfacc18952f9dac22e3a00b7"
+  },
+  {
+    "file": "fire_ignite.mp3",
+    "bytes": 17179,
+    "sha256": "afa5ceabc38d53b84b986a17ce9ee2a3112c00a8a2dc5513b1a158e00b62d7fa"
+  },
+  {
+    "file": "flight.mp3",
+    "bytes": 24702,
+    "sha256": "d752650e81657624aa6053ac718b0bd305c6b989ead27620d57985c7d1aecabe"
+  },
+  {
+    "file": "footsteps.mp3",
+    "bytes": 33061,
+    "sha256": "8452b333c0cb5dfc5391c03a80cb0e4ed90190a44a8a7e47c86864fea4528d25"
+  },
+  {
+    "file": "giant.mp3",
+    "bytes": 33061,
+    "sha256": "88b7ecd21550f15378ddb6ebfe8d1d66edfdfba6731fe05052f58f821ef79f81"
+  },
+  {
+    "file": "hammer_hit.mp3",
+    "bytes": 17179,
+    "sha256": "1d123af8d6faa483caf292a04d23bd5b41eeb5fa2f3482be7f311b09ba1112f8"
+  },
+  {
+    "file": "hammer_swing.mp3",
+    "bytes": 17179,
+    "sha256": "a392e9bfbd7ea7b0a9c5cb85ef8b3692ca5979ff46b2caf6fa84e1c00a5084fe"
+  },
+  {
+    "file": "heal.mp3",
+    "bytes": 33061,
+    "sha256": "da90245882cadf44826cae3c30470eed320cf10122f04dd04d51b727e837e93a"
+  },
+  {
+    "file": "hero_death.mp3",
+    "bytes": 17179,
+    "sha256": "2641b003cf45a995212f7dac9ac8576d71e379b06ed9599dfc889ed653eef881"
+  },
+  {
+    "file": "ice_form.mp3",
+    "bytes": 33061,
+    "sha256": "283c3454679486085ceb91e83b1ba9f9b2a7cbe7162c9949058da7db2d3f439d"
+  },
+  {
+    "file": "ice_shards.mp3",
+    "bytes": 17179,
+    "sha256": "e6c97bb5df4de9f0843c00d3c6da48aa221f584668d9d9e06aa12e84b2ab8874"
+  },
+  {
+    "file": "illusion.mp3",
+    "bytes": 24702,
+    "sha256": "2d6c7d056ff9d7e203e5dfb6e67f646ca60c63e0fbdbd8903a858df5fab5fbfe"
+  },
+  {
+    "file": "minion_death.mp3",
+    "bytes": 24702,
+    "sha256": "559b0d49a581c4d07ee75fd6cbc0ec16690dac5678da2eac07727280ec825cfc"
+  },
+  {
+    "file": "minion_spawn.mp3",
+    "bytes": 17179,
+    "sha256": "919c6e0553224f17e874450eaaa7e3f993810d24be91ffd86baec2957ba0c4b7"
+  },
+  {
+    "file": "phase.mp3",
+    "bytes": 33061,
+    "sha256": "cd3cbda7af6ec185de087646aed5afce84dd5380e1bd89cdc8b2f6eed69e702c"
+  },
+  {
+    "file": "phase_percussion.mp3",
+    "bytes": 746250,
+    "sha256": "94e8df1359420f195c38e6018f7f2954f6fe008cd5015cc37c0a6ef3405902c9"
+  },
+  {
+    "file": "punch.mp3",
+    "bytes": 17179,
+    "sha256": "74ae22043c8e4403d7690db1dedfdb8fb5e4be8431f51e261890c0d2df2ca399"
+  },
+  {
+    "file": "roots.mp3",
+    "bytes": 24702,
+    "sha256": "f134f6669a4528291eb9171426cc17fa332dd6979fea4a2f190d78032607d22b"
+  },
+  {
+    "file": "sacrifice.mp3",
+    "bytes": 8820,
+    "sha256": "0bc772568a5b1f8d5fc50684d8cf9a376cac7e200c10ceaa1f00f57cec4b2eba"
+  },
+  {
+    "file": "shadow_charge.mp3",
+    "bytes": 17179,
+    "sha256": "9ae05a0a6773475e3fc0a2f44323b73f0e86f434725647732a844a44566997d6"
+  },
+  {
+    "file": "shadow_rupture.mp3",
+    "bytes": 17179,
+    "sha256": "16a6e29938cc4f967a6dc99cfb13dd50500c3c6fc1c527a1f3b356bbfffa8c81"
+  },
+  {
+    "file": "silence.mp3",
+    "bytes": 17179,
+    "sha256": "a91781218acea4565ce01fe2450f0bef43a3202c2660607cf2fa637f7bcda0b1"
+  },
+  {
+    "file": "smoke.mp3",
+    "bytes": 33061,
+    "sha256": "3a42d1c32fbe1fe47ae5523989cdb2699c1c96f62673e5ccd195d7688342c82f"
+  },
+  {
+    "file": "summon.mp3",
+    "bytes": 33061,
+    "sha256": "6092569e5fefd5c277063cea926886c0a4eef31b3897f2569b00c0b8d203d8ae"
+  },
+  {
+    "file": "sword_slash.mp3",
+    "bytes": 17179,
+    "sha256": "6a22c13a41dff48a40b20cfdf1575e8b00653ba91468219df9da35aa9a3d78f1"
+  },
+  {
+    "file": "ui.mp3",
+    "bytes": 33061,
+    "sha256": "0ca2b9d281df251f5385d517ac5b6f459ece7f6b3008ede8087812b1dd93695d"
+  },
+  {
+    "file": "victory.mp3",
+    "bytes": 746250,
+    "sha256": "98ed96a8538c7f5b040db0a28378b73d71545954154649e26b09e66ed3952773"
+  },
+  {
+    "file": "violet_beam.mp3",
+    "bytes": 24702,
+    "sha256": "d23d5bf3c4937af11e0e81896ed7cfce498e1de83dd6983cc781bf5baf4bed99"
+  }
+]
