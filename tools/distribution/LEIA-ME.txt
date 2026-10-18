@@ -1,4 +1,4 @@
-XARDOROK BOSS BATTLE — MARCO 6.1 (TESTE)
+XARDOROK BOSS BATTLE — CORREÇÃO PHASE 2 (TESTE)
 
 COMO JOGAR
 1. Extraia TODO o ZIP para uma pasta do seu computador.
@@ -19,6 +19,7 @@ Use as opções de reação na interface quando meteoros forem anunciados.
 A interface mostra custos, alcance, ações e estados.
 
 Esta é uma distribuição de teste para avaliação, sem instalador e sem assinatura digital.
+Exportada com Godot 4.7.2. Validação nativa em Windows e escuta humana desta correção pendentes.
 Se o Windows bloquear o arquivo, confira a origem e o arquivo recebido antes de decidir executá-lo.
 Configurações de áudio ficam nos dados locais do seu usuário; não exigem acesso à pasta de desenvolvimento.
 

@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+MUSIC_TRACE {"active_clip":0,"at":0.0,"hp":-1,"model_hp":-1,"nominal_mix":0.0,"outcome":"","phase":-1,"phase_requests":0,"phase_transitions":0,"player_count":1,"playing":true,"reason":"restart","stinger_playing":false,"target":0.0,"track":"battle"}
+MUSIC_TRACE {"active_clip":0,"at":0.0,"hp":-1,"model_hp":-1,"nominal_mix":0.0,"outcome":"","phase":-1,"phase_requests":1,"phase_transitions":0,"player_count":1,"playing":true,"reason":"phase_request","stinger_playing":false,"target":0.0,"track":"battle"}
+MUSIC_TRACE {"active_clip":0,"at":0.0,"hp":-1,"model_hp":-1,"nominal_mix":0.0,"outcome":"","phase":-1,"phase_requests":1,"phase_transitions":1,"player_count":1,"playing":true,"reason":"crossfade_requested","stinger_playing":false,"target":1.0,"track":"battle"}
+MUSIC_TRACE {"active_clip":1,"at":1.504259,"hp":-1,"model_hp":-1,"nominal_mix":1.0,"outcome":"","phase":-1,"phase_requests":1,"phase_transitions":1,"player_count":1,"playing":true,"reason":"crossfade_nominal_end","stinger_playing":false,"target":1.0,"track":"phase_two"}
+MUSIC_TRACE {"active_clip":1,"at":1.800969,"hp":-1,"model_hp":-1,"nominal_mix":1.0,"outcome":"","phase":-1,"phase_requests":1,"phase_transitions":1,"player_count":1,"playing":true,"reason":"stable","stinger_playing":false,"target":1.0,"track":"phase_two"}
+MUSIC_TRACE {"active_clip":-1,"at":1.800969,"hp":-1,"model_hp":-1,"nominal_mix":1.0,"outcome":"","phase":-1,"phase_requests":2,"phase_transitions":1,"player_count":1,"playing":false,"reason":"phase_request","stinger_playing":false,"target":1.0,"track":""}

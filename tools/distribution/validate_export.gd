@@ -77,7 +77,8 @@ func run() -> void:
 	for frame in 100:
 		audio._process(.02)
 	check(is_equal_approx(audio.phase_mix, 1), "Crossfade reaches phase two")
-	check(is_equal_approx(audio.music_layers.get_sync_stream_volume(1), 0), "Phase two full gain")
+	await create_timer(1.8).timeout
+	check(audio.music[0].get_stream_playback().get_current_clip_index() == 1, "Native phase two playback")
 	audio.set_volume("Music", .42, false)
 	audio.set_mute("Music", true, false)
 	scene._restart()

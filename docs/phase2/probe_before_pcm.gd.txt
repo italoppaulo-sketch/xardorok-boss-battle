@@ -1,0 +1,49 @@
+extends SceneTree
+func _initialize() -> void:
+	call_deferred("run")
+func run() -> void:
+	var audio: Node = load("res://scripts/audio/battle_audio.gd").new()
+	audio.persist_settings = false
+	root.add_child(audio)
+	audio.set_process(false)
+	audio.restart()
+	audio.music[0].stop()
+	# Isolated real mixer: constant PCM makes gain steps measurable without musical transients.
+	for i in 2:
+		var pcm := AudioStreamWAV.new()
+		pcm.format = AudioStreamWAV.FORMAT_16_BITS
+		pcm.mix_rate = 44100
+		pcm.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		pcm.loop_end = 441000
+		var data := PackedByteArray()
+		data.resize(882000)
+		for sample in 441000:
+			data.encode_s16(sample * 2, 3277 if i == 0 else 16384)
+		pcm.data = data
+		audio.music_layers.set_sync_stream(i, pcm)
+	var playback: AudioStreamPlayback = audio.music_layers.instantiate_playback()
+	playback.start()
+	var warm := playback.mix_audio(1, 44100)
+	print("warm ", warm[0], " ", warm[-1])
+	audio.on_visual({"kind":"phase"})
+	var max_jump := 0.0
+	var previous := .1
+	var at := -1
+	var peak := 0.0
+	for frame in 120:
+		audio._process(1.0 / 60.0)
+		var samples := playback.mix_audio(1, 735)
+		for sample in samples:
+			if frame > 5 and absf(sample.x - previous) > max_jump:
+				at = frame
+			if frame > 5:
+				max_jump = maxf(max_jump, absf(sample.x - previous))
+			peak = maxf(peak, absf(sample.x))
+			previous = sample.x
+	print(JSON.stringify({"at_frame":at,"peak":peak,"sample_step_max":max_jump,"end":previous,"transition_count":audio.phase_transition_count}))
+	playback.stop()
+	audio.shutdown()
+	await create_timer(.2).timeout
+	audio.queue_free()
+	await process_frame
+	quit()

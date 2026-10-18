@@ -1,7 +1,7 @@
 name: Windows test build
 on:
   push:
-    branches: [feature/marco-6-1-audio-fix-windows-export]
+    branches: [feature/marco-6-1-audio-fix-windows-export, fix/codex-phase2-audio-windows]
   workflow_dispatch:
 permissions:
   contents: read
@@ -17,6 +17,14 @@ jobs:
           $release = 'https://github.com/godotengine/godot/releases/download/4.7.2-stable'
           Invoke-WebRequest "$release/Godot_v4.7.2-stable_win64.exe.zip" -OutFile "$env:RUNNER_TEMP/godot.zip"
           Invoke-WebRequest "$release/Godot_v4.7.2-stable_export_templates.tpz" -OutFile "$env:RUNNER_TEMP/templates.zip"
+          Invoke-WebRequest "$release/SHA512-SUMS.txt" -OutFile "$env:RUNNER_TEMP/SHA512-SUMS.txt"
+          $checksums = Get-Content "$env:RUNNER_TEMP/SHA512-SUMS.txt"
+          foreach ($asset in @(@('godot.zip', 'Godot_v4.7.2-stable_win64.exe.zip'), @('templates.zip', 'Godot_v4.7.2-stable_export_templates.tpz'))) {
+            $line = $checksums | Where-Object { $_ -match ([regex]::Escape($asset[1]) + '$') }
+            if (@($line).Count -ne 1) { throw "Missing official checksum: $($asset[1])" }
+            $expected = ($line -split '\s+')[0]
+            if ((Get-FileHash "$env:RUNNER_TEMP/$($asset[0])" -Algorithm SHA512).Hash -ne $expected) { throw 'Checksum mismatch' }
+          }
           Expand-Archive "$env:RUNNER_TEMP/godot.zip" "$env:RUNNER_TEMP/godot"
           $dest = "$env:APPDATA/Godot/export_templates/4.7.2.stable"
           New-Item -ItemType Directory -Force $dest | Out-Null
@@ -38,6 +46,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Import failed' }
           & Godot_v4.7.2-stable_win64_console.exe --headless --path . --export-release 'Windows x64' 'build/windows/Xardorok Boss Battle.exe' 2>&1 | Tee-Object build/export.log
           if ($LASTEXITCODE -ne 0) { throw 'Export failed' }
+      - name: Run phase music regression on native Windows
+        shell: pwsh
+        run: |
+          & Godot_v4.7.2-stable_win64_console.exe --headless --path . --script tests/test_music_marco61.gd 2>&1 | Tee-Object build/music-regression.log
+          if ($LASTEXITCODE -ne 0) { throw 'Phase music regression failed' }
+          if (Select-String -Path build/music-regression.log -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet) { throw 'Engine errors in music regression' }
       - name: Run exported executable away from source
         shell: pwsh
         run: |
@@ -60,12 +74,12 @@ jobs:
         run: |
           Copy-Item tools/distribution/LEIA-ME.txt build/windows/
           Copy-Item tools/distribution/CREDITOS.txt build/windows/
-          Compress-Archive build/windows/* build/Xardorok_Marco6_1_Windows_x64.zip
+          Compress-Archive build/windows/* build/Xardorok_Phase2_Windows_x64.zip
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Xardorok-Marco6.1-Windows-x64-test
+          name: Xardorok-Phase2-Windows-x64-test
           path: |
-            build/Xardorok_Marco6_1_Windows_x64.zip
+            build/Xardorok_Phase2_Windows_x64.zip
             build/*.log
           retention-days: 30

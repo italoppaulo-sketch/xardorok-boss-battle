@@ -3,6 +3,7 @@ extends Node
 ## Presentation only. Never calls combat APIs or consumes the combat RNG.
 signal cue_played(cue: String, context: Dictionary)
 const MAX_VOICES := 14
+const PHASE_FADE_SECONDS := 1.5
 const BUS_DEFAULTS := {"Master": 0.9, "Music": 0.8, "SFX": 0.8, "Ambience": 0.45, "UI": 0.7}
 const BUS_TRIM := {"Master": -1.0, "Music": 0.0, "SFX": -1.0, "Ambience": -12.0, "UI": -6.0}
 const CASTS := {
@@ -61,7 +62,10 @@ var streams := {}
 var voices: Array[Dictionary] = []
 var recent := {}
 var music: Array[AudioStreamPlayer] = []
-var music_layers := AudioStreamSynchronized.new()
+var music_sequence := AudioStreamInteractive.new()
+var phase_request_count := 0
+var music_trace: Array[Dictionary] = []
+var trace_music := false
 var phase_started := false
 var phase_transition_count := 0
 var duck_db := 0.0
@@ -76,6 +80,7 @@ var phase_target := 0.0
 var duck_until := 0.0
 var stopped := false
 var outcome := ""
+var victory_music_started := false
 var played: Array[Dictionary] = []
 var settings := BUS_DEFAULTS.duplicate()
 var muted := {}
@@ -106,7 +111,6 @@ func _ready() -> void:
 		limiter.ceiling_db = -1.5
 		limiter.threshold_db = -3.0
 		AudioServer.add_bus_effect(0, limiter)
-	music_layers.stream_count = 2
 	for i in 1:
 		var player := AudioStreamPlayer.new()
 		player.bus = "Music"
@@ -235,24 +239,34 @@ func restart() -> void:
 	phase_mix = 0
 	phase_started = false
 	phase_transition_count = 0
+	phase_request_count = 0
 	duck_db = 0
 	ending_db = 0
 	duck_until = 0
 	outcome = ""
+	victory_music_started = false
 	stopped = false
 	last_round = 1
-	# One transport starts both approved arrangements on the same audio sample.
-	# They contain the same melody, so complementary linear gains avoid a boost.
+	# The audio mixer owns the fade: per-frame resource volume changes are stepped,
+	# not interpolated by AudioStreamSynchronized. Keep one player/transport.
 	music[0].stop()
-	music_layers = AudioStreamSynchronized.new()
-	music_layers.stream_count = 2
-	music_layers.set_sync_stream(0, _stream("battle"))
-	music_layers.set_sync_stream(1, _stream("phase_two"))
-	music_layers.set_sync_stream_volume(0, 0)
-	music_layers.set_sync_stream_volume(1, -100)
-	music[0].stream = music_layers
+	music_sequence = AudioStreamInteractive.new()
+	music_sequence.clip_count = 2
+	music_sequence.set_clip_name(0, &"battle")
+	music_sequence.set_clip_name(1, &"phase_two")
+	music_sequence.set_clip_stream(0, _stream("battle"))
+	music_sequence.set_clip_stream(1, _stream("phase_two"))
+	music_sequence.initial_clip = 0
+	# These approved recordings have no BPM metadata, so fade_beats is seconds.
+	music_sequence.add_transition(
+		0, 1, AudioStreamInteractive.TRANSITION_FROM_TIME_IMMEDIATE,
+		AudioStreamInteractive.TRANSITION_TO_TIME_SAME_POSITION,
+		AudioStreamInteractive.FADE_CROSS, PHASE_FADE_SECONDS
+	)
+	music[0].stream = music_sequence
 	music[0].volume_db = 0
 	music[0].play()
+	_music_snapshot("restart")
 	ambience.stream = _stream("ruins")
 	ambience.volume_db = -2
 	ambience.play()
@@ -328,13 +342,17 @@ func on_visual(event: Dictionary) -> void:
 		"meteor_impact":
 			play_cue("meteor_hit", event)
 		"phase":
+			phase_request_count += 1
+			_music_snapshot("phase_request")
 			if phase_started or stopped or not outcome.is_empty():
 				return
 			phase_started = true
 			phase_transition_count += 1
 			phase_target = 1
+			var playback := music[0].get_stream_playback() as AudioStreamPlaybackInteractive
+			playback.switch_to_clip(1)
+			_music_snapshot("crossfade_requested")
 			play_cue("phase", event)
-			# The transformation no longer ducks the crossfade itself.
 		"reaction":
 			play_cue("summon" if event.get("ability", "") == "command" else "warning", event, -6)
 		"world":
@@ -379,15 +397,21 @@ func _damage(event: Dictionary, skill: String, source: int, target: int) -> void
 func on_cinematic(cue: String) -> void:
 	match cue:
 		"start":
+			if stopped or not outcome.is_empty():
+				return
 			outcome = "victory"
 			play_cue("phase", {}, -12)
 		"crown":
 			play_cue("crown")
 		"title":
+			if stopped or outcome != "victory" or victory_music_started:
+				return
+			victory_music_started = true
 			stinger.stream = _stream("victory")
 			stinger.play()
 			cue_played.emit("victory", {"at": clock})
 		"skip":
+			victory_music_started = true
 			stinger.stop()
 			for player in music:
 				player.stop()
@@ -398,7 +422,7 @@ func on_cinematic(cue: String) -> void:
 
 
 func defeat() -> void:
-	if not outcome.is_empty():
+	if stopped or not outcome.is_empty():
 		return
 	outcome = "defeat"
 	cue_played.emit("defeat", {"at": clock})
@@ -410,12 +434,12 @@ func defeat() -> void:
 func _process(delta: float) -> void:
 	clock += delta
 	_prune()
-	phase_mix = move_toward(phase_mix, phase_target, delta / 1.5)
-	# Fade amplitudes directly. Slewing each layer from -80 dB caused a hole
-	# while the outgoing arrangement was already fading but the new one inaudible.
-	var blend := phase_mix * phase_mix * (3.0 - 2.0 * phase_mix)
-	music_layers.set_sync_stream_volume(0, linear_to_db(maxf(.00001, 1.0 - blend)))
-	music_layers.set_sync_stream_volume(1, linear_to_db(maxf(.00001, blend)))
+	# Progress is diagnostic only; the actual fade runs per audio sample, even
+	# when the render/game thread stalls. No timers or tweens control playback.
+	var was_fading := phase_mix < phase_target
+	phase_mix = move_toward(phase_mix, phase_target, delta / PHASE_FADE_SECONDS)
+	if was_fading and phase_mix == phase_target:
+		_music_snapshot("crossfade_nominal_end")
 	duck_db = move_toward(duck_db, -7.0 if clock < duck_until else 0.0, delta * 20)
 	ending_db = move_toward(ending_db, -80.0 if not outcome.is_empty() else 0.0, delta * 55)
 	for player in music:
@@ -438,6 +462,31 @@ func _process(delta: float) -> void:
 		var available := capture_effect.get_frames_available()
 		if available > 0:
 			capture_samples.append_array(capture_effect.get_buffer(available))
+
+
+func _music_snapshot(reason: String) -> void:
+	if not trace_music:
+		return
+	var playback: AudioStreamPlaybackInteractive = null
+	if music[0].has_stream_playback():
+		playback = music[0].get_stream_playback() as AudioStreamPlaybackInteractive
+	var clip := playback.get_current_clip_index() if playback != null else -1
+	var entry := {
+		"at": clock, "reason": reason,
+		"phase_requests": phase_request_count, "phase_transitions": phase_transition_count,
+		"target": phase_target, "nominal_mix": phase_mix, "outcome": outcome,
+		"playing": music[0].playing, "player_count": music.size(),
+		"active_clip": clip,
+		"track": str(music_sequence.get_clip_name(clip)) if clip >= 0 else "",
+		"hp": arena.visual_units[5].hp if arena != null else -1,
+		"model_hp": arena.battle.units[5].hp if arena != null else -1,
+		"phase": arena.battle.boss_phase if arena != null else -1,
+		"stinger_playing": stinger.playing
+	}
+	music_trace.append(entry)
+	if music_trace.size() > 512:
+		music_trace.pop_front()
+	print("MUSIC_TRACE ", JSON.stringify(entry))
 
 
 func begin_capture() -> void:
