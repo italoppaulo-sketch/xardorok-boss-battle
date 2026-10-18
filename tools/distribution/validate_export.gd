@@ -18,13 +18,14 @@ func check(value: bool, message: String) -> void:
 
 
 func resources_at(path: String) -> void:
-	for name in DirAccess.get_directories_at(path):
-		resources_at(path.path_join(name))
-	for name in DirAccess.get_files_at(path):
-		var resource_path := path.path_join(name.trim_suffix(".remap"))
-		if resource_path.get_extension() in ["png", "svg", "ttf", "ogg", "wav"]:
+	for name in ResourceLoader.list_directory(path):
+		var resource_path := path.path_join(name)
+		if name.ends_with("/"):
+			resources_at(resource_path)
+		elif resource_path.get_extension() in ["png", "svg", "ttf", "ogg", "wav"]:
 			check(ResourceLoader.load(resource_path) != null, "Resource: " + resource_path)
 			resources_loaded += 1
+
 
 
 func key(code: Key) -> void:
@@ -37,7 +38,8 @@ func key(code: Key) -> void:
 
 
 func run() -> void:
-	resources_at("res://assets")
+	resources_at("res://assets/")
+	check(resources_loaded >= 180, "Export contains sprites, font and audio")
 	scene = load("res://scenes/main.tscn").instantiate()
 	scene.audio.persist_settings = false
 	root.add_child(scene)

@@ -53,7 +53,8 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw 'Exported validation failed' }
           } finally { Pop-Location }
           Copy-Item "$env:RUNNER_TEMP/export-*.log" build/
-          if (Select-String -Path build/export-*.log -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet) { throw 'Engine errors in exported game' }
+          if (Select-String -Path build/export-validation.log -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet) { throw 'Engine errors in exported pack validation' }
+          if (Select-String -Path build/export-startup.log -Pattern 'SCRIPT ERROR:' -Quiet) { throw 'Script error in exported executable' }
       - name: Package players ZIP
         shell: pwsh
         run: |
