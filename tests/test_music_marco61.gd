@@ -45,6 +45,10 @@ func run() -> void:
 		audio.played.filter(func(e: Dictionary): return e.cue == "phase").size() == 1,
 		"One transformation cue"
 	)
+	audio.music[0].seek(first.get_length() - .2)
+	await create_timer(.6).timeout
+	check(audio.music[0].playing, "Transport survives loop boundary")
+	check(audio.music[0].get_playback_position() < 1, "Loop wraps to start")
 	audio.restart()
 	check(audio.phase_transition_count == 0 and not audio.phase_started, "Restart clears latch")
 	check(audio.music[0].get_stream_playback() != transport, "Restart creates one fresh playback")

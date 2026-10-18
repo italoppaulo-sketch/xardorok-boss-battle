@@ -1,0 +1,26 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "ci_commit": "52e055eae5e4bd121f7cb34fe95b5bf091806331",
+  "run_id": 39152316930,
+  "artifact_id": 12145363878,
+  "zip_sha256": "c2eb215a2fdd5d2c281d24e14e76cf6b4d61a20114bfaf856424bf1d7b3a5b8e",
+  "zip_bytes": 50169637,
+  "files": {
+    "LEIA-ME.txt": {
+      "bytes": 1265,
+      "sha256": "5b90a6cfbb04df046dd9ba53d7f2c5b0e30509c385566eff1bc9da29130eb26b"
+    },
+    "Xardorok Boss Battle.exe": {
+      "bytes": 109268480,
+      "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+    },
+    "CREDITOS.txt": {
+      "bytes": 111870,
+      "sha256": "6bbec0fa6fb4df985dceb0fc9452b566914a2380b8f86cf28e3ec8744202c34d"
+    },
+    "Xardorok Boss Battle.pck": {
+      "bytes": 11404000,
+      "sha256": "37b03ee71315b468a8365d919534501ccd502b3b864b15b393ffa8a85c3b9f1e"
+    }
+  }
+}

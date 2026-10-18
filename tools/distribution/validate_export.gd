@@ -27,7 +27,6 @@ func resources_at(path: String) -> void:
 			resources_loaded += 1
 
 
-
 func key(code: Key) -> void:
 	var event := InputEventKey.new()
 	event.keycode = code
