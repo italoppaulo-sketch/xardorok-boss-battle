@@ -13,6 +13,7 @@ var title := Label.new()
 var subtitle := Label.new()
 var crown := TextureRect.new()
 var crown_origin := Vector2.ZERO
+var crown_world_origin := Vector2.ZERO
 var duration := 3.6
 
 
@@ -73,7 +74,8 @@ func start() -> void:
 	playing = true
 	canvas.visible = true
 	var boss: Vector2 = arena.positions.get(5, arena.center(Vector2i(11, 4)))
-	crown_origin = arena.to_global(boss) + Vector2(-18, -88)
+	crown_world_origin = arena.to_global(boss + Vector2(-18, -88))
+	crown_origin = arena.get_viewport_transform() * crown_world_origin
 	crown.position = crown_origin
 	_update_visuals()
 
@@ -113,7 +115,11 @@ func _update_visuals() -> void:
 	# A caída usa PNG da própria coroa; os personagens continuam sendo seus sprites.
 	var fall := clampf((elapsed - 0.15) / 0.85, 0, 1)
 	var bounce := absf(sin(fall * PI * 2.5)) * (1 - fall) * 13
-	crown.position = crown_origin + Vector2(fall * 25, fall * fall * 80 - bounce)
+	crown.position = (
+		arena.get_viewport_transform()
+		* (crown_world_origin + Vector2(fall * 25, fall * fall * 80 - bounce))
+	)
+	crown.scale = arena.get_viewport_transform().get_scale().abs()
 	crown.rotation = fall * 0.62
 	crown.modulate.a = clampf(elapsed * 4, 0, 1)
 	shade.color.a = clampf((elapsed - 0.6) * 0.24, 0, 0.36)

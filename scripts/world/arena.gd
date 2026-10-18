@@ -2,6 +2,7 @@
 extends Node2D
 signal cell_clicked(cell: Vector2i)
 signal cell_hovered(cell: Vector2i)
+signal unit_candidates_clicked(indices: Array[int], screen_position: Vector2)
 signal presentation_started
 signal presentation_finished
 signal display_state_changed
@@ -13,8 +14,12 @@ const ArenaEnvironment = preload("res://scenes/environments/xardorok_arena.tscn"
 const Overlay = preload("res://scripts/visuals/unit_overlay.gd")
 const ORIGIN := Vector2(225, 104)
 const TILE := 50.0
+const MINION_DEATH_SECONDS := 0.65
 var battle: RefCounted
 var selected := 0
+var target_highlight := -1
+var retired_minions := {}
+var minion_deaths := {}
 var show_moves := false
 var skill_id := "move"
 var hovered := Vector2i(-1, -1)
@@ -73,6 +78,8 @@ func capture_state() -> void:
 
 func _ensure_actors() -> void:
 	for i in battle.units.size():
+		if retired_minions.has(i):
+			continue
 		if not positions.has(i):
 			positions[i] = center(battle.units[i].cell)
 		if visual_units.size() <= i:
@@ -95,6 +102,9 @@ func reset_visuals() -> void:
 	scales.clear()
 	effects.active.clear()
 	pending_spawns.clear()
+	retired_minions.clear()
+	minion_deaths.clear()
+	target_highlight = -1
 	fog.reset()
 	if is_instance_valid(spirit):
 		spirit.queue_free()
@@ -172,6 +182,10 @@ func present(events: Array[Dictionary]) -> void:
 					)
 				timeline.add(cursor + 0.1, event)
 				cursor += 0.9
+			"guard":
+				timeline.add(cursor, event)
+				cursor += 0.35
+				impact = cursor
 			"meteor":
 				impact = cursor + 0.3
 				var centers: Array[Vector2] = []
@@ -200,7 +214,8 @@ func present(events: Array[Dictionary]) -> void:
 				timeline.add(maxf(0, impact - 0.1) + chain_link_index * 0.12, event)
 				chain_link_index += 1
 			"spawn":
-				actors[event.target].visible = false
+				if actors.has(event.target):
+					actors[event.target].visible = false
 				pending_spawns[event.target] = true
 				timeline.add(impact, event)
 			"world", "status":
@@ -230,6 +245,9 @@ func _apply_visual(event: Dictionary) -> void:
 			visual_fire.assign(event.get("fire_zones", visual_fire).duplicate(true))
 			display_state_changed.emit()
 			return
+		"guard":
+			if actors.has(target):
+				actors[target].animate("evade", 0.55)
 		"phase":
 			visual_units[5].boss_phase = 2
 			actors[5].animate("special", 0.8)
@@ -237,7 +255,8 @@ func _apply_visual(event: Dictionary) -> void:
 			actors[5].animate("cast", 0.35)
 			visual_meteors = battle.meteors.duplicate(true)
 		"route":
-			routes[source] = event.path.duplicate()
+			if actors.has(source):
+				routes[source] = event.path.duplicate()
 			return
 		"animation":
 			if actors.has(event.actor):
@@ -260,13 +279,15 @@ func _apply_visual(event: Dictionary) -> void:
 				var unit: Dictionary = visual_units[target]
 				var sign_value := 1 if event.kind == "heal" else -1
 				unit.hp = clampi(unit.hp + sign_value * event.amount, 0, unit.max_hp)
-				if event.kind != "heal":
+				if event.kind != "heal" and actors.has(target):
 					actors[target].on_damage(unit.hp <= 0)
+					if target >= 6 and unit.hp <= 0 and not minion_deaths.has(target):
+						minion_deaths[target] = elapsed
 		"link":
 			if actors.has(target) and actors[target].has_method("electric_pulse"):
 				actors[target].electric_pulse()
 		"miss":
-			if target >= 0:
+			if actors.has(target):
 				actors[target].animate("evade", 0.3)
 		"spawn":
 			pending_spawns.erase(target)
@@ -318,7 +339,12 @@ func _apply_visual(event: Dictionary) -> void:
 
 
 func visible_to_player(index: int) -> bool:
-	if index < 0 or index >= visual_units.size() or pending_spawns.has(index):
+	if (
+		index < 0
+		or index >= visual_units.size()
+		or pending_spawns.has(index)
+		or retired_minions.has(index)
+	):
 		return false
 	var observer: int = battle.observer_index()
 	if observer >= visual_units.size():
@@ -345,6 +371,16 @@ func _process(delta: float) -> void:
 		cell_hovered.emit(cell)
 	var routes_pending := false
 	for i in battle.units.size():
+		if not actors.has(i):
+			continue
+		if i >= 6 and visual_units[i].hp <= 0:
+			if not minion_deaths.has(i):
+				minion_deaths[i] = elapsed
+			var death_age: float = elapsed - minion_deaths[i]
+			actors[i].modulate.a = clampf((MINION_DEATH_SECONDS - death_age) / 0.3, 0, 1)
+			if death_age >= MINION_DEATH_SECONDS:
+				_retire_minion(i)
+				continue
 		var remaining := delta * movement_speed
 		while routes.has(i) and not routes[i].is_empty() and remaining > 0:
 			var destination := center(routes[i][0])
@@ -373,8 +409,9 @@ func _process(delta: float) -> void:
 		capture_state()
 		presentation_finished.emit()
 	# Todos os observadores já estão na posição desenhada deste mesmo frame.
-	for i in battle.units.size():
+	for i in actors:
 		actors[i].visible = visible_to_player(i)
+	_stable_depth_order()
 	if is_instance_valid(spirit):
 		spirit_age += delta
 		var wing_pose := "hover" if spirit_age >= 0.6 and spirit_age < 2.1 else "idle"
@@ -390,24 +427,72 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var pointer: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
+		var candidates := pick_candidates(pointer)
+		if candidates.size() > 1:
+			unit_candidates_clicked.emit(candidates, event.position)
+			return
 		var cell := pointer_cell(pointer)
 		if battle.inside(cell):
 			cell_clicked.emit(cell)
 
 
-func pointer_cell(pointer: Vector2) -> Vector2i:
-	# O corpo desenhado, inclusive a coroa, seleciona a base lógica do combatente.
-	var indices: Array = actors.keys()
-	indices.sort_custom(func(a: int, b: int): return actors[a].position.y > actors[b].position.y)
-	for index in indices:
+func pick_candidates(pointer: Vector2) -> Array[int]:
+	var result: Array[int] = []
+	var global_pointer := to_global(pointer)
+	for index in actors:
 		if (
-			battle.units[index].hp > 0
-			and visible_to_player(index)
-			and actors[index].contains_point(to_global(pointer))
+			battle.units[index].hp <= 0
+			or visual_units[index].hp <= 0
+			or not visible_to_player(index)
 		):
-			return battle.units[index].cell
+			continue
+		# A small ellipse at the actual feet complements alpha-aware sprite picking.
+		# It does not expand the whole cell or reveal concealed combatants.
+		var delta: Vector2 = pointer - actors[index].position
+		var feet := Vector2(delta.x / 18.0, delta.y / 9.0).length_squared() <= 1.0
+		if feet or actors[index].contains_point(global_pointer):
+			result.append(index)
+	result.sort_custom(func(a: int, b: int): return _in_front(a, b))
+	return result
+
+
+func pointer_cell(pointer: Vector2) -> Vector2i:
+	var candidates := pick_candidates(pointer)
+	if not candidates.is_empty():
+		return battle.units[candidates[0]].cell
 	var local := (pointer - ORIGIN) / TILE
 	return Vector2i(floori(local.x), floori(local.y))
+
+
+func _in_front(a: int, b: int) -> bool:
+	if not is_equal_approx(actors[a].position.y, actors[b].position.y):
+		return actors[a].position.y > actors[b].position.y
+	if not is_equal_approx(actors[a].position.x, actors[b].position.x):
+		return actors[a].position.x > actors[b].position.x
+	return a > b
+
+
+func _stable_depth_order() -> void:
+	# Y-sort controls depth; stable sibling order resolves equal foot Y without
+	# assigning a z-index that would force a whole character above another row.
+	var order: Array = actors.keys()
+	order.sort_custom(func(a: int, b: int): return _in_front(b, a))
+	for index in order:
+		sorting.move_child(actors[index], sorting.get_child_count() - 1)
+
+
+func _retire_minion(index: int) -> void:
+	retired_minions[index] = true
+	if actors.has(index):
+		actors[index].queue_free()
+		actors.erase(index)
+	positions.erase(index)
+	routes.erase(index)
+	scales.erase(index)
+	pending_spawns.erase(index)
+	minion_deaths.erase(index)
+	if target_highlight == index:
+		target_highlight = -1
 
 
 func displayed_cell(index: int) -> Vector2:
@@ -424,6 +509,12 @@ func _draw() -> void:
 	if battle == null:
 		return
 	_indicators()
+	if (
+		actors.has(target_highlight)
+		and battle.units[target_highlight].hp > 0
+		and visible_to_player(target_highlight)
+	):
+		draw_arc(actors[target_highlight].position, 22, 0, TAU, 32, Color("8ce9ff"), 3)
 	if (
 		visual_units.size() > selected
 		and visual_units[selected].hp > 0

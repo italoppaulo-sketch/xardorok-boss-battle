@@ -68,6 +68,19 @@ func _draw() -> void:
 		var point: Vector2 = effect.to
 		var frame := mini(3, int(t * 4))
 		match effect.kind:
+			"guard":
+				var shield := Color(0.35, 0.82, 1.0, (1.0 - t) * 0.8)
+				draw_arc(point + Vector2(0, 10), 27 + sin(t * PI) * 5, PI, TAU, 28, shield, 4)
+				draw_arc(point + Vector2(0, 10), 22, PI, TAU, 24, Color(shield, shield.a * 0.45), 2)
+				draw_string(
+					font,
+					point + Vector2(-45, -37),
+					"DEFESA −50%",
+					HORIZONTAL_ALIGNMENT_LEFT,
+					-1,
+					13,
+					shield
+				)
 			"phase", "reaction":
 				var phase_change: bool = effect.kind == "phase"
 				var title := (

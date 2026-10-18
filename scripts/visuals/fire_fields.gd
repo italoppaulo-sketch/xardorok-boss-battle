@@ -1,44 +1,46 @@
 extends Node2D
-## Chamas temporárias nas células que o combate já marcou. Sem cálculo de dano.
+## Campo 2D contínuo sobre a lista visual de incêndios. Não altera regras de dano.
+const Field = preload("res://scripts/visuals/volcanic_field_2d.gd")
+const FieldShader = preload("res://scripts/visuals/volcanic_field_2d.gdshader")
+const Rock = preload("res://assets/effects/marco52/volcanic_reference.png")
 var arena: Node2D
 var clock := 0.0
-var texture: Texture2D = preload("res://assets/effects/marco5/floor_fire.png")
-var scorch: Texture2D = preload("res://assets/effects/marco5/floors.png")
+var mask_texture: ImageTexture
+var cached_cells := {}
+var field_material: ShaderMaterial
+var bounds := Rect2()
 
 
 func configure(arena_node: Node2D) -> void:
 	arena = arena_node
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	z_index = -1
+	field_material = ShaderMaterial.new()
+	field_material.shader = FieldShader
+	field_material.set_shader_parameter("rock_texture", Rock)
+	material = field_material
 
 
 func _process(delta: float) -> void:
 	clock += delta
-	queue_redraw()
+	if arena == null:
+		return
+	var cells := Field.cell_set(arena.visual_fire)
+	if cells != cached_cells or mask_texture == null:
+		cached_cells = cells
+		var tile: float = arena.TILE
+		var size: Vector2i = arena.Battle.SIZE
+		bounds = Rect2(arena.ORIGIN, Vector2(size) * tile)
+		var mask := Field.make_mask(size, tile, arena.visual_fire)
+		if mask_texture == null:
+			mask_texture = ImageTexture.create_from_image(mask)
+		else:
+			mask_texture.update(mask)
+		field_material.set_shader_parameter("field_size", bounds.size)
+		queue_redraw()
+	field_material.set_shader_parameter("phase", clock)
 
 
 func _draw() -> void:
-	if arena == null:
-		return
-	for zone in arena.visual_fire:
-		var cell: Vector2i = zone.cell
-		var point: Vector2 = arena.center(cell)
-		var frame := (int(clock * 8) + cell.x + cell.y) % 4
-		draw_texture_rect_region(
-			scorch,
-			Rect2(point - Vector2(25, 25), Vector2(50, 50)),
-			Rect2(288, 0, 96, 96),
-			Color(1, 0.8, 0.65, 0.8)
-		)
-		draw_texture_rect_region(
-			texture,
-			Rect2(point - Vector2(28, 43), Vector2(56, 64)),
-			Rect2(frame * 96, 0, 96, 96),
-			Color(1, 1, 1, 0.93)
-		)
-		for i in 3:
-			var rise := fmod(clock * 0.8 + i * 0.3, 1.0)
-			draw_rect(
-				Rect2(point + Vector2(sin(i * 4.1 + clock) * 17, -rise * 45), Vector2(2, 2)),
-				Color(1, 0.6, 0.12, 1 - rise)
-			)
+	if mask_texture != null and not cached_cells.is_empty():
+		draw_texture_rect(mask_texture, bounds, false)

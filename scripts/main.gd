@@ -2,11 +2,16 @@ extends Node2D
 const Battle = preload("res://scripts/combat/battle.gd")
 const Arena = preload("res://scripts/world/arena.gd")
 const Hud = preload("res://scripts/ui/battle_hud.gd")
+const TacticalZoom = preload("res://scripts/visuals/tactical_zoom.gd")
+const TargetSelector = preload("res://scripts/ui/target_selector.gd")
 const VictorySequence = preload("res://scripts/visuals/victory_sequence.gd")
 var battle := Battle.new()
 var arena := Arena.new()
 var hud := Hud.new()
 var victory := VictorySequence.new()
+var camera := TacticalZoom.new()
+var target_selector := TargetSelector.new()
+var highlighted_target := -1
 var selected := 1
 var shown_turn_index := 1
 var enemy_action_finished := false
@@ -20,10 +25,16 @@ func _ready() -> void:
 	arena.battle = battle
 	arena.cinematic_victory = true
 	add_child(arena)
+	add_child(camera)
+	add_child(target_selector)
 	add_child(hud)
 	add_child(victory)
 	victory.configure(arena, battle)
 	arena.cell_clicked.connect(_on_cell)
+	arena.unit_candidates_clicked.connect(_on_candidates)
+	target_selector.target_chosen.connect(_confirm_target)
+	target_selector.target_highlighted.connect(_highlight_target)
+	target_selector.dismissed.connect(func(): _highlight_target(-1))
 	arena.presentation_started.connect(_on_presentation_started)
 	arena.presentation_finished.connect(_on_presentation_finished)
 	arena.display_state_changed.connect(_on_display_state_changed)
@@ -51,6 +62,7 @@ func _select(index: int) -> void:
 		and battle.player_visible(index)
 		and battle.outcome.is_empty()
 	):
+		target_selector.close()
 		selected = index
 		mode = "move"
 		_refresh()
@@ -59,6 +71,7 @@ func _select(index: int) -> void:
 func _set_mode(value: String) -> void:
 	if busy or battle.meteor_window or not battle.outcome.is_empty():
 		return
+	target_selector.close()
 	mode = value
 	_refresh()
 
@@ -66,6 +79,7 @@ func _set_mode(value: String) -> void:
 func _choose_skill(id: String) -> void:
 	if busy or battle.meteor_window or not battle.outcome.is_empty():
 		return
+	target_selector.close()
 	mode = id
 	var skill := Battle.Abilities.get_skill(id)
 	if skill.get("target", "") == "self":
@@ -159,6 +173,8 @@ func _continue_turns() -> void:
 func _restart() -> void:
 	busy = false
 	meteor_ui_active = false
+	target_selector.close()
+	camera.reset_view()
 	victory.reset()
 	battle = Battle.new()
 	victory.configure(arena, battle)
@@ -173,6 +189,8 @@ func _restart() -> void:
 
 
 func _refresh() -> void:
+	if target_selector.is_open() and (battle.meteor_window or not battle.outcome.is_empty()):
+		target_selector.close()
 	if busy:
 		hud.lock_interface()
 		return
@@ -197,12 +215,16 @@ func _refresh() -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is not InputEventKey or not event.pressed or event.echo:
 		return
+	if _handle_view_key(event.keycode):
+		return
 	if event.keycode == KEY_R:
 		_restart()
 		return
 	if not battle.outcome.is_empty():
 		if event.keycode == KEY_SPACE and victory.is_playing():
 			victory.skip()
+		return
+	if not busy and not battle.meteor_window and _handle_target_key(event):
 		return
 	if battle.meteor_window:
 		if event.keycode == KEY_SPACE:
@@ -229,7 +251,42 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		_set_mode("move")
 
 
+func _handle_target_key(event: InputEventKey) -> bool:
+	if event.keycode == KEY_TAB:
+		if target_selector.is_open():
+			target_selector.cycle(-1 if event.shift_pressed else 1)
+		else:
+			var eligible: Array[int] = []
+			for index in battle.units.size():
+				if _eligible_target(index):
+					eligible.append(index)
+			target_selector.open_targets(battle, eligible, Vector2(620, 180))
+	elif target_selector.is_open():
+		if event.keycode in [KEY_ENTER, KEY_KP_ENTER]:
+			target_selector.confirm()
+		elif event.keycode == KEY_ESCAPE:
+			target_selector.close()
+	else:
+		return false
+	get_viewport().set_input_as_handled()
+	return true
+
+
+func _handle_view_key(keycode: int) -> bool:
+	match keycode:
+		KEY_HOME:
+			camera.reset_view()
+		KEY_F:
+			if battle.valid_unit(selected) and battle.player_visible(selected):
+				camera.focus_world(arena.to_global(arena.center(battle.units[selected].cell)))
+		_:
+			return false
+	get_viewport().set_input_as_handled()
+	return true
+
+
 func _on_presentation_started() -> void:
+	target_selector.close()
 	busy = true
 	hud.lock_interface()
 	hud.sync_visibility(battle, selected)
@@ -277,10 +334,20 @@ func _meteor_choice(choice: String) -> void:
 		return
 	if choice == "evade":
 		if battle.emergency_destinations(battle.response_index).is_empty():
-			status = "Sem evasão válida: é preciso 1 ação e um pouso seguro em até 2 células."
+			status = (
+				"Sem evasão válida: confira a Reação Defensiva, estados "
+				+ "e o espaço seguro em até 2 células."
+			)
 		else:
 			mode = "meteor_evade"
-			status = "Clique num destino marcado: evasão consome 1 ação principal. Esc volta às opções."
+			var current_action: bool = (
+				battle.response_index == battle.active_index
+				and battle.units[battle.response_index].actions > 0
+			)
+			status = (
+				"Pouso seguro até 2 células: 1 Reação Defensiva; perde %s. Esc volta."
+				% ("a ação atual" if current_action else "exatamente a próxima ação")
+			)
 		_refresh()
 		return
 	_respond_meteor(choice)
@@ -306,3 +373,61 @@ func _respond_meteor(choice: String, destination: Vector2i = Vector2i.ZERO) -> v
 	_refresh()
 	if not busy:
 		_continue_turns.call_deferred()
+
+
+func _eligible_target(index: int) -> bool:
+	if (
+		not battle.valid_unit(index)
+		or battle.units[index].hp <= 0
+		or not battle.player_visible(index)
+	):
+		return false
+	if mode == "move":
+		return true
+	var id := "basic" if mode == "attack" else mode
+	var skill := Battle.Abilities.get_skill(id)
+	if skill.get("target", "") not in ["enemy", "ally"]:
+		return false
+	return battle.can_use(selected, id, battle.units[index].cell).is_empty()
+
+
+func _on_candidates(indices: Array[int], screen_position: Vector2) -> void:
+	if busy or battle.meteor_window or not battle.outcome.is_empty():
+		return
+	var id := "basic" if mode == "attack" else mode
+	if Battle.Abilities.get_skill(id).get("target", "") == "ground":
+		var pointer: Vector2 = (
+			arena.get_global_transform_with_canvas().affine_inverse() * screen_position
+		)
+		var grid: Vector2 = (pointer - arena.ORIGIN) / arena.TILE
+		_on_cell(Vector2i(floori(grid.x), floori(grid.y)))
+		return
+	var eligible: Array[int] = []
+	for index in indices:
+		if _eligible_target(index):
+			eligible.append(index)
+	if eligible.size() == 1:
+		_confirm_target(eligible[0])
+	elif not eligible.is_empty():
+		target_selector.open_targets(battle, eligible, screen_position)
+
+
+func _confirm_target(index: int) -> void:
+	if busy or battle.meteor_window or not battle.outcome.is_empty() or not _eligible_target(index):
+		return
+	if mode == "move" and index >= 5:
+		hud.inspect_target(battle, battle.units[index].cell)
+		status = (
+			"Alvo observado: %s. Selecione uma habilidade para atacar." % battle.units[index].name
+		)
+		hud.message.text = status
+		return
+	_on_cell(battle.units[index].cell)
+
+
+func _highlight_target(index: int) -> void:
+	highlighted_target = index
+	arena.target_highlight = index
+	if index >= 0 and battle.valid_unit(index) and battle.player_visible(index):
+		hud.inspect_target(battle, battle.units[index].cell)
+	arena.queue_redraw()

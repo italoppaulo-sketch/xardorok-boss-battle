@@ -191,10 +191,10 @@ func _ready() -> void:
 	emergency_title = _label(emergency_root, Vector2(316, 571), Vector2(650, 23), 12)
 	emergency_title.modulate = GOLD
 	emergency_evade = _button(emergency_root, Vector2(316, 600), Vector2(308, 62))
-	emergency_evade.text = "EVASÃO EMERGENCIAL [E]\n1 ação · até 2 células · escolha o destino"
+	emergency_evade.text = "EVADIR [E]\n1 reação · até 2 células · perde ação principal"
 	emergency_evade.pressed.connect(func(): meteor_choice.emit("evade"))
 	emergency_guard = _button(emergency_root, Vector2(638, 600), Vector2(334, 62))
-	emergency_guard.text = "DEFENDER-SE [D]\n1 bônus + 8 PM · 50% menos dano do impacto"
+	emergency_guard.text = "DEFENDER [D]\n1 reação · −50% dano · preserva ação principal"
 	emergency_guard.pressed.connect(func(): meteor_choice.emit("guard"))
 	description = _label(self, Vector2(316, 676), Vector2(658, 14), 10)
 	_panel(Vector2(998, 566), Vector2(190, 126))
@@ -450,8 +450,14 @@ func refresh(battle: RefCounted, selected: int, mode: String, status: String) ->
 		hero_mana.max_value = maxi(1, unit.max_mana)
 		hero_mana.value = unit.mana
 		state_info.text = (
-			"Ação %d · Bônus %d · Passos %d  |  %s"
-			% [unit.actions, unit.bonus, unit.move, Statuses.describe(unit)]
+			"Ação %d · Bônus %d · Passos %d · Reação %d | %s"
+			% [
+				unit.actions,
+				unit.bonus,
+				unit.move,
+				unit.get("defensive_reaction", 1),
+				Statuses.describe(unit)
+			]
 		)
 		state_info.tooltip_text = state_info.text
 	else:
@@ -650,7 +656,10 @@ func _refresh_meteor_response(battle: RefCounted, mode: String) -> void:
 	if battle.has_method("meteor_responses"):
 		for hero in battle.meteor_responses():
 			threatened.append(str(battle.units[hero].name))
-	emergency_title.text = "METEORO · RESPOSTA DE %s" % str(unit.name).to_upper()
+	emergency_title.text = (
+		"METEORO · %s · REAÇÃO %d/1"
+		% [str(unit.name).to_upper(), unit.get("defensive_reaction", 1)]
+	)
 	emergency_title.tooltip_text = (
 		"Ameaçados: %s. Um comando por herói; depois todos os impactos são resolvidos."
 		% ", ".join(threatened)
@@ -667,25 +676,42 @@ func _refresh_meteor_response(battle: RefCounted, mode: String) -> void:
 		% [unit.name, unit.hp, unit.max_hp, unit.mana, unit.max_mana]
 	)
 	state_info.text = (
-		"Ação %d · Bônus %d · %s" % [unit.actions, unit.bonus, Statuses.describe(unit)]
+		"Reação %d · Ação %d · Bônus %d | %s"
+		% [unit.get("defensive_reaction", 1), unit.actions, unit.bonus, Statuses.describe(unit)]
 	)
 	state_info.tooltip_text = (
-		"Recursos atuais, sem renovação. "
-		+ "Fora do turno, evasão reserva a ação principal do próximo turno."
+		"Reação renova somente no início da rodada. Defesa não usa bônus/PM. "
+		+ "Evasão sacrifica uma ação principal uma única vez."
 	)
 	var guard_reason: String = battle.can_meteor_response(index, "guard", Vector2i.ZERO)
+	var estimate := _meteor_damage_estimate(battle, index)
+	emergency_guard.text = "DEFENDER [D]\n1 reação · ~%d dano · preserva ação" % estimate.y
+	var sacrifice := (
+		"ação atual" if index == battle.active_index and unit.actions > 0 else "próxima ação"
+	)
+	emergency_evade.text = "EVADIR [E]\n1 reação · até 2 células · perde %s" % sacrifice
 	emergency_guard.disabled = not guard_reason.is_empty()
 	emergency_guard.tooltip_text = (
-		"Reduz em 50% somente este impacto; consome 1 bônus e 8 PM."
+		"Consome 1 Reação Defensiva, sem bônus ou PM. Reduz em 50% o dano do meteoro; "
+		+ "efeitos secundários continuam possíveis. Preserva a próxima ação."
 		+ ("\n" + guard_reason if not guard_reason.is_empty() else "")
 	)
-	emergency_evade.disabled = battle.emergency_destinations(index).is_empty()
+	var destinations: Dictionary = battle.emergency_destinations(index)
+	var evade_reason: String = battle.can_meteor_response(index, "evade", unit.cell)
+	if evade_reason.is_empty():
+		evade_reason = "Sem destino seguro em até 2 células."
+	if not destinations.is_empty():
+		evade_reason = battle.can_meteor_response(index, "evade", destinations.keys()[0])
+	emergency_evade.disabled = not evade_reason.is_empty()
 	emergency_evade.tooltip_text = (
-		"Consome 1 ação principal. Máximo de 2 células, pouso livre fora de todas as marcas; "
+		"Consome 1 Reação Defensiva e a ação principal atual "
+		+ "(se for seu turno e estiver disponível); caso contrário compromete "
+		+ "exatamente a próxima ação. Até 2 células, pouso livre fora de todas as marcas; "
 		+ "enraizamento e congelamento impedem a evasão. Não concede turno extra."
+		+ ("\n" + evade_reason if not evade_reason.is_empty() else "")
 	)
 	end_button.disabled = false
-	end_button.text = "MANTER POSIÇÃO\n[Espaço] · sem custo"
+	end_button.text = "NÃO REAGIR\n~%d dano · [Espaço]" % estimate.x
 	end_button.tooltip_text = (
 		"Aceita o impacto se ainda estiver na área. "
 		+ "Confirma uma resposta, sem encerrar o turno normal."
@@ -693,10 +719,20 @@ func _refresh_meteor_response(battle: RefCounted, mode: String) -> void:
 	description.text = (
 		"Selecione uma célula segura marcada."
 		if mode == "meteor_evade"
-		else "Uma resposta por ameaçado: manter, defender ou evadir. Impacto após a última resposta."
+		else (
+			"Evasão perde %s; defesa preserva ação e reduz dano. Impacto após todas as respostas."
+			% sacrifice
+		)
 	)
 	description.tooltip_text = (
 		"Ameaçados: %s. Iniciativa normal pausada; nenhum herói recebe movimento ou ações extras."
 		% ", ".join(threatened)
 	)
 	turn_label.text = "RESPOSTA AO METEORO\nImpacto após as respostas"
+
+
+func _meteor_damage_estimate(battle: RefCounted, index: int) -> Vector2i:
+	return Vector2i(
+		battle.reaction_preview(index, "stay").damage,
+		battle.reaction_preview(index, "guard").damage
+	)
