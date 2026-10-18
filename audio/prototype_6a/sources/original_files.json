@@ -1,0 +1,32 @@
+[
+  {
+    "path": "sources/generated/grosso_martelo_original.mp3",
+    "bytes": 33061,
+    "sha256": "0ae9a10f96e141ef493f6409913bfe0ce450311e3e16b8842a72717f469eb5dd"
+  },
+  {
+    "path": "sources/generated/kodokami_fushigiri_original.mp3",
+    "bytes": 48944,
+    "sha256": "c3a8772976ab1433a6337b6a2aeb561c01d2dbd1b9f828a8888499547b3f3205"
+  },
+  {
+    "path": "sources/generated/lacaio_laser_original.mp3",
+    "bytes": 17179,
+    "sha256": "cb4f63a3edb4cdf68ee3ff647d0e520d452117d4e3e45c9565b8381d682090f4"
+  },
+  {
+    "path": "sources/generated/o_ultimo_rei_das_cinzas_original.mp3",
+    "bytes": 2130531,
+    "sha256": "a315d8cd76f391b4415d8ede0392a2396c8e6798602cb50a69c057604c6ce723"
+  },
+  {
+    "path": "sources/generated/thuxil_raio_original.mp3",
+    "bytes": 48944,
+    "sha256": "9489358c6b86f15f76f67c9f8e7bc213b9907aee73fd6fcc5bdabb97c6279958"
+  },
+  {
+    "path": "sources/generated/xardorok_meteoro_original.mp3",
+    "bytes": 65244,
+    "sha256": "759537003e7ff1a1fa79dbfa83b2162df6f3c9b48f40d7ea5d4934ae5385df56"
+  }
+]

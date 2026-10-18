@@ -1,0 +1,100 @@
+[
+  {
+    "path": "masters/o_ultimo_rei_das_cinzas_75s.wav",
+    "bytes": 19845102,
+    "sha256": "8ac8e921d0b44e4b240592a8afd21c15b2cbbabc29ce02110ced94178babd2c3",
+    "duration_seconds": 75.0,
+    "stream": {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "44100",
+      "channels": 2
+    },
+    "integrated_lufs": -16.0,
+    "true_peak_dbtp": -3.63,
+    "loudness_range_lu": 8.6
+  },
+  {
+    "path": "music/o_ultimo_rei_das_cinzas_75s.ogg",
+    "bytes": 1663715,
+    "sha256": "6e0979c6c45f1812917d3668410bd105b837b2bd6f7ca3cde17c6d5bcef399b8",
+    "duration_seconds": 75.0,
+    "stream": {
+      "codec_name": "vorbis",
+      "sample_rate": "44100",
+      "channels": 2
+    },
+    "integrated_lufs": -16.02,
+    "true_peak_dbtp": -3.46,
+    "loudness_range_lu": 8.5
+  },
+  {
+    "path": "sfx/characters/grosso_martelo.wav",
+    "bytes": 352878,
+    "sha256": "c3e5f81d108ec128bc126a680b9aaefbbb4f377033eb4f0ec4e69db1767d305a",
+    "duration_seconds": 2.0,
+    "stream": {
+      "codec_name": "pcm_s16le",
+      "sample_rate": "44100",
+      "channels": 2
+    },
+    "integrated_lufs": -14.78,
+    "true_peak_dbtp": -2.68,
+    "loudness_range_lu": 0.0
+  },
+  {
+    "path": "sfx/characters/kodokami_fushigiri.wav",
+    "bytes": 529278,
+    "sha256": "8956984d439088ed3e1bf65eb5edc503cba948a37488809e8163966f81e2cc4e",
+    "duration_seconds": 3.0,
+    "stream": {
+      "codec_name": "pcm_s16le",
+      "sample_rate": "44100",
+      "channels": 2
+    },
+    "integrated_lufs": -10.65,
+    "true_peak_dbtp": -2.56,
+    "loudness_range_lu": 0.2
+  },
+  {
+    "path": "sfx/characters/thuxil_raio.wav",
+    "bytes": 529278,
+    "sha256": "1bbfec09a2ba1ae7b2681285ce0b6c1cc03f910bc89ce871d3d3a1c16a5df57a",
+    "duration_seconds": 3.0,
+    "stream": {
+      "codec_name": "pcm_s16le",
+      "sample_rate": "44100",
+      "channels": 2
+    },
+    "integrated_lufs": -19.26,
+    "true_peak_dbtp": -2.96,
+    "loudness_range_lu": 0.5
+  },
+  {
+    "path": "sfx/xardorok/xardorok_meteoro.wav",
+    "bytes": 705678,
+    "sha256": "25c229e8c560a7c904808fb506125ab6b95f21cfdd33e1e25cdaf84e4a6f9d90",
+    "duration_seconds": 4.0,
+    "stream": {
+      "codec_name": "pcm_s16le",
+      "sample_rate": "44100",
+      "channels": 2
+    },
+    "integrated_lufs": -17.67,
+    "true_peak_dbtp": -2.47,
+    "loudness_range_lu": 5.6
+  },
+  {
+    "path": "sfx/minions/lacaio_laser.wav",
+    "bytes": 176478,
+    "sha256": "26700f74898e5cc75a0d59366df8fb9f97f77ca3d252b02b17e7d30ee1adcc43",
+    "duration_seconds": 1.0,
+    "stream": {
+      "codec_name": "pcm_s16le",
+      "sample_rate": "44100",
+      "channels": 2
+    },
+    "integrated_lufs": -13.18,
+    "true_peak_dbtp": -2.85,
+    "loudness_range_lu": 0.0
+  }
+]

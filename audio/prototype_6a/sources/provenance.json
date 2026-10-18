@@ -1,0 +1,59 @@
+{
+  "created_at": "2026-10-18",
+  "base_commit": "2db39f1a0f600e7e5cfc4a6d269d06c03ca90aa4",
+  "base_branch": "feature/marco-5-2-combat-refinement",
+  "approval_status": "Marco 5.2 mais recente entregue; PR #6 ainda aberto no momento da inspeção. Aprovação artística desta amostra de áudio pendente.",
+  "provider": "Runway connected workspace",
+  "music": {
+    "task_id": "39a0171f-0991-4df6-bf3e-b606150a5e7c",
+    "model": "lyria-3-pro",
+    "source_format": "MP3 192 kbps, 44.1 kHz, stereo",
+    "source_duration_seconds": 88.450542,
+    "requested_bpm": 148,
+    "requested_key": "D minor",
+    "requested_meter": "4/4",
+    "approval_edit_seconds": 75,
+    "cost_credits": 8
+  },
+  "effects": [
+    {
+      "id": "grosso_martelo",
+      "task_id": "bdde28b1-7b80-4ba3-b2e3-ed9a20064bea",
+      "requested_duration_seconds": 2,
+      "model": "Runway Sound Effects",
+      "cost_credits": 2
+    },
+    {
+      "id": "kodokami_fushigiri",
+      "task_id": "004516c5-5fb2-475a-a1d1-c3e6986ee096",
+      "requested_duration_seconds": 3,
+      "model": "Runway Sound Effects",
+      "cost_credits": 3
+    },
+    {
+      "id": "thuxil_raio",
+      "task_id": "23c2f849-70d6-4acd-9337-839713aeb6b4",
+      "requested_duration_seconds": 3,
+      "model": "Runway Sound Effects",
+      "cost_credits": 3
+    },
+    {
+      "id": "xardorok_meteoro",
+      "task_id": "578bc521-4828-4d1f-b544-d317e964cd6a",
+      "requested_duration_seconds": 4,
+      "model": "Runway Sound Effects",
+      "cost_credits": 4
+    },
+    {
+      "id": "lacaio_laser",
+      "task_id": "8ad78b0b-638c-43e8-81cf-57cdf62b4c9b",
+      "requested_duration_seconds": 1,
+      "model": "Runway Sound Effects",
+      "cost_credits": 1
+    }
+  ],
+  "generation_count": 6,
+  "total_credits_reported_delta": 21,
+  "external_music_or_sample_inputs": [],
+  "in_game_integration": false
+}
