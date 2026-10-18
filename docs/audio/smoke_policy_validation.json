@@ -1,0 +1,74 @@
+{
+	"failures": 0,
+	"reports": [
+		{
+			"attacks_in_smoke": [
+				{
+					"ability": "purple_fire",
+					"executed": true,
+					"from": "(6, 5)",
+					"hero": 2,
+					"offensive": true,
+					"round": 5,
+					"smoke": "[{ \"cell\": (8, 4), \"radius\": 3.0, \"expires\": 7 }]",
+					"smoke_count": 1,
+					"to": "(8, 4)",
+					"visible": true
+				},
+				{
+					"ability": "ice_arrow",
+					"executed": true,
+					"from": "(6, 6)",
+					"hero": 3,
+					"offensive": true,
+					"round": 6,
+					"smoke": "[{ \"cell\": (8, 4), \"radius\": 3.0, \"expires\": 7 }]",
+					"smoke_count": 1,
+					"to": "(8, 4)",
+					"visible": true
+				},
+				{
+					"ability": "basic",
+					"executed": true,
+					"from": "(5, 4)",
+					"hero": 4,
+					"offensive": true,
+					"round": 6,
+					"smoke": "[{ \"cell\": (8, 4), \"radius\": 3.0, \"expires\": 7 }]",
+					"smoke_count": 1,
+					"to": "(8, 4)",
+					"visible": true
+				},
+				{
+					"ability": "purple_fire",
+					"executed": true,
+					"from": "(6, 4)",
+					"hero": 2,
+					"offensive": true,
+					"round": 6,
+					"smoke": "[{ \"cell\": (8, 4), \"radius\": 3.0, \"expires\": 7 }]",
+					"smoke_count": 1,
+					"to": "(7, 5)",
+					"visible": true
+				}
+			],
+			"conservative": false,
+			"dispelled_clouds": 0,
+			"held_attacks": 0,
+			"illegal_los": [],
+			"outcome": "BOSS DEFEATED",
+			"rounds": 6,
+			"smoke_casts": 1
+		},
+		{
+			"attacks_in_smoke": [],
+			"conservative": true,
+			"dispelled_clouds": 1,
+			"held_attacks": 0,
+			"illegal_los": [],
+			"outcome": "BOSS DEFEATED",
+			"rounds": 7,
+			"smoke_casts": 1
+		}
+	]
+}

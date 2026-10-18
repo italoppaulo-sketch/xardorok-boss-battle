@@ -1,0 +1,125 @@
+{
+	"0:basic": [
+		"hammer_swing",
+		"hammer_hit"
+	],
+	"0:double": [
+		"hammer_swing",
+		"hammer_hit",
+		"hammer_swing",
+		"hammer_hit"
+	],
+	"0:giant": [
+		"giant"
+	],
+	"0:hammer": [
+		"ice_form"
+	],
+	"0:skin": [
+		"ice_form"
+	],
+	"1:basic": [
+		"punch_air",
+		"punch"
+	],
+	"1:dodge": [
+		"dodge"
+	],
+	"1:fushigiri": [
+		"shadow_charge",
+		"sacrifice",
+		"sword_slash",
+		"shadow_rupture"
+	],
+	"1:unarmed": [
+		"punch_air",
+		"punch",
+		"punch_air",
+		"punch"
+	],
+	"2:antispell": [
+		"dispel",
+		"ui_confirm"
+	],
+	"2:basic": [
+		"arcane_cast",
+		"arcane_hit"
+	],
+	"2:heal": [
+		"arcane_cast",
+		"heal"
+	],
+	"2:purple_fire": [
+		"violet_beam",
+		"arcane_hit"
+	],
+	"3:basic": [
+		"bow_release",
+		"arrow_hit"
+	],
+	"3:energy_arrow": [
+		"energy_charge",
+		"bow_release",
+		"energy_impact"
+	],
+	"3:flight": [
+		"flight"
+	],
+	"3:ice_arrow": [
+		"bow_release",
+		"ice_hit"
+	],
+	"3:root_arrow": [
+		"bow_release",
+		"arrow_hit",
+		"roots"
+	],
+	"4:basic": [
+		"chain_charge",
+		"chain_jump"
+	],
+	"4:chain": [
+		"chain_charge",
+		"chain_jump",
+		"chain_jump",
+		"chain_jump"
+	],
+	"4:illusion": [
+		"illusion"
+	],
+	"4:silence": [
+		"shadow_charge",
+		"silence"
+	],
+	"5:basic": [
+		"hammer_swing",
+		"boss_hit"
+	],
+	"5:fire_aura": [
+		"fire_ignite"
+	],
+	"5:fire_shield": [
+		"fire_ignite"
+	],
+	"5:meteors": [
+		"summon",
+		"warning"
+	],
+	"5:smoke": [
+		"smoke"
+	],
+	"5:summon": [
+		"summon",
+		"minion_spawn",
+		"minion_spawn"
+	],
+	"6:basic": [
+		"punch_air",
+		"body_hit"
+	],
+	"6:red_laser": [
+		"laser_charge",
+		"laser_emit",
+		"laser_hit"
+	]
+}

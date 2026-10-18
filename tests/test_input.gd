@@ -85,6 +85,8 @@ func run() -> void:
 		if button.visible:
 			expect(button.get_node("Glyph").texture != null, "Habilidade tem ícone conectado")
 	expect(scene.hud.initiative_buttons.size() == 6, "Seis retratos de iniciativa")
+	scene.audio.shutdown()
+	await create_timer(.15).timeout
 	scene.queue_free()
 	await process_frame
 	print("Entradas reais: %d verificações; %d falhas" % [checks, failures])

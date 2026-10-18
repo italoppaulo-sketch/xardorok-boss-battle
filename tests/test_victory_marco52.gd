@@ -85,4 +85,8 @@ func run() -> void:
 		"Reiniciar limpa vitória e zoom"
 	)
 	print("Marco5.2 vitória/câmera: %d verificações; %d falhas" % [checks, failures])
+	scene.audio.shutdown()
+	await create_timer(.15).timeout
+	scene.queue_free()
+	await process_frame
 	quit(1 if failures else 0)

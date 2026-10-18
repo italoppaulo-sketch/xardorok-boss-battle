@@ -6,6 +6,7 @@ signal unit_candidates_clicked(indices: Array[int], screen_position: Vector2)
 signal presentation_started
 signal presentation_finished
 signal display_state_changed
+signal audio_event(event: Dictionary)
 const Battle = preload("res://scripts/combat/battle.gd")
 const Effects = preload("res://scenes/effects/combat_effects.tscn")
 const Actor = preload("res://scenes/characters/combat_sprite.tscn")
@@ -20,6 +21,7 @@ var selected := 0
 var target_highlight := -1
 var retired_minions := {}
 var minion_deaths := {}
+var visual_guards := {}
 var show_moves := false
 var skill_id := "move"
 var hovered := Vector2i(-1, -1)
@@ -104,6 +106,7 @@ func reset_visuals() -> void:
 	pending_spawns.clear()
 	retired_minions.clear()
 	minion_deaths.clear()
+	visual_guards.clear()
 	target_highlight = -1
 	fog.reset()
 	if is_instance_valid(spirit):
@@ -122,13 +125,31 @@ func present(events: Array[Dictionary]) -> void:
 	var impact := 0.12
 	var skill := ""
 	var chain_link_index := 0
+	var cast_source := -1
+	var evaders := {}
+	for response in events:
+		if response.kind == "meteor_response" and response.response == "evade":
+			evaders[response.source] = true
 	for original in events:
 		var event := original.duplicate(true)
 		var source: int = event.get("source", -1)
+		if event.kind == "cast":
+			cast_source = source
+			skill = event.ability
+		elif event.kind == "meteor":
+			skill = "meteor"
+		event.sound_skill = skill
+		event.sound_caster = cast_source
 		match event.kind:
 			"move":
 				timeline.add(
-					cursor, {"kind": "route", "source": source, "path": event.path.duplicate()}
+					cursor,
+					{
+						"kind": "route",
+						"source": source,
+						"path": event.path.duplicate(),
+						"emergency": evaders.has(source)
+					}
 				)
 				cursor += event.path.size() * TILE / movement_speed
 				impact = cursor + 0.12
@@ -178,9 +199,23 @@ func present(events: Array[Dictionary]) -> void:
 				if skill in ["double", "unarmed"]:
 					timeline.add(
 						cursor + 0.4,
-						{"kind": "animation", "actor": source, "animation": "attack_alt"}
+						{
+							"kind": "animation",
+							"actor": source,
+							"source": source,
+							"sound_skill": skill,
+							"animation": "attack_alt"
+						}
 					)
 				timeline.add(cursor + 0.1, event)
+				if skill == "red_laser":
+					timeline.add(
+						cursor + 0.34, {"kind": "sound", "cue": "laser_emit", "source": source}
+					)
+				if skill == "energy_arrow":
+					timeline.add(
+						cursor + 0.30, {"kind": "sound", "cue": "bow_release", "source": source}
+					)
 				cursor += 0.9
 			"guard":
 				timeline.add(cursor, event)
@@ -199,6 +234,7 @@ func present(events: Array[Dictionary]) -> void:
 						centers.append(center(cell))
 				event.area_centers = centers
 				timeline.add(cursor, event)
+				timeline.add(impact, {"kind": "sound", "cue": "meteor_hit", "cell": event.cell})
 				timeline.add(impact, {"kind": "remove_mark", "cell": event.cell})
 				cursor += 0.7
 				skill = "meteor"
@@ -236,16 +272,29 @@ func present(events: Array[Dictionary]) -> void:
 
 
 func _apply_visual(event: Dictionary) -> void:
+	var sound := event.duplicate(true)
+	var victim: int = event.get("target", -1)
+	if victim >= 0 and victim < visual_units.size():
+		sound.hp_before = visual_units[victim].hp
+		sound.guarded = visual_guards.has(victim)
+	if event.kind == "sound":
+		sound.kind = "launch"
+	audio_event.emit(sound)
+	if event.kind == "sound":
+		return
 	var source: int = event.get("source", -1)
 	var target: int = event.get("target", -1)
 	match event.kind:
 		"world":
 			visual_smoke.assign(event.smoke_zones.duplicate(true))
 			visual_meteors.assign(event.marks.duplicate(true))
+			if visual_meteors.is_empty():
+				visual_guards.clear()
 			visual_fire.assign(event.get("fire_zones", visual_fire).duplicate(true))
 			display_state_changed.emit()
 			return
 		"guard":
+			visual_guards[target] = true
 			if actors.has(target):
 				actors[target].animate("evade", 0.55)
 		"phase":
@@ -391,6 +440,9 @@ func _process(delta: float) -> void:
 			remaining -= distance_left
 			if positions[i].distance_to(destination) < 0.1:
 				visual_units[i].cell = routes[i].pop_front()
+				audio_event.emit(
+					{"kind": "step", "source": i, "flying": visual_units[i].statuses.has("flight")}
+				)
 			else:
 				break
 		var moving: bool = routes.has(i) and not routes[i].is_empty()
@@ -482,6 +534,7 @@ func _stable_depth_order() -> void:
 
 
 func _retire_minion(index: int) -> void:
+	audio_event.emit({"kind": "dissipate", "target": index})
 	retired_minions[index] = true
 	if actors.has(index):
 		actors[index].queue_free()

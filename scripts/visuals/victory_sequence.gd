@@ -1,6 +1,7 @@
 extends CanvasLayer
 ## Encenação local da vitória. Nunca altera turnos, HP ou Engine.time_scale.
 signal finished
+signal audio_cue(cue: String)
 var arena: Node2D
 var battle: RefCounted
 var elapsed := 0.0
@@ -14,7 +15,9 @@ var subtitle := Label.new()
 var crown := TextureRect.new()
 var crown_origin := Vector2.ZERO
 var crown_world_origin := Vector2.ZERO
-var duration := 3.6
+var duration := 7.2
+var crown_sounded := false
+var title_sounded := false
 
 
 func _ready() -> void:
@@ -73,6 +76,9 @@ func start() -> void:
 	elapsed = 0
 	playing = true
 	canvas.visible = true
+	crown_sounded = false
+	title_sounded = false
+	audio_cue.emit("start")
 	var boss: Vector2 = arena.positions.get(5, arena.center(Vector2i(11, 4)))
 	crown_world_origin = arena.to_global(boss + Vector2(-18, -88))
 	crown_origin = arena.get_viewport_transform() * crown_world_origin
@@ -82,6 +88,9 @@ func start() -> void:
 
 func skip() -> void:
 	if playing:
+		audio_cue.emit("skip")
+		crown_sounded = true
+		title_sounded = true
 		elapsed = duration
 		_update_visuals()
 		_complete()
@@ -112,6 +121,13 @@ func _process(delta: float) -> void:
 
 
 func _update_visuals() -> void:
+	# Match the original fall endpoint (0.15 + 0.85) and title reveal threshold.
+	if playing and elapsed >= 1.0 and not crown_sounded:
+		crown_sounded = true
+		audio_cue.emit("crown")
+	if playing and elapsed >= 1.05 and not title_sounded:
+		title_sounded = true
+		audio_cue.emit("title")
 	# A caída usa PNG da própria coroa; os personagens continuam sendo seus sprites.
 	var fall := clampf((elapsed - 0.15) / 0.85, 0, 1)
 	var bounce := absf(sin(fall * PI * 2.5)) * (1 - fall) * 13

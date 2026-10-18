@@ -245,6 +245,8 @@ func run() -> void:
 		scene.busy and not scene.hud.boss_hp.visible, "HUD retira HP oculto já durante apresentação"
 	)
 	scene._restart()
+	scene.audio.shutdown()
+	await create_timer(.15).timeout
 	scene.queue_free()
 	await process_frame
 	print("Verificações visuais: %d; falhas: %d" % [checks, failures])

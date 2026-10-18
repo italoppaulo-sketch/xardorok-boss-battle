@@ -1,0 +1,365 @@
+{
+  "date": "2026-10-18",
+  "base_commit": "2db39f1a0f600e7e5cfc4a6d269d06c03ca90aa4",
+  "branch": "feature/marco-6-complete-audio",
+  "new_sources": [
+    {
+      "id": "hammer_swing",
+      "task_id": "e4673c65-6a61-4fef-8c97-5620d608a09a",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "One heavy warhammer swinging fast through air, a short weighty wooden shaft and broad air whoosh. No impact, no explosion, no music, no voice. Immediate dry close-up Foley."
+    },
+    {
+      "id": "hammer_hit",
+      "task_id": "58794e09-dfa4-40e9-9363-d38c6e54d6ba",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "One physical steel warhammer hitting iron armor over a solid wooden body: short deep THUNK with forged metal body, tactile heavy weight, restrained short ring. No explosion, no gunshot, no rock smash, no sword slash, no music. Strong immediate transient."
+    },
+    {
+      "id": "ice_form",
+      "task_id": "569c1758-34d7-430a-9993-e319eccab484",
+      "model": "Runway Sound Effects",
+      "seconds": 2,
+      "credits": 2,
+      "prompt": "Ice armor crystallizing progressively over a body, tiny brittle crystals growing into a resonant cold shell. Detailed glassy granular Foley, gentle low resonance, no piercing ringing, no explosion, no music."
+    },
+    {
+      "id": "ice_shards",
+      "task_id": "685c1b9a-9c56-4304-a001-df8cb3756572",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "One sudden brittle ice fracture, crisp scattered frozen shards tinkling and settling. Compact clear icy attack, no metal clang, no deep explosion, no music or voice."
+    },
+    {
+      "id": "giant",
+      "task_id": "140a9b46-0d74-4a59-9ecf-c8ce1d0b6f52",
+      "model": "Runway Sound Effects",
+      "seconds": 2,
+      "credits": 2,
+      "prompt": "A magical giant transformation, deep organic body expansion, rising rushing air and earth-like low vibration, then a firm settling pulse. Restrained sub bass, textured fantasy Foley, no roar or voice, no music."
+    },
+    {
+      "id": "punch",
+      "task_id": "f93781c3-3421-4df1-a90a-8ce397eb956b",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "One quick close-up bare fist striking a padded leather torso: dry fleshy thwack with small fabric movement. No metal, blade, ice, explosion or voice. One immediate natural martial-arts hit."
+    },
+    {
+      "id": "dodge",
+      "task_id": "cca800a0-77ba-46ad-b4c9-0afd5d9bdd13",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A nimble fighter suddenly sidestepping, short sharp displacement of air with subtle cloth whip and a light foot landing. Agile dry close Foley, no impact weapon, music or voice."
+    },
+    {
+      "id": "shadow_charge",
+      "task_id": "fb5b1d38-0703-4bfa-9b2d-4b556fd9ecf1",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "Dark magic briefly concentrating along a thin sword blade, close tense airy suction with soft metallic harmonic tremor. Very short focused preparation, no hit, no drum, no explosion, no music or voice."
+    },
+    {
+      "id": "sword_slash",
+      "task_id": "df9e3f6f-e764-4cc8-9620-2719e49a4ebc",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A razor-sharp katana making ONE devastating sweeping CUT through air and silk: immediate fast steel shing and slicing hiss, aggressive fine metallic edge. The blade slice dominates. NO blunt thud, hammer, rocks, drums, explosion or deep impact. Dry detailed close Foley, no voice or music."
+    },
+    {
+      "id": "shadow_rupture",
+      "task_id": "fa01cb72-bc17-46d0-80c3-70a4bdd13fa6",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A supernatural cut tearing a thin veil of reality: ripping airy spectral texture and a short dark shimmering resonance. Sharp tearing gesture, not a blunt hit. No hammer, drums, stone, explosion, voice or music."
+    },
+    {
+      "id": "sacrifice",
+      "task_id": "620b30ea-22de-4b8b-9de1-6eaae1a37307",
+      "model": "Runway Sound Effects",
+      "seconds": 0.5,
+      "credits": 1,
+      "prompt": "A subtle low heartbeat-like inward pulse for a magical health sacrifice, soft muted organic throb and tiny breath of air. Discreet, no pain voice, no harsh transient, no music."
+    },
+    {
+      "id": "bow_release",
+      "task_id": "6d832c1f-d6ea-4be2-b26a-53021ba97613",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "One wooden recurve bow pulled and released: taut fiber creak, crisp string snap and arrow feather hiss moving away. Natural dry detailed archery Foley, no laser, explosion, metal or music."
+    },
+    {
+      "id": "arrow_hit",
+      "task_id": "909b8887-fcf2-4ec2-b64c-a4a088b468ac",
+      "model": "Runway Sound Effects",
+      "seconds": 0.5,
+      "credits": 1,
+      "prompt": "One arrow penetrating leather over timber, sharp small woody tick and short feather flutter. Dry and precise, no hammer, explosion, sword, music or voice."
+    },
+    {
+      "id": "roots",
+      "task_id": "8ef7ab19-44f1-4451-81a4-ee59fc141911",
+      "model": "Runway Sound Effects",
+      "seconds": 1.5,
+      "credits": 2,
+      "prompt": "Living roots suddenly growing and wrapping around a target: fibrous wood creaks, vine tension and leafy rustling tightening to a stop. Organic nature magic, no metallic chime, blast, voice or music."
+    },
+    {
+      "id": "energy_charge",
+      "task_id": "36fa7b60-7e85-4dc0-bb7d-0422aaea04a3",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "Golden energy gathering around an arrow, bright focused rising magical tension with warm fine crackling, then a tight release. No science fiction laser, no harsh whistle, music or voice."
+    },
+    {
+      "id": "energy_impact",
+      "task_id": "86917d8c-eea1-4bee-9785-8011b22be118",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A powerful golden arcane arrow contacting a target: concentrated warm electrical crack, bright crystalline energy spreading and quickly decaying. Distinct from blue lightning and from orange fire, no voice or music."
+    },
+    {
+      "id": "flight",
+      "task_id": "b839adbc-1f4a-4fba-86c2-195dc831f5e2",
+      "model": "Runway Sound Effects",
+      "seconds": 1.5,
+      "credits": 2,
+      "prompt": "Enchanted boots lifting a person gently into air: soft leather flutter, airy luminous swirl and a light magical shimmer. Graceful fantasy movement, no engine, jet, explosion or music."
+    },
+    {
+      "id": "arcane_cast",
+      "task_id": "503720a1-df88-4cce-8567-f20b26dc9a31",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A mage releasing a small blue arcane orb: a soft glass-like energy gathering then a quick airy magical release. Warm fantasy texture, no science fiction laser or harsh beep, no music or voice."
+    },
+    {
+      "id": "arcane_hit",
+      "task_id": "9015285d-52ae-4212-8edb-05700e5dbf0d",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A small arcane orb meeting a magical surface: compact hollow glassy pulse, airy energy fragments and short bright resonance. Fantasy spell contact, no gun, explosion or sword, no voice or music."
+    },
+    {
+      "id": "dispel",
+      "task_id": "1d095d5d-adfb-4318-b7c0-18226b29760d",
+      "model": "Runway Sound Effects",
+      "seconds": 1.5,
+      "credits": 2,
+      "prompt": "A magical enchantment being unraveled and cancelled: focused reverse-air pull, crystalline threads breaking apart and a soft final empty pulse. Dissolving rather than exploding, no music, voice or piercing ringing."
+    },
+    {
+      "id": "heal",
+      "task_id": "b64810a7-f22f-479b-a8c8-cf51689c8804",
+      "model": "Runway Sound Effects",
+      "seconds": 2,
+      "credits": 2,
+      "prompt": "A luminous healing spell completing: delicate warm resonant glass and bell-like harmonic shimmer gently rising then resolving, comforting and clear, tiny airy sparkle. Not a song, no voice, no harsh high tones."
+    },
+    {
+      "id": "violet_beam",
+      "task_id": "24bdb4b8-6809-477d-8863-0f84eaf8a469",
+      "model": "Runway Sound Effects",
+      "seconds": 1.5,
+      "credits": 2,
+      "prompt": "A continuous violet arcane beam, dense smooth magical energy humming and rushing for one second with a clear ignition and soft release. Ethereal powerful focused energy, distinct from crackling fire and sci-fi lasers. No voice, music or piercing whistle."
+    },
+    {
+      "id": "illusion",
+      "task_id": "9ebfa9bc-efb1-4f52-a0ce-3e2b7a05c470",
+      "model": "Runway Sound Effects",
+      "seconds": 1.5,
+      "credits": 2,
+      "prompt": "A spectral duplicate appearing: airy phase shift, two softly offset shimmering presences moving apart in stereo, ending with a faint glassy flicker. Ethereal illusion magic, no thunder, electric crack, explosion, music or voice."
+    },
+    {
+      "id": "silence",
+      "task_id": "29866579-95eb-497d-8d85-66452f0a0e1c",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "Magical energy abruptly suppressed: short inward vacuum, a muffled soft snap then a low restrained resonant tail falling into silence. No electric discharge, weapon, explosion, music or voice."
+    },
+    {
+      "id": "boss_hit",
+      "task_id": "a3229b1a-e307-46fb-9c05-b37626abee0a",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "One monumental black iron armored king swinging a heavy gauntlet into a stone shield: massive physical iron crunch with ash rattling, short grounded weight. Not an explosion, no sci-fi effect, voice or music."
+    },
+    {
+      "id": "smoke",
+      "task_id": "e052a2d6-b166-4ddc-a715-44a344f79c65",
+      "model": "Runway Sound Effects",
+      "seconds": 2,
+      "credits": 2,
+      "prompt": "A thick dark magical smoke bubble expanding: sudden air pressure release, dense smoky rushing texture and soft ominous low hollow resonance. No explosion, gunshot, voice or music."
+    },
+    {
+      "id": "summon",
+      "task_id": "b19aea8e-8cd7-4cf2-9fc8-8cdd28ae07b1",
+      "model": "Runway Sound Effects",
+      "seconds": 2,
+      "credits": 2,
+      "prompt": "A dark fantasy summoning portal opening: rough whispered-air texture without speech, low stone chamber resonance, ash swirling inward then a firm magical closure. No choir, words, music, explosion or laser."
+    },
+    {
+      "id": "fire_ignite",
+      "task_id": "a736e28e-ffeb-4b6e-a6f2-b0977e9b77bd",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A magical flame barrier igniting in one broad close fiery whoosh, textured licking flames and a firm warm pressure pulse. No explosion or bomb, no music or voice."
+    },
+    {
+      "id": "fire_hit",
+      "task_id": "5a2d6ce5-d73b-4b85-9a13-780f221b06fb",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A short retaliatory burst of hot magical flame: fast dry flare, crackling embers and a compact warm sizzling decay. Controlled bass, not a giant explosion, no voice or music."
+    },
+    {
+      "id": "minion_spawn",
+      "task_id": "9b8f5f1a-aca0-4bf6-acdd-2fc9c5139ea2",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "An ash-cloaked phantom mage materializing, granular dry ash gathering with faint cloth movement and short eerie air resonance. Distinct intimate arrival, no explosion, music or voice."
+    },
+    {
+      "id": "minion_death",
+      "task_id": "33f54836-91a5-457b-b960-8a0c7f68015a",
+      "model": "Runway Sound Effects",
+      "seconds": 1.5,
+      "credits": 2,
+      "prompt": "A hooded ash mage dissolving into dust: sudden hollow airy collapse followed by fine dry particles scattering and fading. No human voice, scream, metal clang, explosion or music."
+    },
+    {
+      "id": "footsteps",
+      "task_id": "12004d9a-fc2d-45e7-b762-90ca0f104c3e",
+      "model": "Runway Sound Effects",
+      "seconds": 2,
+      "credits": 2,
+      "prompt": "Four separate soft deliberate boot footsteps on old uneven stone, dry close natural Foley with small leather and armor movement. Evenly spaced, silence between steps, no background noise, music or voice."
+    },
+    {
+      "id": "body_hit",
+      "task_id": "ade9eea5-9db7-4c6c-b9af-6e359dc201db",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A short natural impact on cloth and leather armor, low dry thump and fabric rustle. Restrained general damage Foley, no metallic weapon, blast, music or voice."
+    },
+    {
+      "id": "hero_death",
+      "task_id": "32366850-d4b0-4712-a01c-6375ecc34ee4",
+      "model": "Runway Sound Effects",
+      "seconds": 1,
+      "credits": 1,
+      "prompt": "A wounded armored adventurer collapsing to a stone floor, cloth and leather dropping with a soft grounded thud. No groan, scream, voice, music or large explosion."
+    },
+    {
+      "id": "crown",
+      "task_id": "2235c77e-ae6b-4947-b539-e0e966b05488",
+      "model": "Runway Sound Effects",
+      "seconds": 0.5,
+      "credits": 1,
+      "prompt": "A small light golden crown touching stone once, delicate thin metallic clink with one tiny rattle. Small jewelry-like metal, NOT a hammer or heavy impact. No music or voice."
+    },
+    {
+      "id": "ui",
+      "task_id": "ef1d0c58-7376-4811-9a81-2ba8285c44bd",
+      "model": "Runway Sound Effects",
+      "seconds": 2,
+      "credits": 2,
+      "prompt": "Four separate very short soft tactile fantasy menu clicks and gentle glass confirmation ticks, quiet polished game interface Foley. Each distinct with silence between, no melody, harsh beeps, voice or background."
+    },
+    {
+      "id": "critical",
+      "task_id": "73bae6b2-1c59-4d7a-96f2-12b59cdda1d5",
+      "model": "Runway Sound Effects",
+      "seconds": 0.5,
+      "credits": 1,
+      "prompt": "One compact bright sword-edge glint accent, a fine metallic sparkle with fast decay, subtle triumphant magical emphasis. No blunt impact, explosion, music or voice."
+    },
+    {
+      "id": "phase",
+      "task_id": "19b4eb1a-6edc-499d-bc9d-57ee04c44265",
+      "model": "Runway Sound Effects",
+      "seconds": 2,
+      "credits": 2,
+      "prompt": "An ancient ash king revealing greater power: low restrained dramatic resonance, rising dark flame and powerful airy pressure release. No voice, roar, music or giant explosion, keep space for the battle score."
+    },
+    {
+      "id": "ambience",
+      "task_id": "19ed0cf5-7176-4cd6-a6cb-783de45bd534",
+      "model": "Runway Sound Effects",
+      "seconds": 12,
+      "credits": 12,
+      "prompt": "Quiet seamless fantasy ruin ambience: wind through broken stone arches, distant soft fire crackle and drifting embers, occasional low hollow chamber resonance. Spacious, sparse, subdued, no footsteps, identifiable rhythmic pattern, music, voice or loud events."
+    },
+    {
+      "id": "victory",
+      "task_id": "07eeb235-4c48-4570-bf7a-f7c904847fd5",
+      "model": "lyria-3-clip",
+      "credits": 4,
+      "prompt": "Entirely original short triumphant 16-bit era JRPG victory fanfare, instrumental, no voice or lyrics. D minor resolving joyfully to D major. Begin IMMEDIATELY with a memorable confident brass figure, warm expressive sampled strings, active bass, snare and gentle cymbal. The FIRST FIVE SECONDS must contain a complete concise musical phrase and satisfying final major chord, followed by a soft lingering release. No long introduction, loop, trailer impacts or quotations from existing music. Emotional heroic relief after an ancient ash king is defeated. Clean modern stereo sound with nuanced dynamics."
+    },
+    {
+      "id": "defeat",
+      "task_id": "b8201382-a144-4324-8b83-c2cbf9ed5f43",
+      "model": "lyria-3-clip",
+      "credits": 4,
+      "prompt": "Entirely original very short 1990s console JRPG defeat cue, instrumental, no voices or choir. D minor. A gentle descending expressive string phrase, lonely warm woodwind answer and low soft piano chords. Begin immediately and resolve the entire thought in the FIRST SIX SECONDS to a quiet dark final chord with soft decay. No percussion beat, cinematic explosion, quotations or existing melodies. Sad but dignified, clear clean sampled-instrument sound."
+    },
+    {
+      "id": "phase_percussion",
+      "task_id": "ed8b04dc-0b31-4086-8018-c876fb49c21d",
+      "model": "lyria-3-clip",
+      "credits": 4,
+      "prompt": "Solo acoustic orchestral game battle percussion stem ONLY, 152 BPM 4/4, energetic 1990s JRPG sampled drums with clean modern sound. Snare on backbeats, low toms and timpani accents, restrained cymbals, human dynamic variations and fills every fourth bar. Start on a clear downbeat with no introduction. No vocals, melody, bass, chords, strings or brass: unpitched drums and timpani alone. Clear separated dry hits, not a cinematic trailer. A steady 16-bar phrase useful to add intensity beneath an existing battle theme."
+    }
+  ],
+  "reused": [
+    {
+      "id": "battle_original",
+      "task_id": "39a0171f-0991-4df6-bf3e-b606150a5e7c"
+    },
+    {
+      "id": "approved_chain",
+      "task_id": "23c2f849-70d6-4acd-9337-839713aeb6b4"
+    },
+    {
+      "id": "approved_laser",
+      "task_id": "8ad78b0b-638c-43e8-81cf-57cdf62b4c9b"
+    },
+    {
+      "id": "approved_meteor",
+      "task_id": "578bc521-4828-4d1f-b544-d317e964cd6a"
+    }
+  ],
+  "rejected_not_used": [
+    "bdde28b1-7b80-4ba3-b2e3-ed9a20064bea",
+    "004516c5-5fb2-475a-a1d1-c3e6986ee096"
+  ],
+  "new_credits_reported": 76,
+  "tool": "Runway",
+  "external_reference_audio_inputs": []
+}

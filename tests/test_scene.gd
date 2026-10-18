@@ -124,6 +124,8 @@ func run() -> void:
 	await settle(scene)
 	expect(scene.hud.message.text.begins_with("BOSS DEFEATED"), "Interface mostra vitória")
 
+	scene.audio.shutdown()
+	await create_timer(.15).timeout
 	scene.queue_free()
 	await process_frame
 	print("Cena: %d verificações; %d falhas" % [checks, failures])

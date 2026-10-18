@@ -5,6 +5,10 @@ const Hud = preload("res://scripts/ui/battle_hud.gd")
 const TacticalZoom = preload("res://scripts/visuals/tactical_zoom.gd")
 const TargetSelector = preload("res://scripts/ui/target_selector.gd")
 const VictorySequence = preload("res://scripts/visuals/victory_sequence.gd")
+const BattleAudio = preload("res://scripts/audio/battle_audio.gd")
+const AudioPanel = preload("res://scripts/audio/audio_panel.gd")
+var audio := BattleAudio.new()
+var audio_panel := AudioPanel.new()
 var battle := Battle.new()
 var arena := Arena.new()
 var hud := Hud.new()
@@ -30,6 +34,11 @@ func _ready() -> void:
 	add_child(hud)
 	add_child(victory)
 	victory.configure(arena, battle)
+	add_child(audio)
+	audio.bind(arena, victory)
+	audio_panel.audio = audio
+	add_child(audio_panel)
+	hud.log_button.pressed.connect(func(): audio.ui("ui_open"))
 	arena.cell_clicked.connect(_on_cell)
 	arena.unit_candidates_clicked.connect(_on_candidates)
 	target_selector.target_chosen.connect(_confirm_target)
@@ -64,6 +73,7 @@ func _select(index: int) -> void:
 	):
 		target_selector.close()
 		selected = index
+		audio.ui()
 		mode = "move"
 		_refresh()
 
@@ -73,6 +83,7 @@ func _set_mode(value: String) -> void:
 		return
 	target_selector.close()
 	mode = value
+	audio.ui()
 	_refresh()
 
 
@@ -81,6 +92,7 @@ func _choose_skill(id: String) -> void:
 		return
 	target_selector.close()
 	mode = id
+	audio.ui()
 	var skill := Battle.Abilities.get_skill(id)
 	if skill.get("target", "") == "self":
 		_execute(id, battle.units[selected].cell)
@@ -96,6 +108,8 @@ func _execute(id: String, cell: Vector2i) -> void:
 	battle.events.clear()
 	var success := battle.use_ability(selected, id, cell)
 	status = "Habilidade executada." if success else battle.last_error
+	if not success:
+		audio.ui("ui_invalid")
 	arena.present(battle.events)
 	_refresh()
 
@@ -125,6 +139,8 @@ func _on_cell(cell: Vector2i) -> void:
 			if battle.move_unit(selected, cell)
 			else "Destino bloqueado, estado impeditivo ou movimento insuficiente."
 		)
+		if battle.events.is_empty():
+			audio.ui("ui_invalid")
 		arena.present(battle.events)
 		_refresh()
 	else:
@@ -171,6 +187,7 @@ func _continue_turns() -> void:
 
 
 func _restart() -> void:
+	audio.restart()
 	busy = false
 	meteor_ui_active = false
 	target_selector.close()
@@ -295,6 +312,8 @@ func _on_presentation_started() -> void:
 
 func _on_presentation_finished() -> void:
 	busy = false
+	if battle.outcome == "GRUPO DERROTADO":
+		audio.defeat()
 	if battle.outcome == "BOSS DEFEATED":
 		_refresh()
 		if not victory.is_playing() and not victory.is_finished():
@@ -322,6 +341,8 @@ func _handle_meteor_window() -> bool:
 		if not busy:
 			_continue_turns.call_deferred()
 		return true
+	if not meteor_ui_active:
+		audio.ui("ui_open")
 	selected = battle.response_index
 	mode = "meteor_response"
 	status = "Meteoro iminente: escolha uma única resposta. O impacto ocorre após as respostas."
@@ -334,6 +355,7 @@ func _meteor_choice(choice: String) -> void:
 		return
 	if choice == "evade":
 		if battle.emergency_destinations(battle.response_index).is_empty():
+			audio.ui("ui_invalid")
 			status = (
 				"Sem evasão válida: confira a Reação Defensiva, estados "
 				+ "e o espaço seguro em até 2 células."
@@ -358,6 +380,7 @@ func _respond_meteor(choice: String, destination: Vector2i = Vector2i.ZERO) -> v
 		return
 	var reason: String = battle.can_meteor_response(battle.response_index, choice, destination)
 	if not reason.is_empty():
+		audio.ui("ui_invalid")
 		status = reason
 		_refresh()
 		return
@@ -426,6 +449,8 @@ func _confirm_target(index: int) -> void:
 
 
 func _highlight_target(index: int) -> void:
+	if index >= 0 and index != highlighted_target:
+		audio.ui()
 	highlighted_target = index
 	arena.target_highlight = index
 	if index >= 0 and battle.valid_unit(index) and battle.player_visible(index):
