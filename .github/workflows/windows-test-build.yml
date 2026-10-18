@@ -47,8 +47,8 @@ jobs:
           Copy-Item tools/distribution/validate_export.gd "$env:RUNNER_TEMP/validate_export.gd"
           Push-Location $isolated
           try {
-            & '.\Xardorok Boss Battle.exe' --headless --quit-after 120 --log-file "$env:RUNNER_TEMP/export-startup.log"
-            if ($LASTEXITCODE -ne 0) { throw 'Exported startup failed' }
+            $game = Start-Process -FilePath '.\Xardorok Boss Battle.exe' -ArgumentList @('--headless', '--quit-after', '120', '--log-file', "`"$env:RUNNER_TEMP/export-startup.log`"") -Wait -PassThru
+            if ($game.ExitCode -ne 0) { throw "Exported startup failed: $($game.ExitCode)" }
             & Godot_v4.7.2-stable_win64_console.exe --headless --main-pack '.\Xardorok Boss Battle.pck' --script "$env:RUNNER_TEMP/validate_export.gd" --log-file "$env:RUNNER_TEMP/export-validation.log"
             if ($LASTEXITCODE -ne 0) { throw 'Exported validation failed' }
           } finally { Pop-Location }
@@ -62,6 +62,7 @@ jobs:
           Copy-Item tools/distribution/CREDITOS.txt build/windows/
           Compress-Archive build/windows/* build/Xardorok_Marco6_1_Windows_x64.zip
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: Xardorok-Marco6.1-Windows-x64-test
           path: |
