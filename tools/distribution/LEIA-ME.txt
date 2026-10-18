@@ -19,7 +19,8 @@ Use as opções de reação na interface quando meteoros forem anunciados.
 A interface mostra custos, alcance, ações e estados.
 
 Esta é uma distribuição de teste para avaliação, sem instalador e sem assinatura digital.
-Exportada com Godot 4.7.2. Validação nativa em Windows e escuta humana desta correção pendentes.
+Exportada com Godot 4.7.2.
+A fase 2 usa a nova composição instrumental "A Coroa em Chamas". Validação automatizada em Windows aprovada. Escuta humana e teste gráfico manual pendentes.
 Se o Windows bloquear o arquivo, confira a origem e o arquivo recebido antes de decidir executá-lo.
 Configurações de áudio ficam nos dados locais do seu usuário; não exigem acesso à pasta de desenvolvimento.
 

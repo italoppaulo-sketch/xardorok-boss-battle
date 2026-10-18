@@ -464,7 +464,7 @@
     "loop": true
   },
   "phase_two": {
-    "path": "res://assets/audio/music/phase_two.ogg",
+    "path": "res://assets/audio/music/phase_two_distinct.ogg",
     "bus": "Music",
     "gain_db": 0,
     "priority": 40,

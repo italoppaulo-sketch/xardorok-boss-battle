@@ -1,0 +1,14 @@
+{
+  "title": "A Coroa em Chamas",
+  "bpm": 150,
+  "bars": 32,
+  "key": "D minor",
+  "seconds": 51.2,
+  "sample_rate": 44100,
+  "composition": "Original deterministic score; no audio excerpts from the first phase",
+  "renderer": "FluidSynth + FluidR3 GM (MIT)",
+  "soundfont_sha256": "74594e8f4250680adf590507a306655a299935343583256f3b722c48a1bc1cb0",
+  "ogg_sha256": "f3e1ded196dd3ea55f7ea239e00b39fde7210f26205f3e03dfb4fb4e20d3f071",
+  "notes": 1132,
+  "human_listening": "pending"
+}

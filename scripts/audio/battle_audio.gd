@@ -235,6 +235,7 @@ func restart() -> void:
 	recent.clear()
 	stinger.stop()
 	aura.stop()
+	ambience.stop()
 	phase_target = 0
 	phase_mix = 0
 	phase_started = false
@@ -257,10 +258,10 @@ func restart() -> void:
 	music_sequence.set_clip_stream(0, _stream("battle"))
 	music_sequence.set_clip_stream(1, _stream("phase_two"))
 	music_sequence.initial_clip = 0
-	# These approved recordings have no BPM metadata, so fade_beats is seconds.
+	# The independent recordings have no BPM metadata: fade_beats is seconds.
 	music_sequence.add_transition(
 		0, 1, AudioStreamInteractive.TRANSITION_FROM_TIME_IMMEDIATE,
-		AudioStreamInteractive.TRANSITION_TO_TIME_SAME_POSITION,
+		AudioStreamInteractive.TRANSITION_TO_TIME_START,
 		AudioStreamInteractive.FADE_CROSS, PHASE_FADE_SECONDS
 	)
 	music[0].stream = music_sequence

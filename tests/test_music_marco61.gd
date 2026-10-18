@@ -59,9 +59,10 @@ func run() -> void:
 	var first: AudioStream = audio.music_sequence.get_clip_stream(0)
 	var second: AudioStream = audio.music_sequence.get_clip_stream(1)
 	check(first.loop and second.loop, "Both approved recordings loop")
-	check(is_equal_approx(first.get_length(), second.get_length()), "Aligned loop lengths")
+	check(second.get_length() > 30 and first != second, "Distinct full-length phase 2 composition")
+	check(audio.catalog.phase_two.path.ends_with("phase_two_distinct.ogg"), "Rejected percussion overlay is not the active recording")
 	check(is_zero_approx(first.bpm), "Fade duration uses seconds, not BPM")
-	check(audio.music_sequence.get_transition_to_time(0, 1) == AudioStreamInteractive.TRANSITION_TO_TIME_SAME_POSITION, "Keep musical position")
+	check(audio.music_sequence.get_transition_to_time(0, 1) == AudioStreamInteractive.TRANSITION_TO_TIME_START, "Distinct composition starts at its first phrase")
 	check(audio.music_sequence.get_transition_fade_mode(0, 1) == AudioStreamInteractive.FADE_CROSS, "Native mixer crossfade")
 	check(is_equal_approx(audio.music_sequence.get_transition_fade_beats(0, 1), 1.5), "Existing fade duration preserved")
 	damage(449)
@@ -182,7 +183,8 @@ func pcm_regression() -> void:
 	var rate := int(AudioServer.get_mix_rate())
 	var switched := false
 	var minimum_rms := 1.0
-	while frames < rate * 92:
+	var duration: float = audio.music_sequence.get_clip_stream(1).get_length()
+	while frames < rate * (89 + duration):
 		if not switched and frames >= rate * 87:
 			playback.switch_to_clip(1)
 			switched = true

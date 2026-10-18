@@ -126,6 +126,11 @@ def main():
         end=min(len(extra),start+len(hit));extra[start:end]+=hit[:end-start] * (.25 if i%4 else .38)
     save("battle",music,"music",db=-5,bus="Music",looping=True)
     save("phase_two",music+extra,"music",db=-5,bus="Music",looping=True)
+    # Phase 2 now has an independently composed score; retain the legacy render as source only.
+    distinct = OUT / "music/phase_two_distinct.ogg"
+    if not distinct.is_file():
+        raise FileNotFoundError("Render the distinct score with compose_phase_two.py first")
+    CATALOG["phase_two"]["path"] = "res://assets/audio/music/phase_two_distinct.ogg"
     # Short complete-cue edits; the original generations remain in source archive.
     for name,length in [("victory",6.0),("defeat",6.5)]:
         x=read(sources/(name+".mp3"))[:int(length*SR)]
