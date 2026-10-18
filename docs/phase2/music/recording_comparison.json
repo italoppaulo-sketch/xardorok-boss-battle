@@ -1,0 +1,12 @@
+{
+  "recording_segment_seconds": [
+    8,
+    11
+  ],
+  "new_score_alignment_seconds": 4.030612244897959,
+  "new_score_correlation": 0.9982507718203496,
+  "old_score_correlation": -0.005853789073859501,
+  "new_score_gain_estimate": 0.7622199058532715,
+  "peak": 0.5249679088592529,
+  "clipped_samples": 0
+}

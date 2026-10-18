@@ -1,0 +1,7 @@
+{
+  "base": "cf201e68fb5802db4198f607c2ceeb5d631a7c62",
+  "protected_files_compared": 481,
+  "modified_protected_files": [],
+  "authorized_catalog_change": "phase_two now selects separately composed score; original audio files preserved",
+  "36_match_results_match_base_except_elapsed_ms": true
+}

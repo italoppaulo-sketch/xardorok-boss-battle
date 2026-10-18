@@ -1,0 +1,269 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (2 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+PASS: --headless --editor --quit
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Verificações básicas: 24; falhas: 0
+PASS: --headless --script tests/test_battle.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Marco 4: 411 verificações; 0 falhas
+PASS: --headless --script tests/test_marco4.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Marco 5 funcional: 89 verificações; 0 falhas
+PASS: --headless --script tests/test_marco5.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Visibility Marco 5: 46 checks; 0 failures
+PASS: --headless --script tests/test_visibility_marco5.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: Pele Glacial selecionável
+PASS: Pele usa só bônus
+PASS: Pele aplica espinhos e defesa
+PASS: Chefe pode atingir Grosso com pele
+PASS: Defesa reduz golpe de 30 para 20
+PASS: Pele devolve dano de contato
+PASS: Aura já ativada fere Grosso protegido mesmo sob silêncio
+PASS: Martelo Glacial selecionável
+PASS: Ataque Duplo combina com bônus de martelo
+PASS: Dois golpes aplicam dano físico e gelo com vulnerabilidade
+PASS: Ataque Duplo consome uma ação
+PASS: Forma Gigante selecionável
+PASS: Gigante amplia alcance
+PASS: Gigante amplia força
+PASS: Gigante não atravessa pilar
+PASS: Gigante mantém movimento com colisão por célula
+PASS: Martelo pode aplicar congelamento em golpes reais
+PASS: Ataque desarmado duplo executa
+PASS: Dois golpes desarmados causam 24 após resistência e armadura
+PASS: Esquiva ativa usa bônus
+PASS: Esquiva aumentada soma à natural
+PASS: Fushigiri alcança alvo a dois passos
+PASS: Fushigiri cobra exatamente 24 HP e 20 PM
+PASS: Fushigiri aplica 72 após resistência sombria de 20% e armadura
+PASS: Fushigiri rejeita HP insuficiente
+PASS: Falha não consome recursos
+PASS: Esquiva real usa probabilidade aumentada e RNG reproduzível
+PASS: Flecha Enraizante executa
+PASS: Flecha aplica enraizamento
+PASS: Alvo enraizado não desloca
+PASS: Flecha de Gelo executa
+PASS: Chefe é vulnerável a gelo
+PASS: Espinhos atingem dois lacaios em área
+PASS: Gelo em área não causa fogo amigo
+PASS: Flecha Energizada executa
+PASS: Flecha aplica dano elevado e recarga
+PASS: Recarga bloqueia repetição
+PASS: Caminho terrestre contorna pilar
+PASS: Botas Mágicas executam
+PASS: Voo atravessa pilar pelo caminho curto
+PASS: Voo nunca pousa sobre pilar
+PASS: Voo pousa em célula livre
+PASS: Voo não concede invulnerabilidade física
+PASS: Voo expira e personagem retorna ao chão
+PASS: Cura aceita aliado vivo
+PASS: Cura respeita HP máximo
+PASS: Cura não ressuscita personagem caído
+PASS: Raio de Fogo Roxo executa
+PASS: Fogo violeta distingue resistência ao fogo comum
+PASS: Xardorok conjura fumaça
+PASS: Fumaça bloqueia visão para dentro
+PASS: Fumaça bloqueia visão para fora
+PASS: Magia com visão não atravessa fumaça
+PASS: Antispell funciona de fora da fumaça
+PASS: Antispell restaura visão real
+PASS: Antispell remove estados negativos do aliado
+PASS: Antispell remove buff de inimigo
+PASS: Antispell pode mirar chão
+PASS: Antispell neutraliza marca de meteoro
+PASS: Duplicata executa como bônus
+PASS: Ilusão não cria unidade permanente nem gasta ação
+PASS: Raio Encadeado combina com duplicata no mesmo turno
+PASS: Raio crítico mantém 75 de dano contra lacaios agora mais resistentes
+PASS: Ilusão garante crítico no chefe
+PASS: Ilusão é consumida pelo ataque
+PASS: Raio registra conexões entre três alvos
+PASS: Silêncio selecionável contra Xardorok
+PASS: Xardorok silenciado usa somente ataque físico
+PASS: Silêncio expira após turno do alvo
+PASS: Invocação selecionável pela IA
+PASS: Invocação cria dois inimigos com HP próprio
+PASS: Lacaios não agem na rodada de nascimento
+PASS: Lacaios movem e atacam no turno seguinte
+PASS: Invocações respeitam máximo de quatro vivos
+PASS: Chuva de Meteoros cria marcas
+PASS: Meteoro é telegrafado e não causa dano imediato
+PASS: Meteoro fere personagem dentro da área prevista
+PASS: Marcas são removidas após oportunidade limitada
+PASS: Silêncio bloqueia todas as magias do chefe
+PASS: IA muda escolha conforme distância e alvos
+PASS: Estados desconhecidos são rejeitados
+PASS: Congelamento bloqueia ação e deslocamento
+PASS: Estado de um turno expira corretamente
+PASS: Queimadura aplica dano antes de expirar
+PASS: Mana insuficiente não consome ação
+PASS: Herói não usa habilidade de outra classe
+PASS: Índice de alvo inválido é rejeitado
+PASS: Vitória continua funcional com habilidades novas
+PASS: Não há ações após vitória
+PASS: Derrota continua funcional
+PASS: Recarga conta uma rodada, sem liberar cedo
+PASS: Recarga libera na rodada prevista
+PASS: Estado dura após primeira fase: fire_shield
+PASS: Estado termina após segunda fase: fire_shield
+PASS: Estado dura após primeira fase: fire_aura
+PASS: Estado termina após segunda fase: fire_aura
+PASS: Estado dura após primeira fase: burning
+PASS: Estado termina após segunda fase: burning
+PASS: Estado dura após primeira fase: frozen
+PASS: Estado termina após segunda fase: frozen
+PASS: Estado dura após primeira fase: rooted
+PASS: Estado termina após segunda fase: rooted
+PASS: Estado dura após primeira fase: silenced
+PASS: Estado termina após segunda fase: silenced
+PASS: Estado dura após primeira fase: defense
+PASS: Estado termina após segunda fase: defense
+PASS: Estado dura após primeira fase: attack
+PASS: Estado termina após segunda fase: attack
+PASS: Estado dura após primeira fase: evasion
+PASS: Estado termina após segunda fase: evasion
+PASS: Estado dura após primeira fase: illusion
+PASS: Estado termina após segunda fase: illusion
+PASS: Estado dura após primeira fase: flight
+PASS: Estado termina após segunda fase: flight
+PASS: Estado dura após primeira fase: ice_skin
+PASS: Estado termina após segunda fase: ice_skin
+PASS: Estado dura após primeira fase: ice_hammer
+PASS: Estado termina após segunda fase: ice_hammer
+PASS: Estado dura após primeira fase: giant
+PASS: Estado termina após segunda fase: giant
+PASS: Dalamud preparado como espírito sem unidade física
+PASS: Suporte espiritual futuro concede buffs reais pela mesma arquitetura
+Verificações: 122; falhas: 0
+PASS: --headless --script tests/test_abilities.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: Interface cria cinco botões
+PASS: Botão seleciona herói 0
+PASS: Botão seleciona herói 1
+PASS: Botão seleciona herói 2
+PASS: Botão seleciona herói 3
+PASS: Botão seleciona herói 4
+PASS: Botão de ataque escolhe modo correto
+PASS: Botão de movimento escolhe modo correto
+PASS: Clique na arena move herói
+PASS: Interface encerra turno individual
+PASS: Reiniciar renova rodada
+PASS: Reiniciar restaura posições
+PASS: Arena recebe novo modelo
+PASS: Menu apresenta habilidades da classe 0
+PASS: Botão disponível: skin
+PASS: Botão disponível: hammer
+PASS: Botão disponível: double
+PASS: Botão disponível: giant
+PASS: Menu apresenta habilidades da classe 1
+PASS: Botão disponível: unarmed
+PASS: Botão disponível: dodge
+PASS: Botão disponível: fushigiri
+PASS: Menu apresenta habilidades da classe 2
+PASS: Botão disponível: antispell
+PASS: Botão disponível: heal
+PASS: Botão disponível: purple_fire
+PASS: Menu apresenta habilidades da classe 3
+PASS: Botão disponível: root_arrow
+PASS: Botão disponível: ice_arrow
+PASS: Botão disponível: energy_arrow
+PASS: Botão disponível: flight
+PASS: Menu apresenta habilidades da classe 4
+PASS: Botão disponível: illusion
+PASS: Botão disponível: chain
+PASS: Botão disponível: silence
+PASS: Botão executa habilidade pessoal real
+PASS: Interface bloqueia segundo bônus na mesma rodada
+PASS: Forma Gigante anima aumento de tamanho
+PASS: Clique em aliado cura sem trocar de conjurador
+PASS: Cura pela interface consome ação
+PASS: Reinício limpa lacaios e regiões mágicas
+PASS: Reinício limpa estados e recargas
+PASS: Reinício restaura HP e mana
+PASS: Reinício limpa efeitos visuais e rotas
+PASS: Interface mostra derrota
+PASS: Interface mostra vitória
+Cena: 46 verificações; 0 falhas
+PASS: --headless --script tests/test_scene.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Entradas reais: 28 verificações; 0 falhas
+PASS: --headless --script tests/test_input.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Marco5 HUD meteoros: 11 verificações; 0 falhas
+PASS: --headless --script tests/test_input_marco5.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BALANCEAMENTO: [{"actions":55,"actions_sacrificed":0,"aura":1,"aura_damage":53,"boss_damage":242,"boss_hp":0,"casts":{"basic":2,"chain":4,"dodge":2,"double":5,"energy_arrow":3,"fire_aura":1,"fire_shield":1,"flight":2,"fushigiri":1,"giant":2,"hammer":3,"heal":3,"ice_arrow":3,"illusion":6,"purple_fire":3,"red_laser":8,"skin":1,"smoke":1,"summon":2,"unarmed":2},"decision_steps":52,"defensive_reactions_spent":6,"elapsed_ms":90,"evades":0,"floor_damage":34,"guards":6,"hero_casts":{"basic":2,"chain":4,"dodge":2,"double":5,"energy_arrow":3,"flight":2,"fushigiri":1,"giant":2,"hammer":3,"heal":3,"ice_arrow":3,"illusion":6,"purple_fire":3,"skin":1,"unarmed":2},"hero_hp":[58,0,85,95,90],"meteor_damage":135,"meteor_hits":9,"meteor_impacts":9,"meteors":0,"minion_attacks":8,"minion_damage":102,"minion_moves":5,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":9,"result":"BOSS DEFEATED","rounds":6,"seed":17,"shield":1,"shield_damage":20,"smoke":1,"strategy":"agressivo","summons":2},{"actions":55,"actions_sacrificed":0,"aura":1,"aura_damage":53,"boss_damage":342,"boss_hp":0,"casts":{"basic":2,"chain":4,"dodge":2,"double":4,"energy_arrow":3,"fire_aura":1,"fire_shield":1,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":2,"ice_arrow":3,"illusion":6,"meteors":1,"purple_fire":4,"red_laser":9,"skin":1,"smoke":1,"summon":2,"unarmed":2},"decision_steps":58,"defensive_reactions_spent":6,"elapsed_ms":116,"evades":0,"floor_damage":26,"guards":6,"hero_casts":{"basic":2,"chain":4,"dodge":2,"double":4,"energy_arrow":3,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":4,"skin":1,"unarmed":2},"hero_hp":[0,0,32,50,90],"meteor_damage":243,"meteor_hits":12,"meteor_impacts":11,"meteors":1,"minion_attacks":9,"minion_damage":113,"minion_moves":6,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":10,"result":"BOSS DEFEATED","rounds":6,"seed":42,"shield":1,"shield_damage":20,"smoke":1,"strategy":"agressivo","summons":2},{"actions":56,"actions_sacrificed":0,"aura":2,"aura_damage":62,"boss_damage":238,"boss_hp":0,"casts":{"basic":2,"chain":4,"dodge":3,"double":3,"energy_arrow":3,"fire_aura":2,"fire_shield":2,"flight":2,"fushigiri":2,"giant":1,"hammer":2,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":4,"red_laser":8,"skin":1,"smoke":1,"summon":2,"unarmed":3},"decision_steps":52,"defensive_reactions_spent":6,"elapsed_ms":109,"evades":0,"floor_damage":26,"guards":6,"hero_casts":{"basic":2,"chain":4,"dodge":3,"double":3,"energy_arrow":3,"flight":2,"fushigiri":2,"giant":1,"hammer":2,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":4,"skin":1,"unarmed":3},"hero_hp":[0,0,64,95,90],"meteor_damage":130,"meteor_hits":9,"meteor_impacts":9,"meteors":0,"minion_attacks":8,"minion_damage":104,"minion_moves":4,"minions_defeated":2,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":10,"result":"BOSS DEFEATED","rounds":6,"seed":99,"shield":2,"shield_damage":20,"smoke":1,"strategy":"agressivo","summons":2},{"actions":46,"actions_sacrificed":0,"aura":0,"aura_damage":0,"boss_damage":66,"boss_hp":0,"casts":{"basic":2,"dodge":3,"double":5,"energy_arrow":3,"flight":2,"fushigiri":2,"giant":1,"hammer":2,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":4,"silence":6,"skin":2,"unarmed":3},"decision_steps":43,"defensive_reactions_spent":6,"elapsed_ms":55,"evades":0,"floor_damage":5,"guards":6,"hero_casts":{"dodge":3,"double":5,"energy_arrow":3,"flight":2,"fushigiri":2,"giant":1,"hammer":2,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":4,"silence":6,"skin":2,"unarmed":3},"hero_hp":[120,95,85,95,90],"meteor_damage":61,"meteor_hits":6,"meteor_impacts":6,"meteors":0,"minion_attacks":0,"minion_damage":0,"minion_moves":0,"minions_defeated":0,"minions_spawned":0,"phase_two":true,"physical":2,"reactions":6,"result":"BOSS DEFEATED","rounds":6,"seed":17,"shield":0,"shield_damage":0,"smoke":0,"strategy":"defensivo","summons":0},{"actions":45,"actions_sacrificed":0,"aura":0,"aura_damage":0,"boss_damage":88,"boss_hp":0,"casts":{"basic":1,"dodge":3,"double":5,"energy_arrow":3,"flight":2,"fushigiri":2,"giant":1,"hammer":2,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":4,"silence":6,"skin":2,"unarmed":3},"decision_steps":43,"defensive_reactions_spent":6,"elapsed_ms":59,"evades":0,"floor_damage":5,"guards":6,"hero_casts":{"dodge":3,"double":5,"energy_arrow":3,"flight":2,"fushigiri":2,"giant":1,"hammer":2,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":4,"silence":6,"skin":2,"unarmed":3},"hero_hp":[98,95,85,95,90],"meteor_damage":61,"meteor_hits":6,"meteor_impacts":6,"meteors":0,"minion_attacks":0,"minion_damage":0,"minion_moves":0,"minions_defeated":0,"minions_spawned":0,"phase_two":true,"physical":1,"reactions":6,"result":"BOSS DEFEATED","rounds":6,"seed":42,"shield":0,"shield_damage":0,"smoke":0,"strategy":"defensivo","summons":0},{"actions":53,"actions_sacrificed":0,"aura":0,"aura_damage":0,"boss_damage":112,"boss_hp":0,"casts":{"basic":3,"dodge":4,"double":6,"energy_arrow":3,"flight":3,"fushigiri":2,"giant":1,"hammer":2,"heal":3,"ice_arrow":3,"illusion":7,"purple_fire":3,"silence":6,"skin":3,"unarmed":4},"decision_steps":48,"defensive_reactions_spent":7,"elapsed_ms":62,"evades":0,"floor_damage":5,"guards":7,"hero_casts":{"basic":2,"dodge":4,"double":6,"energy_arrow":3,"flight":3,"fushigiri":2,"giant":1,"hammer":2,"heal":3,"ice_arrow":3,"illusion":7,"purple_fire":3,"silence":6,"skin":3,"unarmed":4},"hero_hp":[106,95,85,95,90],"meteor_damage":72,"meteor_hits":7,"meteor_impacts":7,"meteors":0,"minion_attacks":0,"minion_damage":0,"minion_moves":0,"minions_defeated":0,"minions_spawned":0,"phase_two":true,"physical":1,"reactions":7,"result":"BOSS DEFEATED","rounds":7,"seed":99,"shield":0,"shield_damage":0,"smoke":0,"strategy":"defensivo","summons":0},{"actions":112,"actions_sacrificed":19,"aura":4,"aura_damage":85,"boss_damage":301,"boss_hp":112,"casts":{"basic":14,"chain":4,"dodge":4,"energy_arrow":3,"fire_aura":4,"fire_shield":3,"flight":5,"fushigiri":1,"giant":1,"hammer":2,"heal":5,"ice_arrow":3,"illusion":12,"meteors":2,"purple_fire":2,"red_laser":34,"root_arrow":4,"skin":3,"smoke":4,"summon":2},"decision_steps":128,"defensive_reactions_spent":19,"elapsed_ms":380,"evades":19,"floor_damage":39,"guards":0,"hero_casts":{"basic":11,"chain":4,"dodge":4,"energy_arrow":3,"flight":5,"fushigiri":1,"giant":1,"hammer":2,"heal":5,"ice_arrow":3,"illusion":12,"purple_fire":2,"root_arrow":4,"skin":3},"hero_hp":[0,0,0,0,0],"meteor_damage":85,"meteor_hits":3,"meteor_impacts":22,"meteors":2,"minion_attacks":34,"minion_damage":481,"minion_moves":25,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":3,"reactions":21,"result":"GRUPO DERROTADO","rounds":15,"seed":17,"shield":3,"shield_damage":0,"smoke":4,"strategy":"cura","summons":2},{"actions":107,"actions_sacrificed":18,"aura":4,"aura_damage":78,"boss_damage":326,"boss_hp":212,"casts":{"basic":11,"chain":4,"dodge":4,"energy_arrow":3,"fire_aura":4,"fire_shield":3,"flight":4,"fushigiri":1,"giant":1,"hammer":3,"heal":8,"ice_arrow":3,"illusion":9,"meteors":3,"purple_fire":2,"red_laser":33,"root_arrow":2,"skin":3,"smoke":4,"summon":2},"decision_steps":127,"defensive_reactions_spent":18,"elapsed_ms":356,"evades":18,"floor_damage":52,"guards":0,"hero_casts":{"basic":9,"chain":4,"dodge":4,"energy_arrow":3,"flight":4,"fushigiri":1,"giant":1,"hammer":3,"heal":8,"ice_arrow":3,"illusion":9,"purple_fire":2,"root_arrow":2,"skin":3},"hero_hp":[0,0,0,0,0],"meteor_damage":85,"meteor_hits":3,"meteor_impacts":20,"meteors":3,"minion_attacks":33,"minion_damage":513,"minion_moves":17,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":2,"reactions":21,"result":"GRUPO DERROTADO","rounds":15,"seed":42,"shield":3,"shield_damage":0,"smoke":4,"strategy":"cura","summons":2},{"actions":103,"actions_sacrificed":16,"aura":3,"aura_damage":98,"boss_damage":276,"boss_hp":214,"casts":{"basic":13,"chain":4,"dodge":4,"energy_arrow":3,"fire_aura":3,"fire_shield":3,"flight":4,"fushigiri":1,"giant":1,"hammer":3,"heal":6,"ice_arrow":3,"illusion":10,"meteors":2,"purple_fire":2,"red_laser":31,"root_arrow":2,"skin":3,"smoke":3,"summon":2},"decision_steps":114,"defensive_reactions_spent":16,"elapsed_ms":303,"evades":16,"floor_damage":52,"guards":0,"hero_casts":{"basic":11,"chain":4,"dodge":4,"energy_arrow":3,"flight":4,"fushigiri":1,"giant":1,"hammer":3,"heal":6,"ice_arrow":3,"illusion":10,"purple_fire":2,"root_arrow":2,"skin":3},"hero_hp":[0,0,0,0,0],"meteor_damage":40,"meteor_hits":2,"meteor_impacts":18,"meteors":2,"minion_attacks":31,"minion_damage":492,"minion_moves":17,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":2,"reactions":20,"result":"GRUPO DERROTADO","rounds":13,"seed":99,"shield":3,"shield_damage":0,"smoke":3,"strategy":"cura","summons":2},{"actions":117,"actions_sacrificed":20,"aura":4,"aura_damage":0,"boss_damage":193,"boss_hp":112,"casts":{"antispell":8,"basic":12,"chain":4,"dodge":4,"energy_arrow":3,"fire_aura":4,"fire_shield":4,"flight":4,"fushigiri":1,"giant":3,"hammer":4,"heal":3,"ice_arrow":3,"illusion":11,"meteors":2,"purple_fire":1,"red_laser":36,"root_arrow":2,"skin":2,"smoke":4,"summon":2},"decision_steps":131,"defensive_reactions_spent":20,"elapsed_ms":401,"evades":20,"floor_damage":52,"guards":0,"hero_casts":{"antispell":8,"basic":10,"chain":4,"dodge":4,"energy_arrow":3,"flight":4,"fushigiri":1,"giant":3,"hammer":4,"heal":3,"ice_arrow":3,"illusion":11,"purple_fire":1,"root_arrow":2,"skin":2},"hero_hp":[0,0,0,0,0],"meteor_damage":106,"meteor_hits":4,"meteor_impacts":23,"meteors":2,"minion_attacks":36,"minion_damage":523,"minion_moves":22,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":2,"reactions":22,"result":"GRUPO DERROTADO","rounds":15,"seed":17,"shield":4,"shield_damage":0,"smoke":4,"strategy":"antimagia","summons":2},{"actions":117,"actions_sacrificed":20,"aura":4,"aura_damage":0,"boss_damage":193,"boss_hp":112,"casts":{"antispell":8,"basic":12,"chain":4,"dodge":4,"energy_arrow":3,"fire_aura":4,"fire_shield":4,"flight":4,"fushigiri":1,"giant":3,"hammer":4,"heal":3,"ice_arrow":3,"illusion":11,"meteors":2,"purple_fire":1,"red_laser":36,"root_arrow":2,"skin":2,"smoke":4,"summon":2},"decision_steps":131,"defensive_reactions_spent":20,"elapsed_ms":394,"evades":20,"floor_damage":52,"guards":0,"hero_casts":{"antispell":8,"basic":10,"chain":4,"dodge":4,"energy_arrow":3,"flight":4,"fushigiri":1,"giant":3,"hammer":4,"heal":3,"ice_arrow":3,"illusion":11,"purple_fire":1,"root_arrow":2,"skin":2},"hero_hp":[0,0,0,0,0],"meteor_damage":106,"meteor_hits":4,"meteor_impacts":23,"meteors":2,"minion_attacks":36,"minion_damage":548,"minion_moves":22,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":2,"reactions":22,"result":"GRUPO DERROTADO","rounds":15,"seed":42,"shield":4,"shield_damage":0,"smoke":4,"strategy":"antimagia","summons":2},{"actions":122,"actions_sacrificed":20,"aura":4,"aura_damage":0,"boss_damage":237,"boss_hp":142,"casts":{"antispell":8,"basic":12,"chain":4,"dodge":4,"energy_arrow":3,"fire_aura":4,"fire_shield":5,"flight":4,"fushigiri":1,"giant":3,"hammer":4,"heal":4,"ice_arrow":3,"illusion":11,"meteors":2,"purple_fire":1,"red_laser":38,"root_arrow":3,"skin":2,"smoke":4,"summon":2},"decision_steps":135,"defensive_reactions_spent":20,"elapsed_ms":400,"evades":20,"floor_damage":44,"guards":0,"hero_casts":{"antispell":8,"basic":10,"chain":4,"dodge":4,"energy_arrow":3,"flight":4,"fushigiri":1,"giant":3,"hammer":4,"heal":4,"ice_arrow":3,"illusion":11,"purple_fire":1,"root_arrow":3,"skin":2},"hero_hp":[0,0,0,0,0],"meteor_damage":106,"meteor_hits":4,"meteor_impacts":23,"meteors":2,"minion_attacks":38,"minion_damage":560,"minion_moves":22,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":2,"reactions":22,"result":"GRUPO DERROTADO","rounds":15,"seed":99,"shield":5,"shield_damage":0,"smoke":4,"strategy":"antimagia","summons":2},{"actions":145,"actions_sacrificed":29,"aura":5,"aura_damage":91,"boss_damage":674,"boss_hp":439,"casts":{"basic":10,"chain":4,"dodge":2,"double":7,"energy_arrow":3,"fire_aura":5,"fire_shield":4,"flight":7,"giant":5,"hammer":10,"heal":8,"ice_arrow":4,"illusion":11,"meteors":4,"purple_fire":4,"red_laser":33,"root_arrow":6,"skin":5,"smoke":6,"summon":7},"decision_steps":179,"defensive_reactions_spent":29,"elapsed_ms":452,"evades":29,"floor_damage":113,"guards":0,"hero_casts":{"basic":9,"chain":4,"dodge":2,"double":7,"energy_arrow":3,"flight":7,"giant":5,"hammer":10,"heal":8,"ice_arrow":4,"illusion":11,"purple_fire":4,"root_arrow":6,"skin":5},"hero_hp":[0,0,0,0,0],"meteor_damage":383,"meteor_hits":14,"meteor_impacts":39,"meteors":4,"minion_attacks":33,"minion_damage":410,"minion_moves":20,"minions_defeated":11,"minions_spawned":14,"phase_two":true,"physical":1,"reactions":33,"result":"GRUPO DERROTADO","rounds":22,"seed":17,"shield":4,"shield_damage":8,"smoke":6,"strategy":"lacaios","summons":7},{"actions":117,"actions_sacrificed":15,"aura":4,"aura_damage":99,"boss_damage":364,"boss_hp":276,"casts":{"basic":10,"chain":4,"dodge":1,"double":7,"energy_arrow":3,"fire_aura":4,"fire_shield":2,"flight":6,"giant":4,"hammer":7,"heal":4,"ice_arrow":5,"illusion":7,"purple_fire":9,"red_laser":29,"root_arrow":1,"skin":4,"smoke":4,"summon":6},"decision_steps":126,"defensive_reactions_spent":15,"elapsed_ms":263,"evades":15,"floor_damage":44,"guards":0,"hero_casts":{"basic":7,"chain":4,"dodge":1,"double":7,"energy_arrow":3,"flight":6,"giant":4,"hammer":7,"heal":4,"ice_arrow":5,"illusion":7,"purple_fire":9,"root_arrow":1,"skin":4},"hero_hp":[0,0,0,0,0],"meteor_damage":90,"meteor_hits":5,"meteor_impacts":20,"meteors":0,"minion_attacks":29,"minion_damage":419,"minion_moves":22,"minions_defeated":10,"minions_spawned":12,"phase_two":true,"physical":3,"reactions":23,"result":"GRUPO DERROTADO","rounds":18,"seed":42,"shield":2,"shield_damage":0,"smoke":4,"strategy":"lacaios","summons":6},{"actions":181,"actions_sacrificed":33,"aura":6,"aura_damage":140,"boss_damage":703,"boss_hp":250,"casts":{"basic":31,"chain":4,"dodge":7,"double":3,"energy_arrow":3,"fire_aura":6,"fire_shield":4,"flight":7,"fushigiri":3,"giant":5,"hammer":9,"heal":11,"ice_arrow":5,"illusion":20,"meteors":3,"purple_fire":5,"red_laser":31,"root_arrow":6,"skin":4,"smoke":6,"summon":8},"decision_steps":207,"defensive_reactions_spent":33,"elapsed_ms":500,"evades":33,"floor_damage":113,"guards":0,"hero_casts":{"basic":29,"chain":4,"dodge":7,"double":3,"energy_arrow":3,"flight":7,"fushigiri":3,"giant":5,"hammer":9,"heal":11,"ice_arrow":5,"illusion":20,"purple_fire":5,"root_arrow":6,"skin":4},"hero_hp":[0,0,0,0,0],"meteor_damage":314,"meteor_hits":12,"meteor_impacts":42,"meteors":3,"minion_attacks":31,"minion_damage":469,"minion_moves":19,"minions_defeated":13,"minions_spawned":16,"phase_two":true,"physical":2,"reactions":41,"result":"GRUPO DERROTADO","rounds":25,"seed":99,"shield":4,"shield_damage":8,"smoke":6,"strategy":"lacaios","summons":8},{"actions":48,"actions_sacrificed":0,"aura":1,"aura_damage":33,"boss_damage":204,"boss_hp":0,"casts":{"basic":1,"chain":4,"dodge":1,"double":4,"energy_arrow":3,"fire_aura":1,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":1,"ice_arrow":3,"illusion":5,"purple_fire":4,"red_laser":10,"skin":1,"smoke":1,"summon":2},"decision_steps":47,"defensive_reactions_spent":0,"elapsed_ms":109,"evades":0,"floor_damage":5,"guards":0,"hero_casts":{"basic":1,"chain":4,"dodge":1,"double":4,"energy_arrow":3,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":1,"ice_arrow":3,"illusion":5,"purple_fire":4,"skin":1},"hero_hp":[0,0,28,95,90],"meteor_damage":166,"meteor_hits":8,"meteor_impacts":8,"meteors":0,"minion_attacks":10,"minion_damage":135,"minion_moves":6,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":9,"result":"BOSS DEFEATED","rounds":6,"seed":17,"shield":0,"shield_damage":0,"smoke":1,"strategy":"ignora_lacaios","summons":2},{"actions":48,"actions_sacrificed":0,"aura":1,"aura_damage":33,"boss_damage":209,"boss_hp":0,"casts":{"basic":1,"chain":4,"dodge":1,"double":4,"energy_arrow":3,"fire_aura":1,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":1,"ice_arrow":3,"illusion":5,"purple_fire":4,"red_laser":10,"skin":1,"smoke":1,"summon":2},"decision_steps":47,"defensive_reactions_spent":0,"elapsed_ms":106,"evades":0,"floor_damage":5,"guards":0,"hero_casts":{"basic":1,"chain":4,"dodge":1,"double":4,"energy_arrow":3,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":1,"ice_arrow":3,"illusion":5,"purple_fire":4,"skin":1},"hero_hp":[0,0,28,95,90],"meteor_damage":166,"meteor_hits":8,"meteor_impacts":8,"meteors":0,"minion_attacks":10,"minion_damage":147,"minion_moves":6,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":9,"result":"BOSS DEFEATED","rounds":6,"seed":42,"shield":0,"shield_damage":0,"smoke":1,"strategy":"ignora_lacaios","summons":2},{"actions":73,"actions_sacrificed":0,"aura":3,"aura_damage":33,"boss_damage":501,"boss_hp":50,"casts":{"basic":11,"chain":4,"dodge":1,"double":2,"energy_arrow":3,"fire_aura":3,"fire_shield":2,"flight":3,"fushigiri":1,"giant":1,"hammer":1,"heal":3,"ice_arrow":3,"illusion":9,"purple_fire":4,"red_laser":15,"root_arrow":2,"skin":1,"smoke":2,"summon":2},"decision_steps":75,"defensive_reactions_spent":0,"elapsed_ms":162,"evades":0,"floor_damage":13,"guards":0,"hero_casts":{"basic":8,"chain":4,"dodge":1,"double":2,"energy_arrow":3,"flight":3,"fushigiri":1,"giant":1,"hammer":1,"heal":3,"ice_arrow":3,"illusion":9,"purple_fire":4,"root_arrow":2,"skin":1},"hero_hp":[0,0,0,0,0],"meteor_damage":342,"meteor_hits":14,"meteor_impacts":14,"meteors":0,"minion_attacks":15,"minion_damage":212,"minion_moves":7,"minions_defeated":2,"minions_spawned":4,"phase_two":true,"physical":3,"reactions":14,"result":"GRUPO DERROTADO","rounds":11,"seed":99,"shield":2,"shield_damage":8,"smoke":2,"strategy":"ignora_lacaios","summons":2},{"actions":48,"actions_sacrificed":0,"aura":2,"aura_damage":137,"boss_damage":372,"boss_hp":0,"casts":{"chain":4,"dodge":3,"double":3,"energy_arrow":3,"fire_aura":2,"fire_shield":1,"flight":2,"fushigiri":1,"giant":1,"hammer":2,"ice_arrow":3,"illusion":4,"purple_fire":5,"red_laser":8,"skin":1,"smoke":1,"summon":1,"unarmed":3},"decision_steps":47,"defensive_reactions_spent":0,"elapsed_ms":68,"evades":0,"floor_damage":42,"guards":0,"hero_casts":{"chain":4,"dodge":3,"double":3,"energy_arrow":3,"flight":2,"fushigiri":1,"giant":1,"hammer":2,"ice_arrow":3,"illusion":4,"purple_fire":5,"skin":1,"unarmed":3},"hero_hp":[0,0,21,7,0],"meteor_damage":158,"meteor_hits":7,"meteor_impacts":7,"meteors":0,"minion_attacks":8,"minion_damage":102,"minion_moves":6,"minions_defeated":2,"minions_spawned":2,"phase_two":true,"physical":0,"reactions":7,"result":"BOSS DEFEATED","rounds":6,"seed":17,"shield":1,"shield_damage":6,"smoke":1,"strategy":"mau_posicionamento","summons":1},{"actions":46,"actions_sacrificed":0,"aura":2,"aura_damage":133,"boss_damage":406,"boss_hp":130,"casts":{"basic":1,"chain":4,"dodge":2,"double":3,"energy_arrow":3,"fire_aura":2,"fire_shield":1,"flight":2,"fushigiri":1,"giant":1,"hammer":2,"ice_arrow":2,"illusion":4,"purple_fire":5,"red_laser":8,"skin":1,"smoke":1,"summon":1,"unarmed":2},"decision_steps":46,"defensive_reactions_spent":0,"elapsed_ms":65,"evades":0,"floor_damage":34,"guards":0,"hero_casts":{"chain":4,"dodge":2,"double":3,"energy_arrow":3,"flight":2,"fushigiri":1,"giant":1,"hammer":2,"ice_arrow":2,"illusion":4,"purple_fire":5,"skin":1,"unarmed":2},"hero_hp":[0,0,0,0,0],"meteor_damage":152,"meteor_hits":7,"meteor_impacts":7,"meteors":0,"minion_attacks":8,"minion_damage":116,"minion_moves":6,"minions_defeated":0,"minions_spawned":2,"phase_two":true,"physical":1,"reactions":7,"result":"GRUPO DERROTADO","rounds":6,"seed":42,"shield":1,"shield_damage":20,"smoke":1,"strategy":"mau_posicionamento","summons":1},{"actions":44,"actions_sacrificed":0,"aura":2,"aura_damage":117,"boss_damage":445,"boss_hp":144,"casts":{"basic":3,"chain":4,"dodge":2,"double":3,"energy_arrow":2,"fire_aura":2,"fire_shield":1,"flight":1,"fushigiri":1,"giant":1,"hammer":2,"ice_arrow":1,"illusion":5,"purple_fire":4,"red_laser":8,"skin":1,"summon":1,"unarmed":2},"decision_steps":41,"defensive_reactions_spent":0,"elapsed_ms":62,"evades":0,"floor_damage":42,"guards":0,"hero_casts":{"basic":1,"chain":4,"dodge":2,"double":3,"energy_arrow":2,"flight":1,"fushigiri":1,"giant":1,"hammer":2,"ice_arrow":1,"illusion":5,"purple_fire":4,"skin":1,"unarmed":2},"hero_hp":[0,0,0,0,0],"meteor_damage":158,"meteor_hits":7,"meteor_impacts":7,"meteors":0,"minion_attacks":8,"minion_damage":126,"minion_moves":4,"minions_defeated":0,"minions_spawned":2,"phase_two":true,"physical":2,"reactions":7,"result":"GRUPO DERROTADO","rounds":5,"seed":99,"shield":1,"shield_damage":20,"smoke":0,"strategy":"mau_posicionamento","summons":1},{"actions":74,"actions_sacrificed":6,"aura":2,"aura_damage":0,"boss_damage":95,"boss_hp":0,"casts":{"antispell":4,"basic":4,"chain":4,"dodge":4,"double":4,"energy_arrow":3,"fire_aura":2,"fire_shield":2,"flight":3,"fushigiri":2,"giant":2,"hammer":3,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":1,"red_laser":17,"root_arrow":1,"skin":2,"smoke":2,"summon":2,"unarmed":1},"decision_steps":75,"defensive_reactions_spent":12,"elapsed_ms":162,"evades":6,"floor_damage":21,"guards":6,"hero_casts":{"antispell":4,"basic":4,"chain":4,"dodge":4,"double":4,"energy_arrow":3,"flight":3,"fushigiri":2,"giant":2,"hammer":3,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":1,"root_arrow":1,"skin":2,"unarmed":1},"hero_hp":[50,36,85,11,76],"meteor_damage":74,"meteor_hits":7,"meteor_impacts":13,"meteors":0,"minion_attacks":17,"minion_damage":230,"minion_moves":9,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":13,"result":"BOSS DEFEATED","rounds":8,"seed":17,"shield":2,"shield_damage":0,"smoke":2,"strategy":"evita_meteoros","summons":2},{"actions":67,"actions_sacrificed":7,"aura":2,"aura_damage":0,"boss_damage":134,"boss_hp":0,"casts":{"antispell":3,"basic":5,"chain":4,"dodge":4,"double":3,"energy_arrow":3,"fire_aura":2,"fire_shield":1,"flight":3,"fushigiri":2,"giant":2,"hammer":3,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":2,"red_laser":12,"skin":2,"smoke":2,"summon":2,"unarmed":1},"decision_steps":69,"defensive_reactions_spent":11,"elapsed_ms":152,"evades":7,"floor_damage":29,"guards":4,"hero_casts":{"antispell":3,"basic":4,"chain":4,"dodge":4,"double":3,"energy_arrow":3,"flight":3,"fushigiri":2,"giant":2,"hammer":3,"heal":2,"ice_arrow":3,"illusion":6,"purple_fire":2,"skin":2,"unarmed":1},"hero_hp":[0,53,85,67,90],"meteor_damage":83,"meteor_hits":6,"meteor_impacts":13,"meteors":0,"minion_attacks":12,"minion_damage":177,"minion_moves":8,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":1,"reactions":13,"result":"BOSS DEFEATED","rounds":8,"seed":42,"shield":1,"shield_damage":0,"smoke":2,"strategy":"evita_meteoros","summons":2},{"actions":82,"actions_sacrificed":8,"aura":2,"aura_damage":33,"boss_damage":172,"boss_hp":0,"casts":{"antispell":4,"basic":6,"chain":4,"dodge":5,"double":4,"energy_arrow":3,"fire_aura":2,"fire_shield":2,"flight":3,"fushigiri":1,"giant":2,"hammer":4,"heal":2,"ice_arrow":3,"illusion":8,"purple_fire":2,"red_laser":16,"root_arrow":2,"skin":2,"smoke":2,"summon":2,"unarmed":3},"decision_steps":83,"defensive_reactions_spent":13,"elapsed_ms":175,"evades":8,"floor_damage":26,"guards":5,"hero_casts":{"antispell":4,"basic":6,"chain":4,"dodge":5,"double":4,"energy_arrow":3,"flight":3,"fushigiri":1,"giant":2,"hammer":4,"heal":2,"ice_arrow":3,"illusion":8,"purple_fire":2,"root_arrow":2,"skin":2,"unarmed":3},"hero_hp":[14,7,85,53,76],"meteor_damage":92,"meteor_hits":7,"meteor_impacts":15,"meteors":0,"minion_attacks":16,"minion_damage":204,"minion_moves":10,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":15,"result":"BOSS DEFEATED","rounds":9,"seed":99,"shield":2,"shield_damage":0,"smoke":2,"strategy":"evita_meteoros","summons":2},{"actions":50,"actions_sacrificed":0,"aura":1,"aura_damage":0,"boss_damage":201,"boss_hp":0,"casts":{"basic":2,"chain":4,"dodge":1,"double":4,"fire_aura":1,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"ice_arrow":6,"illusion":6,"purple_fire":6,"red_laser":9,"skin":1,"smoke":1,"summon":2},"decision_steps":50,"defensive_reactions_spent":0,"elapsed_ms":94,"evades":0,"floor_damage":13,"guards":0,"hero_casts":{"basic":2,"chain":4,"dodge":1,"double":4,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"ice_arrow":6,"illusion":6,"purple_fire":6,"skin":1},"hero_hp":[0,0,57,39,90],"meteor_damage":188,"meteor_hits":9,"meteor_impacts":9,"meteors":0,"minion_attacks":9,"minion_damage":126,"minion_moves":7,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":10,"result":"BOSS DEFEATED","rounds":6,"seed":17,"shield":0,"shield_damage":0,"smoke":1,"strategy":"enfrenta_fumaca","summons":2},{"actions":69,"actions_sacrificed":0,"aura":2,"aura_damage":43,"boss_damage":374,"boss_hp":19,"casts":{"basic":6,"chain":4,"dodge":1,"double":3,"fire_aura":2,"fire_shield":2,"flight":3,"fushigiri":1,"giant":1,"hammer":2,"heal":1,"ice_arrow":7,"illusion":8,"meteors":1,"purple_fire":5,"red_laser":16,"root_arrow":1,"skin":1,"smoke":2,"summon":2},"decision_steps":69,"defensive_reactions_spent":0,"elapsed_ms":160,"evades":0,"floor_damage":13,"guards":0,"hero_casts":{"basic":5,"chain":4,"dodge":1,"double":3,"flight":3,"fushigiri":1,"giant":1,"hammer":2,"heal":1,"ice_arrow":7,"illusion":8,"purple_fire":5,"root_arrow":1,"skin":1},"hero_hp":[0,0,0,0,0],"meteor_damage":275,"meteor_hits":11,"meteor_impacts":11,"meteors":1,"minion_attacks":16,"minion_damage":255,"minion_moves":12,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":1,"reactions":12,"result":"GRUPO DERROTADO","rounds":9,"seed":42,"shield":2,"shield_damage":8,"smoke":2,"strategy":"enfrenta_fumaca","summons":2},{"actions":63,"actions_sacrificed":0,"aura":2,"aura_damage":0,"boss_damage":284,"boss_hp":22,"casts":{"basic":6,"chain":4,"dodge":1,"double":3,"fire_aura":2,"fire_shield":1,"flight":2,"fushigiri":1,"giant":1,"hammer":2,"ice_arrow":6,"illusion":7,"purple_fire":6,"red_laser":17,"skin":1,"smoke":1,"summon":2},"decision_steps":65,"defensive_reactions_spent":0,"elapsed_ms":159,"evades":0,"floor_damage":5,"guards":0,"hero_casts":{"basic":5,"chain":4,"dodge":1,"double":3,"flight":2,"fushigiri":1,"giant":1,"hammer":2,"ice_arrow":6,"illusion":7,"purple_fire":6,"skin":1},"hero_hp":[0,0,0,0,0],"meteor_damage":244,"meteor_hits":11,"meteor_impacts":11,"meteors":0,"minion_attacks":17,"minion_damage":235,"minion_moves":11,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":1,"reactions":11,"result":"GRUPO DERROTADO","rounds":8,"seed":99,"shield":1,"shield_damage":0,"smoke":1,"strategy":"enfrenta_fumaca","summons":2},{"actions":99,"actions_sacrificed":19,"aura":3,"aura_damage":78,"boss_damage":391,"boss_hp":149,"casts":{"basic":8,"chain":4,"dodge":2,"energy_arrow":3,"fire_aura":3,"fire_shield":3,"flight":3,"giant":3,"hammer":4,"heal":5,"ice_arrow":3,"illusion":11,"meteors":3,"purple_fire":5,"red_laser":30,"root_arrow":1,"skin":2,"smoke":4,"summon":2},"decision_steps":125,"defensive_reactions_spent":19,"elapsed_ms":347,"evades":19,"floor_damage":86,"guards":0,"hero_casts":{"basic":7,"chain":4,"dodge":2,"energy_arrow":3,"flight":3,"giant":3,"hammer":4,"heal":5,"ice_arrow":3,"illusion":11,"purple_fire":5,"root_arrow":1,"skin":2},"hero_hp":[0,0,0,0,0],"meteor_damage":207,"meteor_hits":7,"meteor_impacts":25,"meteors":3,"minion_attacks":30,"minion_damage":430,"minion_moves":21,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":1,"reactions":21,"result":"GRUPO DERROTADO","rounds":14,"seed":17,"shield":3,"shield_damage":0,"smoke":4,"strategy":"evasao_excessiva","summons":2},{"actions":87,"actions_sacrificed":15,"aura":3,"aura_damage":78,"boss_damage":434,"boss_hp":98,"casts":{"basic":9,"chain":4,"dodge":2,"energy_arrow":3,"fire_aura":3,"fire_shield":2,"flight":3,"giant":3,"hammer":4,"heal":3,"ice_arrow":3,"illusion":9,"meteors":2,"purple_fire":6,"red_laser":23,"root_arrow":1,"skin":2,"smoke":3,"summon":2},"decision_steps":107,"defensive_reactions_spent":15,"elapsed_ms":282,"evades":15,"floor_damage":62,"guards":0,"hero_casts":{"basic":6,"chain":4,"dodge":2,"energy_arrow":3,"flight":3,"giant":3,"hammer":4,"heal":3,"ice_arrow":3,"illusion":9,"purple_fire":6,"root_arrow":1,"skin":2},"hero_hp":[0,0,0,0,0],"meteor_damage":162,"meteor_hits":6,"meteor_impacts":21,"meteors":2,"minion_attacks":23,"minion_damage":338,"minion_moves":19,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":3,"reactions":18,"result":"GRUPO DERROTADO","rounds":12,"seed":42,"shield":2,"shield_damage":0,"smoke":3,"strategy":"evasao_excessiva","summons":2},{"actions":99,"actions_sacrificed":19,"aura":3,"aura_damage":78,"boss_damage":402,"boss_hp":153,"casts":{"basic":8,"chain":4,"dodge":2,"energy_arrow":3,"fire_aura":3,"fire_shield":3,"flight":3,"giant":3,"hammer":4,"heal":5,"ice_arrow":3,"illusion":11,"meteors":3,"purple_fire":5,"red_laser":30,"root_arrow":1,"skin":2,"smoke":4,"summon":2},"decision_steps":125,"defensive_reactions_spent":19,"elapsed_ms":333,"evades":19,"floor_damage":86,"guards":0,"hero_casts":{"basic":7,"chain":4,"dodge":2,"energy_arrow":3,"flight":3,"giant":3,"hammer":4,"heal":5,"ice_arrow":3,"illusion":11,"purple_fire":5,"root_arrow":1,"skin":2},"hero_hp":[0,0,0,0,0],"meteor_damage":207,"meteor_hits":7,"meteor_impacts":25,"meteors":3,"minion_attacks":30,"minion_damage":450,"minion_moves":21,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":1,"reactions":21,"result":"GRUPO DERROTADO","rounds":14,"seed":99,"shield":3,"shield_damage":0,"smoke":4,"strategy":"evasao_excessiva","summons":2},{"actions":48,"actions_sacrificed":0,"aura":1,"aura_damage":33,"boss_damage":204,"boss_hp":0,"casts":{"basic":1,"chain":4,"dodge":1,"double":4,"energy_arrow":3,"fire_aura":1,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":1,"ice_arrow":3,"illusion":5,"purple_fire":4,"red_laser":10,"skin":1,"smoke":1,"summon":2},"decision_steps":47,"defensive_reactions_spent":0,"elapsed_ms":101,"evades":0,"floor_damage":5,"guards":0,"hero_casts":{"basic":1,"chain":4,"dodge":1,"double":4,"energy_arrow":3,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":1,"ice_arrow":3,"illusion":5,"purple_fire":4,"skin":1},"hero_hp":[0,0,28,95,90],"meteor_damage":166,"meteor_hits":8,"meteor_impacts":8,"meteors":0,"minion_attacks":10,"minion_damage":135,"minion_moves":6,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":9,"result":"BOSS DEFEATED","rounds":6,"seed":17,"shield":0,"shield_damage":0,"smoke":1,"strategy":"ignora_meteoros","summons":2},{"actions":48,"actions_sacrificed":0,"aura":1,"aura_damage":33,"boss_damage":209,"boss_hp":0,"casts":{"basic":1,"chain":4,"dodge":1,"double":4,"energy_arrow":3,"fire_aura":1,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":1,"ice_arrow":3,"illusion":5,"purple_fire":4,"red_laser":10,"skin":1,"smoke":1,"summon":2},"decision_steps":47,"defensive_reactions_spent":0,"elapsed_ms":103,"evades":0,"floor_damage":5,"guards":0,"hero_casts":{"basic":1,"chain":4,"dodge":1,"double":4,"energy_arrow":3,"flight":2,"fushigiri":1,"giant":2,"hammer":2,"heal":1,"ice_arrow":3,"illusion":5,"purple_fire":4,"skin":1},"hero_hp":[0,0,28,95,90],"meteor_damage":166,"meteor_hits":8,"meteor_impacts":8,"meteors":0,"minion_attacks":10,"minion_damage":147,"minion_moves":6,"minions_defeated":1,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":9,"result":"BOSS DEFEATED","rounds":6,"seed":42,"shield":0,"shield_damage":0,"smoke":1,"strategy":"ignora_meteoros","summons":2},{"actions":73,"actions_sacrificed":0,"aura":3,"aura_damage":33,"boss_damage":501,"boss_hp":50,"casts":{"basic":11,"chain":4,"dodge":1,"double":2,"energy_arrow":3,"fire_aura":3,"fire_shield":2,"flight":3,"fushigiri":1,"giant":1,"hammer":1,"heal":3,"ice_arrow":3,"illusion":9,"purple_fire":4,"red_laser":15,"root_arrow":2,"skin":1,"smoke":2,"summon":2},"decision_steps":75,"defensive_reactions_spent":0,"elapsed_ms":160,"evades":0,"floor_damage":13,"guards":0,"hero_casts":{"basic":8,"chain":4,"dodge":1,"double":2,"energy_arrow":3,"flight":3,"fushigiri":1,"giant":1,"hammer":1,"heal":3,"ice_arrow":3,"illusion":9,"purple_fire":4,"root_arrow":2,"skin":1},"hero_hp":[0,0,0,0,0],"meteor_damage":342,"meteor_hits":14,"meteor_impacts":14,"meteors":0,"minion_attacks":15,"minion_damage":212,"minion_moves":7,"minions_defeated":2,"minions_spawned":4,"phase_two":true,"physical":3,"reactions":14,"result":"GRUPO DERROTADO","rounds":11,"seed":99,"shield":2,"shield_damage":8,"smoke":2,"strategy":"ignora_meteoros","summons":2},{"actions":52,"actions_sacrificed":0,"aura":2,"aura_damage":65,"boss_damage":279,"boss_hp":0,"casts":{"basic":2,"chain":4,"dodge":3,"double":4,"energy_arrow":3,"fire_aura":2,"flight":2,"fushigiri":2,"giant":2,"hammer":2,"heal":4,"ice_arrow":3,"illusion":6,"purple_fire":1,"red_laser":6,"skin":1,"summon":2,"unarmed":3},"decision_steps":48,"defensive_reactions_spent":0,"elapsed_ms":68,"evades":0,"floor_damage":34,"guards":0,"hero_casts":{"basic":2,"chain":4,"dodge":3,"double":4,"energy_arrow":3,"flight":2,"fushigiri":2,"giant":2,"hammer":2,"heal":4,"ice_arrow":3,"illusion":6,"purple_fire":1,"skin":1,"unarmed":3},"hero_hp":[60,49,85,51,90],"meteor_damage":180,"meteor_hits":8,"meteor_impacts":8,"meteors":0,"minion_attacks":6,"minion_damage":91,"minion_moves":5,"minions_defeated":2,"minions_spawned":4,"phase_two":true,"physical":0,"reactions":8,"result":"BOSS DEFEATED","rounds":6,"seed":17,"shield":0,"shield_damage":0,"smoke":0,"strategy":"corpo_a_corpo","summons":2},{"actions":51,"actions_sacrificed":0,"aura":1,"aura_damage":45,"boss_damage":273,"boss_hp":0,"casts":{"basic":2,"chain":4,"dodge":3,"double":5,"energy_arrow":3,"fire_aura":1,"fire_shield":1,"flight":2,"fushigiri":2,"giant":2,"hammer":3,"heal":4,"ice_arrow":3,"illusion":6,"purple_fire":1,"red_laser":4,"skin":1,"summon":1,"unarmed":3},"decision_steps":47,"defensive_reactions_spent":0,"elapsed_ms":71,"evades":0,"floor_damage":34,"guards":0,"hero_casts":{"basic":2,"chain":4,"dodge":3,"double":5,"energy_arrow":3,"flight":2,"fushigiri":2,"giant":2,"hammer":3,"heal":4,"ice_arrow":3,"illusion":6,"purple_fire":1,"skin":1,"unarmed":3},"hero_hp":[79,50,85,65,90],"meteor_damage":174,"meteor_hits":8,"meteor_impacts":8,"meteors":0,"minion_attacks":4,"minion_damage":63,"minion_moves":3,"minions_defeated":2,"minions_spawned":2,"phase_two":true,"physical":0,"reactions":8,"result":"BOSS DEFEATED","rounds":6,"seed":42,"shield":1,"shield_damage":20,"smoke":0,"strategy":"corpo_a_corpo","summons":1},{"actions":47,"actions_sacrificed":0,"aura":1,"aura_damage":45,"boss_damage":241,"boss_hp":0,"casts":{"basic":1,"chain":4,"dodge":3,"double":4,"energy_arrow":3,"fire_aura":1,"fire_shield":1,"flight":2,"fushigiri":2,"giant":2,"hammer":2,"heal":4,"ice_arrow":3,"illusion":5,"purple_fire":1,"red_laser":4,"skin":1,"summon":1,"unarmed":3},"decision_steps":44,"defensive_reactions_spent":0,"elapsed_ms":65,"evades":0,"floor_damage":34,"guards":0,"hero_casts":{"basic":1,"chain":4,"dodge":3,"double":4,"energy_arrow":3,"flight":2,"fushigiri":2,"giant":2,"hammer":2,"heal":4,"ice_arrow":3,"illusion":5,"purple_fire":1,"skin":1,"unarmed":3},"hero_hp":[104,57,85,65,90],"meteor_damage":142,"meteor_hits":7,"meteor_impacts":7,"meteors":0,"minion_attacks":4,"minion_damage":63,"minion_moves":3,"minions_defeated":2,"minions_spawned":2,"phase_two":true,"physical":0,"reactions":7,"result":"BOSS DEFEATED","rounds":6,"seed":99,"shield":1,"shield_damage":20,"smoke":0,"strategy":"corpo_a_corpo","summons":1}]
+Partidas completas: 36; falhas de integridade: 0
+PASS: --headless --script tests/test_encounters.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Verificações visuais: 496; falhas: 0
+PASS: --headless --script tests/test_visuals.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PRESENTATION5: 9 checks passed
+PASS: --headless --script tests/test_presentation_marco5.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Marco 5.2 regras: 92 verificações; 0 falhas
+PASS: --headless --script tests/test_marco52.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Marco 5.2 entrada/cena: 53 verificações; 0 falhas
+PASS: --headless --script tests/test_input_marco52.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Terrain Marco 5.2: 27 checks; 0 failures
+PASS: --headless --script tests/test_terrain_marco52.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Marco5.2 vitória/câmera: 10 verificações; 0 falhas
+PASS: --headless --script tests/test_victory_marco52.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Marco6 audio: 211 checks, 0 failures
+PASS: --headless --script tests/test_audio_marco6.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Marco6 audio UI: 21 checks, 0 failures
+PASS: --headless --script tests/test_audio_ui_marco6.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PCM max adjacent step: 0.00002116709948
+Loop minimum block RMS: 0.02365813746894
+Music Phase 2: 44 checks; 0 failures; all 12 requested scenarios
+PASS: --headless --script tests/test_music_marco61.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Marco6 startup: 120 frames, graceful audio shutdown
+PASS: --headless --script tests/test_startup_marco6.gd

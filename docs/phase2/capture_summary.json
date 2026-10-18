@@ -1,0 +1,49 @@
+{
+  "before": {
+    "phase_cues": [
+      {
+        "at": 3.95833333333333,
+        "cue": "phase",
+        "event": "cue"
+      }
+    ],
+    "last_state": {
+      "at": 11.9583333333333,
+      "event": "sample",
+      "hp": 450,
+      "nominal_mix": 1.0,
+      "phase": 2,
+      "players": 1,
+      "playing": true,
+      "requests_accepted": 1,
+      "visual_hp": 450,
+      "voices": []
+    },
+    "recording_pcm_peak": 0.551544189453125,
+    "recording_clipped_samples": 0
+  },
+  "after": {
+    "phase_cues": [
+      {
+        "at": 3.95833333333333,
+        "cue": "phase",
+        "event": "cue"
+      }
+    ],
+    "last_state": {
+      "active_clip": 1,
+      "at": 11.9583333333333,
+      "event": "sample",
+      "hp": 450,
+      "nominal_mix": 1.0,
+      "phase": 2,
+      "players": 1,
+      "playing": true,
+      "requests_accepted": 1,
+      "visual_hp": 450,
+      "voices": []
+    },
+    "recording_pcm_peak": 0.521026611328125,
+    "recording_clipped_samples": 0
+  }
+}

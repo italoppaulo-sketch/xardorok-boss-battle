@@ -1,0 +1,319 @@
+[
+	{
+		"at": 0.458333333333333,
+		"event": "sample",
+		"hp": 900,
+		"nominal_mix": 0.0,
+		"phase": 1,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 0,
+		"visual_hp": 900,
+		"voices": []
+	},
+	{
+		"at": 0.958333333333333,
+		"event": "sample",
+		"hp": 900,
+		"nominal_mix": 0.0,
+		"phase": 1,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 0,
+		"visual_hp": 900,
+		"voices": []
+	},
+	{
+		"at": 1.45833333333333,
+		"event": "sample",
+		"hp": 900,
+		"nominal_mix": 0.0,
+		"phase": 1,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 0,
+		"visual_hp": 900,
+		"voices": []
+	},
+	{
+		"at": 1.95833333333334,
+		"event": "sample",
+		"hp": 451,
+		"nominal_mix": 0.0,
+		"phase": 1,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 0,
+		"visual_hp": 900,
+		"voices": []
+	},
+	{
+		"at": 2.05833333333334,
+		"cue": "body_hit",
+		"event": "cue"
+	},
+	{
+		"at": 2.45833333333333,
+		"event": "sample",
+		"hp": 451,
+		"nominal_mix": 0.0,
+		"phase": 1,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 0,
+		"visual_hp": 451,
+		"voices": [
+			"body_hit"
+		]
+	},
+	{
+		"at": 2.95833333333333,
+		"event": "sample",
+		"hp": 451,
+		"nominal_mix": 0.0,
+		"phase": 1,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 0,
+		"visual_hp": 451,
+		"voices": [
+			"body_hit"
+		]
+	},
+	{
+		"at": 3.45833333333333,
+		"event": "sample",
+		"hp": 451,
+		"nominal_mix": 0.0,
+		"phase": 1,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 0,
+		"visual_hp": 451,
+		"voices": []
+	},
+	{
+		"at": 3.95833333333333,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 0.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 0,
+		"visual_hp": 451,
+		"voices": []
+	},
+	{
+		"at": 3.95833333333333,
+		"cue": "phase",
+		"event": "cue"
+	},
+	{
+		"at": 4.05833333333333,
+		"cue": "body_hit",
+		"event": "cue"
+	},
+	{
+		"at": 4.45833333333333,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 0.333333333333333,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": [
+			"phase",
+			"body_hit"
+		]
+	},
+	{
+		"at": 4.95833333333333,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 0.666666666666667,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": [
+			"phase",
+			"body_hit"
+		]
+	},
+	{
+		"at": 5.45833333333332,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": [
+			"phase"
+		]
+	},
+	{
+		"at": 5.95833333333332,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": [
+			"phase"
+		]
+	},
+	{
+		"at": 6.45833333333332,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 6.95833333333332,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 7.45833333333332,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 7.95833333333332,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 8.45833333333331,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 8.95833333333331,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 9.45833333333331,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 9.95833333333331,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 10.4583333333333,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 10.9583333333333,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 11.4583333333333,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	},
+	{
+		"at": 11.9583333333333,
+		"event": "sample",
+		"hp": 450,
+		"nominal_mix": 1.0,
+		"phase": 2,
+		"players": 1,
+		"playing": true,
+		"requests_accepted": 1,
+		"visual_hp": 450,
+		"voices": []
+	}
+]
