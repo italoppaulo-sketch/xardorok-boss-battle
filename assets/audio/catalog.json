@@ -1,0 +1,506 @@
+{
+  "hammer_swing": {
+    "path": "res://assets/audio/sfx/heroes/hammer_swing.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "hammer_hit": {
+    "path": "res://assets/audio/sfx/heroes/hammer_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "ice_form": {
+    "path": "res://assets/audio/sfx/heroes/ice_form.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "ice_shards": {
+    "path": "res://assets/audio/sfx/heroes/ice_shards.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "giant": {
+    "path": "res://assets/audio/sfx/heroes/giant.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "punch": {
+    "path": "res://assets/audio/sfx/heroes/punch.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "dodge": {
+    "path": "res://assets/audio/sfx/heroes/dodge.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "shadow_charge": {
+    "path": "res://assets/audio/sfx/heroes/shadow_charge.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "sword_slash": {
+    "path": "res://assets/audio/sfx/heroes/sword_slash.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 90,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "shadow_rupture": {
+    "path": "res://assets/audio/sfx/heroes/shadow_rupture.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "sacrifice": {
+    "path": "res://assets/audio/sfx/heroes/sacrifice.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "bow_release": {
+    "path": "res://assets/audio/sfx/heroes/bow_release.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "arrow_hit": {
+    "path": "res://assets/audio/sfx/heroes/arrow_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "roots": {
+    "path": "res://assets/audio/sfx/heroes/roots.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "energy_charge": {
+    "path": "res://assets/audio/sfx/heroes/energy_charge.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "energy_impact": {
+    "path": "res://assets/audio/sfx/heroes/energy_impact.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "flight": {
+    "path": "res://assets/audio/sfx/heroes/flight.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "arcane_cast": {
+    "path": "res://assets/audio/sfx/heroes/arcane_cast.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "arcane_hit": {
+    "path": "res://assets/audio/sfx/heroes/arcane_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "dispel": {
+    "path": "res://assets/audio/sfx/heroes/dispel.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "heal": {
+    "path": "res://assets/audio/sfx/heroes/heal.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "violet_beam": {
+    "path": "res://assets/audio/sfx/heroes/violet_beam.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "illusion": {
+    "path": "res://assets/audio/sfx/heroes/illusion.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "silence": {
+    "path": "res://assets/audio/sfx/heroes/silence.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "boss_hit": {
+    "path": "res://assets/audio/sfx/boss/boss_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "smoke": {
+    "path": "res://assets/audio/sfx/boss/smoke.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "summon": {
+    "path": "res://assets/audio/sfx/boss/summon.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "fire_ignite": {
+    "path": "res://assets/audio/sfx/boss/fire_ignite.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "fire_hit": {
+    "path": "res://assets/audio/sfx/boss/fire_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "phase": {
+    "path": "res://assets/audio/sfx/boss/phase.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 90,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "crown": {
+    "path": "res://assets/audio/sfx/boss/crown.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 90,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "minion_spawn": {
+    "path": "res://assets/audio/sfx/minions/minion_spawn.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "minion_death": {
+    "path": "res://assets/audio/sfx/minions/minion_death.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "footsteps": {
+    "path": "res://assets/audio/sfx/combat/footsteps.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "body_hit": {
+    "path": "res://assets/audio/sfx/combat/body_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "hero_death": {
+    "path": "res://assets/audio/sfx/combat/hero_death.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "critical": {
+    "path": "res://assets/audio/sfx/combat/critical.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "ui": {
+    "path": "res://assets/audio/sfx/ui/ui.wav",
+    "bus": "UI",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "ui_select": {
+    "path": "res://assets/audio/sfx/ui/ui_select.wav",
+    "bus": "UI",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "ui_confirm": {
+    "path": "res://assets/audio/sfx/ui/ui_confirm.wav",
+    "bus": "UI",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "ui_invalid": {
+    "path": "res://assets/audio/sfx/ui/ui_invalid.wav",
+    "bus": "UI",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "ui_open": {
+    "path": "res://assets/audio/sfx/ui/ui_open.wav",
+    "bus": "UI",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "step": {
+    "path": "res://assets/audio/sfx/combat/step.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "land": {
+    "path": "res://assets/audio/sfx/combat/land.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "punch_air": {
+    "path": "res://assets/audio/sfx/heroes/punch_air.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "ice_hit": {
+    "path": "res://assets/audio/sfx/heroes/ice_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "minion_dissolve": {
+    "path": "res://assets/audio/sfx/minions/minion_dissolve.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "chain_charge": {
+    "path": "res://assets/audio/sfx/heroes/chain_charge.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "chain_jump": {
+    "path": "res://assets/audio/sfx/heroes/chain_jump.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "laser_charge": {
+    "path": "res://assets/audio/sfx/minions/laser_charge.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "laser_emit": {
+    "path": "res://assets/audio/sfx/minions/laser_emit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "laser_hit": {
+    "path": "res://assets/audio/sfx/minions/laser_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "meteor_fall": {
+    "path": "res://assets/audio/sfx/boss/meteor_fall.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 90,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "meteor_hit": {
+    "path": "res://assets/audio/sfx/boss/meteor_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 95,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "guard": {
+    "path": "res://assets/audio/sfx/combat/guard.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "guard_hit": {
+    "path": "res://assets/audio/sfx/combat/guard_hit.wav",
+    "bus": "SFX",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "warning": {
+    "path": "res://assets/audio/sfx/ui/warning.wav",
+    "bus": "UI",
+    "gain_db": 0,
+    "priority": 90,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "battle": {
+    "path": "res://assets/audio/music/battle.ogg",
+    "bus": "Music",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": true
+  },
+  "phase_two": {
+    "path": "res://assets/audio/music/phase_two.ogg",
+    "bus": "Music",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": true
+  },
+  "victory": {
+    "path": "res://assets/audio/music/victory.ogg",
+    "bus": "Music",
+    "gain_db": 0,
+    "priority": 100,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "defeat": {
+    "path": "res://assets/audio/music/defeat.ogg",
+    "bus": "Music",
+    "gain_db": 0,
+    "priority": 100,
+    "cooldown": 0.035,
+    "loop": false
+  },
+  "ruins": {
+    "path": "res://assets/audio/ambience/ruins.ogg",
+    "bus": "Ambience",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": true
+  },
+  "aura_presence": {
+    "path": "res://assets/audio/ambience/aura_presence.ogg",
+    "bus": "Ambience",
+    "gain_db": 0,
+    "priority": 40,
+    "cooldown": 0.035,
+    "loop": true
+  }
+}
