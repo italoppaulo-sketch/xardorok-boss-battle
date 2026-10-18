@@ -1,0 +1,17 @@
+{
+  "url": "https://github.com/italoppaulo-sketch/xardorok-boss-battle/actions/runs/39157586585",
+  "commit": "5ca8a6b",
+  "run_status": "Success",
+  "job_urls": [
+    "https://github.com/italoppaulo-sketch/xardorok-boss-battle/actions/runs/39157586585/job/117763904363"
+  ],
+  "evidence": "Public GitHub run summary; detailed logs require login",
+  "native_commands": [
+    "phase music regression (44 checks)",
+    "Windows release export with new score",
+    "Start-Process -Wait exported EXE --headless --quit-after 120",
+    "exported PCK resource QA"
+  ],
+  "human_listening": false,
+  "manual_gui_validation": false
+}

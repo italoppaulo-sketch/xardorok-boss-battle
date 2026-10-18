@@ -1,0 +1,24 @@
+{
+  "before": {
+    "source_alignment_seconds": 7.99859410430839,
+    "recording_segment_seconds": [
+      8,
+      11
+    ],
+    "scale": 0.7620720863342285,
+    "correlation": 0.9964896379643133,
+    "residual_rms": 0.00432687858119607,
+    "output_rms": 0.051688432693481445
+  },
+  "after": {
+    "source_alignment_seconds": 8.001224489795918,
+    "recording_segment_seconds": [
+      8,
+      11
+    ],
+    "scale": 0.7612774968147278,
+    "correlation": 0.9952591599433234,
+    "residual_rms": 0.005028082989156246,
+    "output_rms": 0.051702216267585754
+  }
+}

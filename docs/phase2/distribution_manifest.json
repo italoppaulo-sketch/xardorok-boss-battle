@@ -1,27 +1,34 @@
 {
   "godot": "4.7.2.stable.official.ed1daf0bf",
-  "native_windows_validation": "pending",
+  "production_commit": "5ca8a6b",
+  "music": "A Coroa em Chamas (original distinct phase 2 score)",
+  "native_windows_validation": {
+    "automated": "passed",
+    "run": "https://github.com/italoppaulo-sketch/xardorok-boss-battle/actions/runs/39157586585",
+    "commit": "5ca8a6b",
+    "manual_gui_and_listening": "pending"
+  },
   "files": {
     "Xardorok Boss Battle.exe": {
       "bytes": 109268480,
       "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
     },
     "Xardorok Boss Battle.pck": {
-      "bytes": 11405520,
-      "sha256": "b795b6029f2659a1ac0b38c782945e7465011b41d4afb1ab8954f94edd2e045a"
+      "bytes": 12408788,
+      "sha256": "458efc179a867b4f017e69965f9cba5cdff540f4913f70b57134dfade5a82555"
     },
     "LEIA-ME.txt": {
-      "bytes": 1375,
-      "sha256": "a186ba77be74e6ab5a630158b2a2e298f75dadae7a2035021e5f40b793c6cd2f"
+      "bytes": 1463,
+      "sha256": "7c2964f34a4b3826a52793434a65190b11f2d8c7c73d06c03798761aab0c24c2"
     },
     "CREDITOS.txt": {
-      "bytes": 111870,
-      "sha256": "6bbec0fa6fb4df985dceb0fc9452b566914a2380b8f86cf28e3ec8744202c34d"
+      "bytes": 113316,
+      "sha256": "dfbbcbe2887fc6448cfb672c052257b9ce2717950e8df1c6699ee4c34034cdb3"
     }
   },
   "zip": {
     "name": "Xardorok_Phase2_Windows_x64.zip",
-    "bytes": 48989224,
-    "sha256": "35eae2d9411940ee7cb9d546fa659485892cf2c18ef92e2519481e73eb551f4b"
+    "bytes": 49971091,
+    "sha256": "e982b715b50be125a9a78435443a08abd929b0b277f58cdd4313b271bae40cf3"
   }
 }

@@ -1,69 +1,76 @@
-# Fase 2: transição musical e distribuição Windows
+# Fase 2 — música distinta, transição e Windows x64
 
-Data: 18/10/2026. Base: `feature/marco-6-1-audio-fix-windows-export`, commit `cf201e68fb5802db4198f607c2ceeb5d631a7c62`. Essa branch contém o Marco 6 completo (`1affb6e`) e a tentativa anterior. Trabalho em `fix/codex-phase2-audio-windows`, sem merge.
+Data: 18/10/2026. Base: `feature/marco-6-1-audio-fix-windows-export`, commit `cf201e68fb5802db4198f607c2ceeb5d631a7c62`, que inclui o Marco 6 completo e a tentativa anterior. Branch de trabalho: `fix/codex-phase2-audio-windows`. Sem merge automático.
 
-## Diagnóstico e limites da conclusão
+## Diagnóstico principal e autorização da correção
 
-O usuário descreveu um efeito sobreposto e trepidante, semelhante à interferência de um celular em uma caixa de som. Não há gravação desse defeito no computador do usuário. **A causa desse sintoma específico permanece não confirmada por audição. Esta entrega é candidata para validação, não uma declaração de resolução definitiva.**
+O usuário descreveu um som sobreposto e trepidante, esclareceu que continuava por toda a segunda fase e, ao comparar os arquivos, relatou que a música inicial continuava enquanto entravam ruídos. A investigação mostrou que **não havia uma composição diferente para entrar**: `tools/audio/build_audio.py` montava `phase_two.ogg` como `music + extra`, usando a mesma gravação de `battle.ogg` com recortes de percussão. A correlação entre os arquivos era 0,962.
 
-Fluxo investigado: `Battle.deal_damage()` chama `_update_boss_phase()`; a condição é fase 1, chefe vivo e HP <= 50% do máximo (450 de 900). O evento `phase` entra na timeline da arena; `_apply_visual()` emite `audio_event`, ligado uma vez por `BattleAudio.bind()` a `on_visual()`. A fase é decidida no combate e a música acompanha o evento apresentado, não uma consulta repetitiva ao HP final. Golpes que cruzam o limite são cobertos pelo teste real de dano/apresentação.
+O transporte antigo efetivamente selecionava esse arranjo. Na captura antes da correção, a saída após o fade corresponde ao próprio arquivo `phase_two.ogg` (correlação 0,99649 no trecho de 8–11 s). Não foi demonstrada reprodução duplicada ou reinício espontâneo: havia um player, uma solicitação aceita e uma transformação. A música inicial percebida nesse caso estava **dentro da gravação da fase 2**, não necessariamente em outro player que continuava tocando. A tentativa anterior de corrigir apenas o crossfade não poderia transformar esse conteúdo em outra música.
 
-A tentativa anterior já tinha trava por batalha e transporte único (`AudioStreamPlayer` + `AudioStreamSynchronized`). Não reproduzimos reinícios ou solicitações duplicadas espontâneas. Ela corrigia a perda de volume do crossfade antigo, mas calculava os volumes dos substreams em `_process()`.
+Após essa explicação, o usuário escolheu expressamente **“Criar uma música distinta para a fase 2”**. Essa autorização permite a nova composição abaixo. Os arquivos aprovados anteriores, incluindo o arranjo rejeitado, foram preservados byte a byte; o catálogo passa a selecionar um novo arquivo. Não foi necessário remover efeitos existentes nem alterar o combate.
 
-**Defeito técnico reproduzido:** o mixer de `AudioStreamSynchronized` aplica um ganho constante por bloco, sem interpolar alterações do recurso. Assim, a curva aparentemente suave nos testes de propriedades vira uma escada na saída PCM. Com duas fontes constantes conhecidas (0,1 e 0,5), a implementação anterior produziu salto de **0,0066656768 entre amostras** no fade a 60 FPS. A nova configuração nativa produziu no máximo **0,0000211671** no teste correspondente, incluindo o início do fade. Os resultados medem a implementação, não provam que essa era toda a interferência ouvida pelo usuário.
+## Nova composição: A Coroa em Chamas
 
-Referências do motor oficial 4.7.2: [mixer sincronizado](https://github.com/godotengine/godot/blob/4.7.2-stable/modules/interactive_music/audio_stream_synchronized.cpp), método `AudioStreamPlaybackSynchronized::mix`; [mixer interativo](https://github.com/godotengine/godot/blob/4.7.2-stable/modules/interactive_music/audio_stream_interactive.cpp), métodos `_queue` e `_mix_stream`. O segundo aplica a rampa por amostra e para o stream anterior ao chegar a ganho zero.
+Peça instrumental original de **32 compassos, 150 BPM, Ré menor e 51,2 s**. Tem tema de metais, ostinato de cordas, ponte de oboé, baixo articulado, percussão acústica e reprise de trompete. Não usa trechos da música inicial nem o antigo stem de percussão recortada.
 
-As gravações aprovadas têm a mesma duração (87,200612 s) e correlação PCM de 0,962. Não foi demonstrada corrupção dos arquivos, silêncio no loop ou clipping nas fontes. O efeito `phase` dura 2 s; a percussão adicional faz parte do próprio arranjo aprovado `phase_two`. Esses elementos não foram removidos, filtrados ou substituídos para mascarar o relato. Se a trepidação persistir na gravação/pacote, essas fontes e o dispositivo/mixagem real precisam ser comparados por escuta antes de outra alteração.
+Foi composta por notas MIDI e renderizada localmente com **FluidSynth + FluidR3 GM**, licença MIT incluída nos créditos. A partitura MIDI, o renderizador reproduzível, a procedência e as métricas estão em `music/` e `tools/audio/compose_phase_two.py`. O PixVerse não tinha helper/executável instalado neste ambiente; não houve geração paga, pedido de credenciais ou uso de serviços externos para criar a faixa. O jogo continua reproduzindo OGG estático, sem dependências adicionais para jogadores.
 
-## Implementação
+O OGG decodificado tem pico de aproximadamente −5 dBFS, zero amostras saturadas e nenhum trecho silencioso de 100 ms. Sua correlação máxima medida com os primeiros 30 s do tema inicial é **0,042**, contra 0,962 do arranjo anterior. Na gravação final, o trecho de 8–11 s tem correlação **0,99825 com a nova faixa**, e apenas **−0,00585 com o tema inicial**. O trace confirma um player, uma transformação aceita e clip 1 estável. Isso demonstra a substituição efetiva do conteúdo musical após o fade; não equivale a aprovação auditiva humana.
 
-- Um único player de combate passa a usar `AudioStreamInteractive`, com dois clips e crossfade nativo de 1,5 s, posição musical preservada e ganhos lineares complementares. Os recursos não têm BPM; nesse caso o parâmetro de duração do motor é em segundos.
-- O mixer realiza a transição mesmo se `_process()` parar. Não há tween, timer ou reinício de player na troca de fase. A primeira faixa deixa de ser decodificada após o fade.
-- A trava existente continua aceitando uma transformação por batalha. Reinício recria apenas o transporte, cancela o fade anterior e restaura a fase 1, preservando volume/mudo.
-- Vitória, derrota e eventos tardios de título/pular são protegidos contra reativação da música. A sequência e os efeitos existentes permanecem preservados.
-- `phase_mix` é somente progresso nominal para diagnóstico/compatibilidade; **não mede o ganho real do mixer**. O teste PCM e o clip nativo ativo validam o áudio de fato.
-- `trace_music = true` ativa logs limitados a 512 registros: tempo, HP do modelo e visual, fase, faixa/clip, player, solicitações recebidas/aceitas e pedido/fim nominal do fade. O fim nominal não é apresentado como callback de conclusão do mixer. O harness de captura registra o estado real durante e após a transformação.
+## Controle musical e fragilidade secundária corrigida
 
-## Validação executada nesta entrega
+Fluxo de produção: `Battle.deal_damage()` → `_update_boss_phase()` (fase 1, chefe vivo, HP <= 450) → evento `phase` → timeline da arena → `_apply_visual()` → `audio_event` → `BattleAudio.on_visual()`. O receptor acompanha o evento apresentado, não consulta continuamente o HP final para reiniciar música.
 
-Godot Linux **4.7.2 stable oficial** e templates da mesma versão, ambos conferidos com `SHA512-SUMS.txt` da distribuição oficial. Não foi utilizada a versão 4.6.3 preinstalada para os resultados desta entrega.
+A tentativa anterior usava `AudioStreamSynchronized` e alterava ganhos em `_process()`. O mixer aplica esses ganhos por bloco, sem interpolação. Um teste PCM controlado reproduziu degraus de ganho de 0,0066657 entre amostras. Isso é uma fragilidade da transição, **não a explicação única do ruído persistente** relatado pelo usuário. Referências oficiais: [mixer sincronizado](https://github.com/godotengine/godot/blob/4.7.2-stable/modules/interactive_music/audio_stream_synchronized.cpp), `mix`; [mixer interativo](https://github.com/godotengine/godot/blob/4.7.2-stable/modules/interactive_music/audio_stream_interactive.cpp), `_queue` e `_mix_stream`.
+
+Agora um único `AudioStreamPlayer` usa `AudioStreamInteractive`. O crossfade de 1,5 s é calculado por amostra no mixer, independentemente dos frames do jogo; o teste PCM mede salto máximo de 0,0000212. A composição distinta começa no início da frase, não na posição temporal arbitrária da música anterior. O primeiro clip é parado pelo motor ao completar o fade.
+
+A trava por batalha aceita a transformação uma vez. Reinício cancela o transporte anterior, restaura fase 1 e preserva volumes/mudo. Vitória, derrota, título repetido e título tardio após pular não reativam trilhas indevidas. A ambiência também é parada explicitamente antes de reiniciar: um teste com muitos reinícios expôs retenção intermitente do decoder de `ruins.ogg`, identificada pelo log verbose. Após essa correção, três repetições de diagnóstico e o runner completo encerraram sem esse erro. Não foi inserido atraso na transição nem suprimida mensagem do runner.
+
+`trace_music = true` ativa até 512 registros de tempo, HP visual/modelo, fase, faixa/clip, estado dos players, solicitações recebidas e aceitas. `phase_mix` e o evento `crossfade_nominal_end` são **diagnósticos nominais**, não leituras do ganho ou callbacks de conclusão do mixer. O clip ativo, a saída PCM e as capturas verificam a reprodução real.
+
+## Testes finais desta versão
+
+Godot Linux **4.7.2 stable oficial**, com editor e templates conferidos por SHA-512 da distribuição oficial.
 
 | Verificação | Resultado |
 | --- | --- |
-| Runner completo `tests/run_tests.py` | 18 suítes, **1.739 verificações**, zero falhas; mais 36 partidas completas, importação e startup de 120 frames |
-| Música, dentro desse runner | **43 verificações**, os 12 cenários solicitados, zero falhas |
-| Teste PCM | Fade nativo sem degraus de frame; avança sem `_process()`; chega ao segundo clip |
-| Loop real | 92 s decodificados pelo mixer, com troca perto do final de 87,2 s; transporte ativo e menor RMS de bloco 0,0138793, sem bloco silencioso |
-| Pacote Windows exportado, carregado isoladamente no motor Linux | **270 verificações**, **184 recursos**, zero falhas; os 63 cues são carregados |
-| Preservação | **482 arquivos** protegidos comparados byte a byte sem mudanças; resultados das 36 partidas iguais à base, exceto duração da medição |
-| Instrumentação optativa | Exercitada com reinício, pedido, conclusão nominal, estabilidade e evento após shutdown, sem erro |
+| `tests/run_tests.py` | **18 suítes, 1.740 verificações**, zero falhas; mais 36 partidas completas, importação e startup de 120 frames |
+| Regressão de música (incluída acima) | **44 verificações**, os 12 cenários pedidos, zero falhas |
+| PCM nativo | Fade sem degraus de frame e progressão sem `_process()`; chegada ao clip 1 |
+| Loops reais | Mais de 140 s decodificados, com troca junto à emenda da fase 1 e passagem pelo loop completo da nova fase 2; menor RMS de bloco 0,0236581 |
+| Pacote Windows isolado, carregado no motor Linux | **271 verificações**, **185 recursos**, todos os 63 cues carregados, zero falhas |
+| Gravação final | Cena real, HP 451 → 450 pela API de dano, transformação pela timeline, música nova efetivamente presente; zero amostras saturadas |
+| Preservação | **481 arquivos protegidos** da base idênticos; todos os arquivos de áudio originais preservados; resultados das 36 partidas iguais, exceto duração da medição |
 
-O primeiro runner apontou um recurso ainda referenciado na saída do novo teste, embora todas as asserções passassem. O harness agora retorna da coroutine de teste antes de encerrar o motor, liberando as referências locais; o runner final encerrou sem esse erro. Não foram desativados checks ou ignoradas mensagens de erro.
+Cenários cobertos: início; 451 HP; 450 HP; golpe que ultrapassa o limite; eventos repetidos no mesmo frame; fase 2 estável; reinício durante/após fade; vitória durante/após fade; derrota; volume durante fade; mudo/desmudo. Também há proteção contra título repetido/tardio e eventos após shutdown.
 
-A captura controlada instancia a cena real, aplica dano via API de combate para 451 HP e depois 450 HP, e deixa a timeline e o mixer de produção executarem. Não é uma partida manual completa. As gravações antes/depois incluem áudio gerado pelo modo Movie Maker; **não houve escuta humana nem captura de um dispositivo físico**. Não se afirma validação auditiva subjetiva nem compatibilidade de drivers reais.
+As capturas são fixtures controladas da cena real, não partidas manuais completas. O modo Movie Maker grava imagem e áudio do mixer. Não houve escuta humana pelo agente nem conferência de áudio em dispositivo físico; portanto **não se declara eliminação perceptiva definitiva do defeito apenas pelos testes**. A nova composição e sua gravação são entregues para avaliação auditiva.
 
-## Distribuição
+## Distribuição e Windows
 
-`Xardorok_Phase2_Windows_x64.zip` contém `Xardorok Boss Battle.exe`, `Xardorok Boss Battle.pck`, `LEIA-ME.txt` e `CREDITOS.txt`. O preset existente foi preservado. Os jogadores não precisam instalar Godot, Git ou Python. Arquivos e SHA-256 em `distribution_manifest.json`.
+`Xardorok_Phase2_Windows_x64.zip` contém `Xardorok Boss Battle.exe`, `Xardorok Boss Battle.pck`, `LEIA-ME.txt` e `CREDITOS.txt`. Não requer Godot, Git, Python, FluidSynth ou instalação adicional para jogadores. O preset existente permanece intacto; os recursos sonoros são importados no PCK. Hashes e tamanhos em `distribution_manifest.json`.
 
-A exportação Windows release foi produzida com Godot 4.7.2. O PCK foi carregado fora do checkout em Linux; isso verifica os recursos exportados, **não equivale a executar o EXE no Windows**. Não há Windows/Wine disponível nesta máquina. A validação nativa desta correção está pendente. O workflow existente foi estendido à nova branch, com verificação SHA-512 e regressão musical no runner Windows, mas sua execução precisa ser confirmada separadamente. Resultados de Windows da tentativa anterior não são atribuídos a esta entrega.
+O PCK final foi validado fora do checkout em Linux. A validação nativa automatizada desta composição está registrada em `windows_ci.json`, com o commit e o run correspondente. O run anterior `39156773156`, do commit `3b2257f`, validou o controlador antes da composição nova e não é usado como prova da nova faixa. Não houve teste manual com janela, GPU e saída física de áudio no Windows. Os logs detalhados do GitHub exigem login; o estado dos jobs foi observado nas páginas públicas de execução.
 
-## Reproduzir
+## Reprodução
 
 ```sh
 GODOT=/caminho/Godot_v4.7.2-stable_linux.x86_64
 python tests/run_tests.py --godot "$GODOT"
 "$GODOT" --headless --path . --script tests/test_music_marco61.gd
 "$GODOT" --headless --path . --export-release "Windows x64" "build/windows/Xardorok Boss Battle.exe"
-# Em uma sessão gráfica; gravação controlada de 12,5 s, com áudio:
+# Com display gráfico e templates correspondentes instalados:
 "$GODOT" --path . --fixed-fps 30 --quit-after 380 --write-movie /caminho/transition.avi --script tests/capture_phase2_audio.gd -- --trace=/caminho/trace.json
 ```
 
-Os templates oficiais 4.7.2 devem estar instalados para exportar. A captura exige display gráfico; `--headless --write-movie` não serve nesta versão (renderer dummy sem textura). Foi usado Xvfb/OpenGL Mesa. Logs de teste e traces estão nesta pasta; os vídeos e o ZIP de jogadores são artefatos separados.
+Foi usado Xvfb/OpenGL Mesa para a gravação. `--headless --write-movie` não funciona com o renderer dummy desta versão. `music/README.md` explica como renderizar a partitura original. A atualização do gerador de catálogo mantém a nova seleção se o catálogo for reconstruído.
 
-## Arquivos alterados
+## Arquivos e revisão
 
-Produção: `scripts/audio/battle_audio.gd`. Testes: `tests/test_music_marco61.gd`, novo `tests/capture_phase2_audio.gd` e UID. Distribuição: `tools/distribution/validate_export.gd`, `tools/distribution/LEIA-ME.txt`. CI: `.github/workflows/windows-test-build.yml`. Evidências: esta pasta `docs/phase2/`.
+Produção: `scripts/audio/battle_audio.gd`, `assets/audio/catalog.json`, novo `assets/audio/music/phase_two_distinct.ogg` e importação. Fonte musical: `tools/audio/compose_phase_two.py`, atualização de `tools/audio/build_audio.py` e arquivos de `docs/phase2/music/`. Testes: `tests/test_music_marco61.gd`, novo `tests/capture_phase2_audio.gd` e UID. Distribuição: `tools/distribution/validate_export.gd`, `LEIA-ME.txt`, `CREDITOS.txt`. CI: `.github/workflows/windows-test-build.yml`. Demais alterações são evidências desta pasta.
 
-Sem mudanças em combate, balanceamento, dados, IA, habilidades, animações, imagens, arena, câmera, HUD, fontes musicais, efeitos sonoros ou `project.godot`.
+Sem alterações em balanceamento, HP/dano, IA, habilidades, animações, sprites, cenário, câmera, HUD, efeitos existentes ou `project.godot`. A mudança de identidade da faixa da fase 2 foi explicitamente autorizada pelo usuário após o diagnóstico.
+
+A branch foi publicada, sem merge. `gh pr create --draft` foi bloqueado: `Post "https://api.github.com/graphql": Forbidden`; a conexão à API também retornou HTTP 403 no proxy. O acesso Git funciona. Foi salva no rascunho a inclusão de `api.github.com`, preservando os presets; essa gravação não aplica a rede. Para tentar criar o PR novamente, é necessário aplicar a alteração nas configurações do ambiente. Nenhum novo segredo foi solicitado. O título/corpo do PR estão preparados; base pretendida: `feature/marco-6-1-audio-fix-windows-export`; head: `fix/codex-phase2-audio-windows`.

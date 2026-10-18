@@ -1,0 +1,15 @@
+Before explicit ambience.stop() on restart:
+Leaked instance: AudioStreamOggVorbis:9223372097068206194 - Reference count: 1
+Leaked instance: OggPacketSequence:9223372096984320116 - Reference count: 3
+Leaked instance: AudioStreamPlaybackOggVorbis:9223372116294895979 - Reference count: 1
+Leaked instance: OggPacketSequencePlayback:9223372116311673196 - Reference count: 1
+Hint: Leaked instances typically happen when nodes are removed from the scene tree (with `remove_child()`) but not freed (with `free()` or `queue_free()`).
+Resource still in use: res://assets/audio/ambience/ruins.ogg::OggPacketSequence_ybj4h (OggPacketSequence)
+Orphan StringName: Ambience (static: 0, total: 2)
+StringName: 1 unclaimed string names at exit.
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit.
+   at: clear (core/io/resource.cpp:817)
+
+After correction: 3 consecutive verbose runs and the final full runner completed without ERROR or resource leak.
