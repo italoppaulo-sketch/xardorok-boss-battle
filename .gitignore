@@ -19,3 +19,5 @@ export_credentials.cfg
 # Caches Python das ferramentas de teste
 __pycache__/
 *.pyc
+
+/build/
