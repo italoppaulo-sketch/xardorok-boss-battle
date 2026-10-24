@@ -1,0 +1,18 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "regression_checks": 1696,
+  "regression_failures": 0,
+  "full_matches": 36,
+  "new_music_checks": 317,
+  "new_music_failures": 0,
+  "export_linux_checks": 270,
+  "export_windows_checks": 270,
+  "export_resources": 184,
+  "windows_ci_run": 39152316930,
+  "native_windows_mode": "headless",
+  "graphical_audio_windows_validation": "pending",
+  "clip_seconds": 16,
+  "clip_integrated_lufs": -20.8,
+  "clip_true_peak_dbfs": -4.2,
+  "protected_files_unchanged": 464
+}

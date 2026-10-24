@@ -1,0 +1,71 @@
+name: Windows test build
+on:
+  push:
+    branches: [feature/marco-6-1-audio-fix-windows-export]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install official Godot 4.7.2 and templates
+        shell: pwsh
+        run: |
+          $release = 'https://github.com/godotengine/godot/releases/download/4.7.2-stable'
+          Invoke-WebRequest "$release/Godot_v4.7.2-stable_win64.exe.zip" -OutFile "$env:RUNNER_TEMP/godot.zip"
+          Invoke-WebRequest "$release/Godot_v4.7.2-stable_export_templates.tpz" -OutFile "$env:RUNNER_TEMP/templates.zip"
+          Expand-Archive "$env:RUNNER_TEMP/godot.zip" "$env:RUNNER_TEMP/godot"
+          $dest = "$env:APPDATA/Godot/export_templates/4.7.2.stable"
+          New-Item -ItemType Directory -Force $dest | Out-Null
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $zip = [IO.Compression.ZipFile]::OpenRead("$env:RUNNER_TEMP/templates.zip")
+          try {
+            foreach ($entry in $zip.Entries) {
+              if ($entry.Name -in @('version.txt', 'windows_release_x86_64.exe', 'windows_release_x86_64_console.exe')) {
+                [IO.Compression.ZipFileExtensions]::ExtractToFile($entry, "$dest/$($entry.Name)", $true)
+              }
+            }
+          } finally { $zip.Dispose() }
+          "$env:RUNNER_TEMP/godot" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Import and export release
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build/windows | Out-Null
+          & Godot_v4.7.2-stable_win64_console.exe --headless --path . --editor --import 2>&1 | Tee-Object build/import.log
+          if ($LASTEXITCODE -ne 0) { throw 'Import failed' }
+          & Godot_v4.7.2-stable_win64_console.exe --headless --path . --export-release 'Windows x64' 'build/windows/Xardorok Boss Battle.exe' 2>&1 | Tee-Object build/export.log
+          if ($LASTEXITCODE -ne 0) { throw 'Export failed' }
+      - name: Run exported executable away from source
+        shell: pwsh
+        run: |
+          $isolated = "$env:RUNNER_TEMP/Xardorok Windows Test"
+          New-Item -ItemType Directory -Force $isolated | Out-Null
+          Copy-Item build/windows/* $isolated
+          Copy-Item tools/distribution/validate_export.gd "$env:RUNNER_TEMP/validate_export.gd"
+          Push-Location $isolated
+          try {
+            $game = Start-Process -FilePath '.\Xardorok Boss Battle.exe' -ArgumentList @('--headless', '--quit-after', '120', '--log-file', "`"$env:RUNNER_TEMP/export-startup.log`"") -Wait -PassThru
+            if ($game.ExitCode -ne 0) { throw "Exported startup failed: $($game.ExitCode)" }
+            & Godot_v4.7.2-stable_win64_console.exe --headless --main-pack '.\Xardorok Boss Battle.pck' --script "$env:RUNNER_TEMP/validate_export.gd" --log-file "$env:RUNNER_TEMP/export-validation.log"
+            if ($LASTEXITCODE -ne 0) { throw 'Exported validation failed' }
+          } finally { Pop-Location }
+          Copy-Item "$env:RUNNER_TEMP/export-*.log" build/
+          if (Select-String -Path build/export-validation.log -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet) { throw 'Engine errors in exported pack validation' }
+          if (Select-String -Path build/export-startup.log -Pattern 'SCRIPT ERROR:' -Quiet) { throw 'Script error in exported executable' }
+      - name: Package players ZIP
+        shell: pwsh
+        run: |
+          Copy-Item tools/distribution/LEIA-ME.txt build/windows/
+          Copy-Item tools/distribution/CREDITOS.txt build/windows/
+          Compress-Archive build/windows/* build/Xardorok_Marco6_1_Windows_x64.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Xardorok-Marco6.1-Windows-x64-test
+          path: |
+            build/Xardorok_Marco6_1_Windows_x64.zip
+            build/*.log
+          retention-days: 30

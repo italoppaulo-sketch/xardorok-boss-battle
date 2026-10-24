@@ -61,6 +61,11 @@ var streams := {}
 var voices: Array[Dictionary] = []
 var recent := {}
 var music: Array[AudioStreamPlayer] = []
+var music_layers := AudioStreamSynchronized.new()
+var phase_started := false
+var phase_transition_count := 0
+var duck_db := 0.0
+var ending_db := 0.0
 var ambience := AudioStreamPlayer.new()
 var aura := AudioStreamPlayer.new()
 var stinger := AudioStreamPlayer.new()
@@ -101,7 +106,8 @@ func _ready() -> void:
 		limiter.ceiling_db = -1.5
 		limiter.threshold_db = -3.0
 		AudioServer.add_bus_effect(0, limiter)
-	for i in 2:
+	music_layers.stream_count = 2
+	for i in 1:
 		var player := AudioStreamPlayer.new()
 		player.bus = "Music"
 		add_child(player)
@@ -227,14 +233,26 @@ func restart() -> void:
 	aura.stop()
 	phase_target = 0
 	phase_mix = 0
+	phase_started = false
+	phase_transition_count = 0
+	duck_db = 0
+	ending_db = 0
 	duck_until = 0
 	outcome = ""
 	stopped = false
 	last_round = 1
-	for i in 2:
-		music[i].stream = _stream("battle" if i == 0 else "phase_two")
-		music[i].volume_db = 0 if i == 0 else -80
-		music[i].play()
+	# One transport starts both approved arrangements on the same audio sample.
+	# They contain the same melody, so complementary linear gains avoid a boost.
+	music[0].stop()
+	music_layers = AudioStreamSynchronized.new()
+	music_layers.stream_count = 2
+	music_layers.set_sync_stream(0, _stream("battle"))
+	music_layers.set_sync_stream(1, _stream("phase_two"))
+	music_layers.set_sync_stream_volume(0, 0)
+	music_layers.set_sync_stream_volume(1, -100)
+	music[0].stream = music_layers
+	music[0].volume_db = 0
+	music[0].play()
 	ambience.stream = _stream("ruins")
 	ambience.volume_db = -2
 	ambience.play()
@@ -310,9 +328,13 @@ func on_visual(event: Dictionary) -> void:
 		"meteor_impact":
 			play_cue("meteor_hit", event)
 		"phase":
+			if phase_started or stopped or not outcome.is_empty():
+				return
+			phase_started = true
+			phase_transition_count += 1
 			phase_target = 1
 			play_cue("phase", event)
-			duck_until = clock + 1.0
+			# The transformation no longer ducks the crossfade itself.
 		"reaction":
 			play_cue("summon" if event.get("ability", "") == "command" else "warning", event, -6)
 		"world":
@@ -389,15 +411,17 @@ func _process(delta: float) -> void:
 	clock += delta
 	_prune()
 	phase_mix = move_toward(phase_mix, phase_target, delta / 1.5)
-	var duck := -7.0 if clock < duck_until else 0.0
-	for i in music.size():
-		var weight := (1.0 - phase_mix) if i == 0 else phase_mix
-		var target_db := linear_to_db(maxf(.0001, weight)) + duck
-		if not outcome.is_empty():
-			target_db = -80
-		music[i].volume_db = move_toward(music[i].volume_db, target_db, delta * 55)
-		if not outcome.is_empty() and music[i].volume_db <= -79:
-			music[i].stop()
+	# Fade amplitudes directly. Slewing each layer from -80 dB caused a hole
+	# while the outgoing arrangement was already fading but the new one inaudible.
+	var blend := phase_mix * phase_mix * (3.0 - 2.0 * phase_mix)
+	music_layers.set_sync_stream_volume(0, linear_to_db(maxf(.00001, 1.0 - blend)))
+	music_layers.set_sync_stream_volume(1, linear_to_db(maxf(.00001, blend)))
+	duck_db = move_toward(duck_db, -7.0 if clock < duck_until else 0.0, delta * 20)
+	ending_db = move_toward(ending_db, -80.0 if not outcome.is_empty() else 0.0, delta * 55)
+	for player in music:
+		player.volume_db = duck_db + ending_db
+		if not outcome.is_empty() and ending_db <= -79:
+			player.stop()
 	if arena != null:
 		var active_aura: bool = (
 			arena.visual_units[5].hp > 0

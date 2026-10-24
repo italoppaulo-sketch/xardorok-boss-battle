@@ -1,0 +1,25 @@
+XARDOROK BOSS BATTLE — MARCO 6.1 (TESTE)
+
+COMO JOGAR
+1. Extraia TODO o ZIP para uma pasta do seu computador.
+2. Abra "Xardorok Boss Battle.exe".
+3. Mantenha "Xardorok Boss Battle.pck" junto do executável.
+Não é necessário instalar Godot, Python, Git ou qualquer ferramenta de desenvolvimento.
+
+Sistema: Windows 64 bits, vídeo com suporte a OpenGL 3.3.
+Resolução de referência: 1200 x 700.
+
+CONTROLES
+Clique em um herói para selecioná-lo/inspecioná-lo.
+No turno do herói, selecione uma habilidade no menu inferior e clique no alvo.
+Use "Mover" e clique em um destino válido para deslocar o herói.
+Espaço: encerrar turno. R: reiniciar batalha.
+F10: painel de áudio e volumes independentes. M: ativar/desativar o som geral.
+Use as opções de reação na interface quando meteoros forem anunciados.
+A interface mostra custos, alcance, ações e estados.
+
+Esta é uma distribuição de teste para avaliação, sem instalador e sem assinatura digital.
+Se o Windows bloquear o arquivo, confira a origem e o arquivo recebido antes de decidir executá-lo.
+Configurações de áudio ficam nos dados locais do seu usuário; não exigem acesso à pasta de desenvolvimento.
+
+Áudio e recursos mantêm os créditos e condições do projeto; veja CREDITOS.txt.

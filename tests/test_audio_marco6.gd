@@ -208,7 +208,7 @@ func run() -> void:
 		(
 			not scene.audio.stinger.playing
 			and not scene.audio.music[0].playing
-			and not scene.audio.music[1].playing
+			and scene.audio.music.size() == 1
 		),
 		"skip stops fanfare and battle layers"
 	)

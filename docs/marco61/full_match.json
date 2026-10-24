@@ -1,0 +1,2229 @@
+{
+	"audit": [
+		{
+			"ability": "dodge",
+			"executed": true,
+			"from": "(2, 4)",
+			"hero": 1,
+			"offensive": false,
+			"round": 1,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(2, 4)",
+			"visible": true
+		},
+		{
+			"ability": "flight",
+			"executed": true,
+			"from": "(3, 6)",
+			"hero": 3,
+			"offensive": false,
+			"round": 1,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(3, 6)",
+			"visible": true
+		},
+		{
+			"ability": "energy_arrow",
+			"executed": true,
+			"from": "(6, 6)",
+			"hero": 3,
+			"offensive": true,
+			"round": 1,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(12, 4)",
+			"visible": true
+		},
+		{
+			"ability": "illusion",
+			"executed": true,
+			"from": "(4, 4)",
+			"hero": 4,
+			"offensive": false,
+			"round": 1,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(4, 4)",
+			"visible": true
+		},
+		{
+			"ability": "chain",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": true,
+			"round": 1,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(12, 4)",
+			"visible": true
+		},
+		{
+			"ability": "giant",
+			"executed": true,
+			"from": "(2, 2)",
+			"hero": 0,
+			"offensive": false,
+			"round": 1,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(2, 2)",
+			"visible": true
+		},
+		{
+			"ability": "purple_fire",
+			"executed": true,
+			"from": "(3, 6)",
+			"hero": 2,
+			"offensive": true,
+			"round": 1,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "fushigiri",
+			"executed": true,
+			"from": "(7, 3)",
+			"hero": 1,
+			"offensive": true,
+			"round": 2,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "ice_arrow",
+			"executed": true,
+			"from": "(6, 6)",
+			"hero": 3,
+			"offensive": true,
+			"round": 2,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "illusion",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": false,
+			"round": 2,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(5, 4)",
+			"visible": true
+		},
+		{
+			"ability": "chain",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": true,
+			"round": 2,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "hammer",
+			"executed": true,
+			"from": "(7, 2)",
+			"hero": 0,
+			"offensive": false,
+			"round": 2,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(7, 2)",
+			"visible": true
+		},
+		{
+			"ability": "double",
+			"executed": true,
+			"from": "(8, 2)",
+			"hero": 0,
+			"offensive": true,
+			"round": 2,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "heal",
+			"executed": true,
+			"from": "(3, 6)",
+			"hero": 2,
+			"offensive": false,
+			"round": 2,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(7, 3)",
+			"visible": true
+		},
+		{
+			"ability": "dodge",
+			"executed": true,
+			"from": "(7, 3)",
+			"hero": 1,
+			"offensive": false,
+			"round": 3,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(7, 3)",
+			"visible": true
+		},
+		{
+			"ability": "unarmed",
+			"executed": true,
+			"from": "(8, 3)",
+			"hero": 1,
+			"offensive": true,
+			"round": 3,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "energy_arrow",
+			"executed": true,
+			"from": "(6, 6)",
+			"hero": 3,
+			"offensive": true,
+			"round": 3,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "illusion",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": false,
+			"round": 3,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(5, 4)",
+			"visible": true
+		},
+		{
+			"ability": "chain",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": true,
+			"round": 3,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "skin",
+			"executed": true,
+			"from": "(8, 2)",
+			"hero": 0,
+			"offensive": false,
+			"round": 3,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 2)",
+			"visible": true
+		},
+		{
+			"ability": "double",
+			"executed": true,
+			"from": "(7, 4)",
+			"hero": 0,
+			"offensive": true,
+			"round": 3,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "purple_fire",
+			"executed": true,
+			"from": "(3, 6)",
+			"hero": 2,
+			"offensive": true,
+			"round": 3,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "unarmed",
+			"executed": true,
+			"from": "(8, 3)",
+			"hero": 1,
+			"offensive": true,
+			"round": 4,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "flight",
+			"executed": true,
+			"from": "(6, 6)",
+			"hero": 3,
+			"offensive": false,
+			"round": 4,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(6, 6)",
+			"visible": true
+		},
+		{
+			"ability": "ice_arrow",
+			"executed": true,
+			"from": "(6, 6)",
+			"hero": 3,
+			"offensive": true,
+			"round": 4,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "illusion",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": false,
+			"round": 4,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(5, 4)",
+			"visible": true
+		},
+		{
+			"ability": "chain",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": true,
+			"round": 4,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "hammer",
+			"executed": true,
+			"from": "(7, 4)",
+			"hero": 0,
+			"offensive": false,
+			"round": 4,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(7, 4)",
+			"visible": true
+		},
+		{
+			"ability": "double",
+			"executed": true,
+			"from": "(7, 4)",
+			"hero": 0,
+			"offensive": true,
+			"round": 4,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "heal",
+			"executed": true,
+			"from": "(3, 6)",
+			"hero": 2,
+			"offensive": false,
+			"round": 4,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(7, 4)",
+			"visible": true
+		},
+		{
+			"ability": "energy_arrow",
+			"executed": true,
+			"from": "(6, 6)",
+			"hero": 3,
+			"offensive": true,
+			"round": 5,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "illusion",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": false,
+			"round": 5,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(5, 4)",
+			"visible": true
+		},
+		{
+			"ability": "basic",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": true,
+			"round": 5,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "giant",
+			"executed": true,
+			"from": "(7, 4)",
+			"hero": 0,
+			"offensive": false,
+			"round": 5,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(7, 4)",
+			"visible": true
+		},
+		{
+			"ability": "double",
+			"executed": true,
+			"from": "(7, 4)",
+			"hero": 0,
+			"offensive": true,
+			"round": 5,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "antispell",
+			"executed": true,
+			"from": "(3, 6)",
+			"hero": 2,
+			"offensive": false,
+			"round": 5,
+			"smoke": "[{ \"cell\": (8, 4), \"radius\": 3.0, \"expires\": 7 }]",
+			"smoke_count": 1,
+			"to": "(8, 4)",
+			"visible": false
+		},
+		{
+			"ability": "ice_arrow",
+			"executed": true,
+			"from": "(6, 6)",
+			"hero": 3,
+			"offensive": true,
+			"round": 6,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "illusion",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": false,
+			"round": 6,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(5, 4)",
+			"visible": true
+		},
+		{
+			"ability": "basic",
+			"executed": true,
+			"from": "(5, 4)",
+			"hero": 4,
+			"offensive": true,
+			"round": 6,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(8, 4)",
+			"visible": true
+		},
+		{
+			"ability": "purple_fire",
+			"executed": true,
+			"from": "(3, 6)",
+			"hero": 2,
+			"offensive": true,
+			"round": 6,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(6, 4)",
+			"visible": true
+		},
+		{
+			"ability": "flight",
+			"executed": true,
+			"from": "(6, 6)",
+			"hero": 3,
+			"offensive": false,
+			"round": 7,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(6, 6)",
+			"visible": true
+		},
+		{
+			"ability": "basic",
+			"executed": true,
+			"from": "(6, 6)",
+			"hero": 3,
+			"offensive": true,
+			"round": 7,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(6, 4)",
+			"visible": true
+		},
+		{
+			"ability": "purple_fire",
+			"executed": true,
+			"from": "(3, 6)",
+			"hero": 2,
+			"offensive": true,
+			"round": 7,
+			"smoke": "[]",
+			"smoke_count": 0,
+			"to": "(6, 5)",
+			"visible": true
+		}
+	],
+	"boss_damage": [
+		{
+			"amount": 49,
+			"at": 5.69166666666666,
+			"hp_before": 900
+		},
+		{
+			"amount": 43,
+			"at": 10.8583333333333,
+			"hp_before": 851
+		},
+		{
+			"amount": 42,
+			"at": 19.6916666666668,
+			"hp_before": 808
+		},
+		{
+			"amount": 72,
+			"at": 21.6250000000002,
+			"hp_before": 766
+		},
+		{
+			"amount": 34,
+			"at": 27.3250000000005,
+			"hp_before": 694
+		},
+		{
+			"amount": 43,
+			"at": 32.0250000000008,
+			"hp_before": 660
+		},
+		{
+			"amount": 16,
+			"at": 34.7250000000006,
+			"hp_before": 617
+		},
+		{
+			"amount": 15,
+			"at": 34.7250000000006,
+			"hp_before": 601
+		},
+		{
+			"amount": 23,
+			"at": 35.1250000000006,
+			"hp_before": 586
+		},
+		{
+			"amount": 15,
+			"at": 35.1250000000006,
+			"hp_before": 563
+		},
+		{
+			"amount": 12,
+			"at": 40.3583333333336,
+			"hp_before": 548
+		},
+		{
+			"amount": 12,
+			"at": 40.7583333333336,
+			"hp_before": 536
+		},
+		{
+			"amount": 49,
+			"at": 44.2250000000001,
+			"hp_before": 524
+		},
+		{
+			"amount": 43,
+			"at": 48.9249999999998,
+			"hp_before": 475
+		},
+		{
+			"amount": 12,
+			"at": 52.6583333333329,
+			"hp_before": 432
+		},
+		{
+			"amount": 11,
+			"at": 52.6583333333329,
+			"hp_before": 420
+		},
+		{
+			"amount": 12,
+			"at": 53.0583333333329,
+			"hp_before": 409
+		},
+		{
+			"amount": 11,
+			"at": 53.0583333333329,
+			"hp_before": 397
+		},
+		{
+			"amount": 25,
+			"at": 59.5249999999992,
+			"hp_before": 386
+		},
+		{
+			"amount": 7,
+			"at": 61.2249999999991,
+			"hp_before": 361
+		},
+		{
+			"amount": 7,
+			"at": 61.6249999999991,
+			"hp_before": 354
+		},
+		{
+			"amount": 21,
+			"at": 65.8249999999988,
+			"hp_before": 347
+		},
+		{
+			"amount": 26,
+			"at": 70.8583333333319,
+			"hp_before": 326
+		},
+		{
+			"amount": 7,
+			"at": 73.4583333333317,
+			"hp_before": 300
+		},
+		{
+			"amount": 6,
+			"at": 73.4583333333317,
+			"hp_before": 293
+		},
+		{
+			"amount": 7,
+			"at": 73.8583333333317,
+			"hp_before": 287
+		},
+		{
+			"amount": 6,
+			"at": 73.8583333333317,
+			"hp_before": 280
+		},
+		{
+			"amount": 49,
+			"at": 86.0249999999977,
+			"hp_before": 274
+		},
+		{
+			"amount": 21,
+			"at": 88.8249999999975,
+			"hp_before": 225
+		},
+		{
+			"amount": 23,
+			"at": 93.6583333333306,
+			"hp_before": 204
+		},
+		{
+			"amount": 15,
+			"at": 93.6583333333306,
+			"hp_before": 181
+		},
+		{
+			"amount": 16,
+			"at": 94.0583333333306,
+			"hp_before": 166
+		},
+		{
+			"amount": 15,
+			"at": 94.0583333333306,
+			"hp_before": 150
+		},
+		{
+			"amount": 51,
+			"at": 108.45833333333,
+			"hp_before": 135
+		},
+		{
+			"amount": 21,
+			"at": 111.25833333333,
+			"hp_before": 84
+		},
+		{
+			"amount": 42,
+			"at": 115.458333333329,
+			"hp_before": 63
+		},
+		{
+			"amount": 15,
+			"at": 123.191666666662,
+			"hp_before": 21
+		},
+		{
+			"amount": 25,
+			"at": 127.724999999995,
+			"hp_before": 6
+		}
+	],
+	"dispelled_clouds": 1,
+	"failures": 0,
+	"outcome": "BOSS DEFEATED",
+	"phase_transition_count": 1,
+	"policy": "agressivo, suspend attacks until smoke is dispelled",
+	"rounds": 7,
+	"seed": 42,
+	"trace": [
+		{
+			"at": 1.525,
+			"cue": "ui_select"
+		},
+		{
+			"at": 1.59166666666667,
+			"cue": "dodge"
+		},
+		{
+			"at": 2.525,
+			"cue": "step"
+		},
+		{
+			"at": 2.625,
+			"cue": "step"
+		},
+		{
+			"at": 2.725,
+			"cue": "step"
+		},
+		{
+			"at": 2.825,
+			"cue": "step"
+		},
+		{
+			"at": 2.925,
+			"cue": "step"
+		},
+		{
+			"at": 3.625,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 3.95833333333333,
+			"cue": "ui_select"
+		},
+		{
+			"at": 4.025,
+			"cue": "flight"
+		},
+		{
+			"at": 4.95833333333333,
+			"cue": "flight"
+		},
+		{
+			"at": 5.05833333333333,
+			"cue": "flight"
+		},
+		{
+			"at": 5.15833333333333,
+			"cue": "flight"
+		},
+		{
+			"at": 5.25833333333332,
+			"cue": "energy_charge"
+		},
+		{
+			"at": 5.45833333333332,
+			"cue": "bow_release"
+		},
+		{
+			"at": 5.69166666666666,
+			"cue": "energy_impact"
+		},
+		{
+			"at": 6.65833333333332,
+			"cue": "warning"
+		},
+		{
+			"at": 6.75833333333332,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 7.29166666666665,
+			"cue": "ui_open"
+		},
+		{
+			"at": 7.92499999999998,
+			"cue": "guard"
+		},
+		{
+			"at": 8.25833333333332,
+			"cue": "meteor_fall"
+		},
+		{
+			"at": 8.55833333333331,
+			"cue": "meteor_hit"
+		},
+		{
+			"at": 8.55833333333331,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 8.55833333333331,
+			"cue": "fire_ignite"
+		},
+		{
+			"at": 9.32499999999998,
+			"cue": "ui_select"
+		},
+		{
+			"at": 9.39166666666664,
+			"cue": "illusion"
+		},
+		{
+			"at": 10.325,
+			"cue": "step"
+		},
+		{
+			"at": 10.425,
+			"cue": "chain_charge"
+		},
+		{
+			"at": 10.7583333333333,
+			"cue": "chain_jump"
+		},
+		{
+			"at": 10.8583333333333,
+			"cue": "critical"
+		},
+		{
+			"at": 11.925,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 12.2583333333333,
+			"cue": "ui_select"
+		},
+		{
+			"at": 12.325,
+			"cue": "giant"
+		},
+		{
+			"at": 13.2583333333333,
+			"cue": "step"
+		},
+		{
+			"at": 13.3583333333333,
+			"cue": "step"
+		},
+		{
+			"at": 13.4583333333333,
+			"cue": "step"
+		},
+		{
+			"at": 13.5583333333333,
+			"cue": "step"
+		},
+		{
+			"at": 13.6583333333333,
+			"cue": "step"
+		},
+		{
+			"at": 14.2583333333333,
+			"cue": "warning"
+		},
+		{
+			"at": 14.3583333333333,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 14.8916666666666,
+			"cue": "ui_open"
+		},
+		{
+			"at": 15.525,
+			"cue": "guard"
+		},
+		{
+			"at": 15.8583333333333,
+			"cue": "meteor_fall"
+		},
+		{
+			"at": 16.1583333333333,
+			"cue": "meteor_hit"
+		},
+		{
+			"at": 16.1583333333333,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 16.1583333333333,
+			"cue": "fire_ignite"
+		},
+		{
+			"at": 16.9916666666667,
+			"cue": "step"
+		},
+		{
+			"at": 17.0916666666667,
+			"cue": "step"
+		},
+		{
+			"at": 17.1916666666667,
+			"cue": "step"
+		},
+		{
+			"at": 17.2916666666667,
+			"cue": "step"
+		},
+		{
+			"at": 17.3916666666667,
+			"cue": "summon"
+		},
+		{
+			"at": 17.4916666666667,
+			"cue": "minion_spawn"
+		},
+		{
+			"at": 17.4916666666667,
+			"cue": "minion_spawn"
+		},
+		{
+			"at": 18.6250000000001,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 18.9583333333334,
+			"cue": "ui_select"
+		},
+		{
+			"at": 19.0583333333334,
+			"cue": "step"
+		},
+		{
+			"at": 19.1583333333334,
+			"cue": "step"
+		},
+		{
+			"at": 19.2583333333335,
+			"cue": "violet_beam"
+		},
+		{
+			"at": 19.6916666666668,
+			"cue": "arcane_hit"
+		},
+		{
+			"at": 20.7583333333335,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 20.7583333333335,
+			"cue": "ui_open"
+		},
+		{
+			"at": 21.0916666666669,
+			"cue": "ui_select"
+		},
+		{
+			"at": 21.1916666666669,
+			"cue": "step"
+		},
+		{
+			"at": 21.2916666666669,
+			"cue": "shadow_charge"
+		},
+		{
+			"at": 21.2916666666669,
+			"cue": "sacrifice"
+		},
+		{
+			"at": 21.6250000000002,
+			"cue": "sword_slash"
+		},
+		{
+			"at": 21.6250000000002,
+			"cue": "shadow_rupture"
+		},
+		{
+			"at": 22.691666666667,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 22.791666666667,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 23.191666666667,
+			"cue": "step"
+		},
+		{
+			"at": 23.291666666667,
+			"cue": "step"
+		},
+		{
+			"at": 23.391666666667,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 23.6250000000003,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 23.8250000000003,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 23.8250000000003,
+			"cue": "critical"
+		},
+		{
+			"at": 24.6250000000004,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 25.0250000000004,
+			"cue": "step"
+		},
+		{
+			"at": 25.1250000000004,
+			"cue": "step"
+		},
+		{
+			"at": 25.2250000000004,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 25.4583333333338,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 25.6583333333338,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 26.4583333333338,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 26.7916666666672,
+			"cue": "ui_select"
+		},
+		{
+			"at": 26.8583333333338,
+			"cue": "bow_release"
+		},
+		{
+			"at": 27.3250000000005,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 28.2583333333339,
+			"cue": "land"
+		},
+		{
+			"at": 28.2583333333339,
+			"cue": "warning"
+		},
+		{
+			"at": 28.3583333333339,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 28.8916666666673,
+			"cue": "ui_open"
+		},
+		{
+			"at": 29.5250000000006,
+			"cue": "meteor_fall"
+		},
+		{
+			"at": 29.7916666666673,
+			"cue": "meteor_hit"
+		},
+		{
+			"at": 29.7916666666673,
+			"cue": "fire_ignite"
+		},
+		{
+			"at": 30.5916666666673,
+			"cue": "ui_select"
+		},
+		{
+			"at": 30.658333333334,
+			"cue": "illusion"
+		},
+		{
+			"at": 31.5916666666674,
+			"cue": "chain_charge"
+		},
+		{
+			"at": 31.9250000000007,
+			"cue": "chain_jump"
+		},
+		{
+			"at": 32.0250000000008,
+			"cue": "critical"
+		},
+		{
+			"at": 32.0583333333341,
+			"cue": "chain_jump"
+		},
+		{
+			"at": 32.1583333333341,
+			"cue": "critical"
+		},
+		{
+			"at": 32.1583333333341,
+			"cue": "minion_death"
+		},
+		{
+			"at": 32.8250000000007,
+			"cue": "minion_dissolve"
+		},
+		{
+			"at": 33.058333333334,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 33.3916666666673,
+			"cue": "ui_select"
+		},
+		{
+			"at": 33.458333333334,
+			"cue": "ice_form"
+		},
+		{
+			"at": 34.3916666666673,
+			"cue": "step"
+		},
+		{
+			"at": 34.4916666666673,
+			"cue": "hammer_swing"
+		},
+		{
+			"at": 34.7250000000006,
+			"cue": "hammer_hit"
+		},
+		{
+			"at": 34.7250000000006,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 34.7250000000006,
+			"cue": "ice_shards"
+		},
+		{
+			"at": 34.7916666666673,
+			"cue": "hammer_swing"
+		},
+		{
+			"at": 35.1250000000006,
+			"cue": "hammer_hit"
+		},
+		{
+			"at": 35.1250000000006,
+			"cue": "critical"
+		},
+		{
+			"at": 35.1250000000006,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 35.8916666666672,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 35.9916666666672,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 36.6916666666672,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 36.7916666666671,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 37.1250000000005,
+			"cue": "ui_select"
+		},
+		{
+			"at": 37.1916666666671,
+			"cue": "arcane_cast"
+		},
+		{
+			"at": 37.6583333333338,
+			"cue": "heal"
+		},
+		{
+			"at": 38.691666666667,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 38.691666666667,
+			"cue": "ui_open"
+		},
+		{
+			"at": 39.0250000000004,
+			"cue": "ui_select"
+		},
+		{
+			"at": 39.091666666667,
+			"cue": "dodge"
+		},
+		{
+			"at": 40.0250000000003,
+			"cue": "step"
+		},
+		{
+			"at": 40.1250000000003,
+			"cue": "punch_air"
+		},
+		{
+			"at": 40.3583333333336,
+			"cue": "punch"
+		},
+		{
+			"at": 40.4250000000003,
+			"cue": "punch_air"
+		},
+		{
+			"at": 40.7583333333336,
+			"cue": "punch"
+		},
+		{
+			"at": 41.6250000000002,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 42.0250000000002,
+			"cue": "step"
+		},
+		{
+			"at": 42.1250000000002,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 42.3583333333335,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 42.5583333333335,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 43.3583333333334,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 43.6916666666668,
+			"cue": "ui_select"
+		},
+		{
+			"at": 43.7583333333334,
+			"cue": "energy_charge"
+		},
+		{
+			"at": 43.9583333333334,
+			"cue": "bow_release"
+		},
+		{
+			"at": 44.2250000000001,
+			"cue": "energy_impact"
+		},
+		{
+			"at": 45.1583333333333,
+			"cue": "warning"
+		},
+		{
+			"at": 45.2583333333333,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 45.7916666666666,
+			"cue": "ui_open"
+		},
+		{
+			"at": 46.4249999999999,
+			"cue": "meteor_fall"
+		},
+		{
+			"at": 46.6916666666666,
+			"cue": "meteor_hit"
+		},
+		{
+			"at": 46.6916666666666,
+			"cue": "fire_ignite"
+		},
+		{
+			"at": 47.4916666666665,
+			"cue": "ui_select"
+		},
+		{
+			"at": 47.5583333333332,
+			"cue": "illusion"
+		},
+		{
+			"at": 48.4916666666665,
+			"cue": "chain_charge"
+		},
+		{
+			"at": 48.8249999999998,
+			"cue": "chain_jump"
+		},
+		{
+			"at": 48.9249999999998,
+			"cue": "critical"
+		},
+		{
+			"at": 49.2583333333331,
+			"cue": "phase"
+		},
+		{
+			"at": 50.7916666666664,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 51.1249999999997,
+			"cue": "ui_select"
+		},
+		{
+			"at": 51.1916666666663,
+			"cue": "ice_form"
+		},
+		{
+			"at": 52.1249999999996,
+			"cue": "step"
+		},
+		{
+			"at": 52.2249999999996,
+			"cue": "step"
+		},
+		{
+			"at": 52.3249999999996,
+			"cue": "step"
+		},
+		{
+			"at": 52.4249999999996,
+			"cue": "hammer_swing"
+		},
+		{
+			"at": 52.4249999999996,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 52.6583333333329,
+			"cue": "hammer_hit"
+		},
+		{
+			"at": 52.6583333333329,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 52.7249999999996,
+			"cue": "hammer_swing"
+		},
+		{
+			"at": 53.0583333333329,
+			"cue": "hammer_hit"
+		},
+		{
+			"at": 53.0583333333329,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 53.8249999999995,
+			"cue": "warning"
+		},
+		{
+			"at": 53.9249999999995,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 54.4583333333328,
+			"cue": "ui_open"
+		},
+		{
+			"at": 55.0916666666661,
+			"cue": "guard"
+		},
+		{
+			"at": 55.4249999999994,
+			"cue": "meteor_fall"
+		},
+		{
+			"at": 55.7249999999994,
+			"cue": "meteor_hit"
+		},
+		{
+			"at": 55.7249999999994,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 55.7249999999994,
+			"cue": "fire_ignite"
+		},
+		{
+			"at": 56.5249999999994,
+			"cue": "fire_ignite"
+		},
+		{
+			"at": 57.4583333333326,
+			"cue": "fire_ignite"
+		},
+		{
+			"at": 58.6583333333326,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 58.9916666666659,
+			"cue": "ui_select"
+		},
+		{
+			"at": 59.0583333333325,
+			"cue": "violet_beam"
+		},
+		{
+			"at": 59.5249999999992,
+			"cue": "arcane_hit"
+		},
+		{
+			"at": 59.5249999999992,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 60.5583333333325,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 60.5583333333325,
+			"cue": "ui_open"
+		},
+		{
+			"at": 60.8916666666658,
+			"cue": "ui_select"
+		},
+		{
+			"at": 60.9583333333324,
+			"cue": "punch_air"
+		},
+		{
+			"at": 61.2249999999991,
+			"cue": "punch"
+		},
+		{
+			"at": 61.2249999999991,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 61.2249999999991,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 61.2916666666658,
+			"cue": "punch_air"
+		},
+		{
+			"at": 61.6249999999991,
+			"cue": "punch"
+		},
+		{
+			"at": 61.6249999999991,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 61.6249999999991,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 62.3583333333324,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 62.4583333333324,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 62.4583333333324,
+			"cue": "hero_death"
+		},
+		{
+			"at": 62.4583333333324,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 62.824999999999,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 63.0916666666657,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 63.2916666666656,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 64.0583333333323,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 64.3916666666656,
+			"cue": "ui_select"
+		},
+		{
+			"at": 64.4583333333322,
+			"cue": "flight"
+		},
+		{
+			"at": 65.3916666666655,
+			"cue": "bow_release"
+		},
+		{
+			"at": 65.8249999999988,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 65.8249999999988,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 66.7583333333321,
+			"cue": "warning"
+		},
+		{
+			"at": 66.8583333333321,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 67.3916666666654,
+			"cue": "ui_open"
+		},
+		{
+			"at": 68.0249999999987,
+			"cue": "guard"
+		},
+		{
+			"at": 68.358333333332,
+			"cue": "meteor_fall"
+		},
+		{
+			"at": 68.658333333332,
+			"cue": "meteor_hit"
+		},
+		{
+			"at": 68.658333333332,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 69.4249999999986,
+			"cue": "ui_select"
+		},
+		{
+			"at": 69.4916666666653,
+			"cue": "illusion"
+		},
+		{
+			"at": 70.4249999999986,
+			"cue": "chain_charge"
+		},
+		{
+			"at": 70.7583333333319,
+			"cue": "chain_jump"
+		},
+		{
+			"at": 70.8583333333319,
+			"cue": "critical"
+		},
+		{
+			"at": 70.8583333333319,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 71.8916666666652,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 72.2249999999985,
+			"cue": "ui_select"
+		},
+		{
+			"at": 72.2916666666651,
+			"cue": "ice_form"
+		},
+		{
+			"at": 73.2249999999984,
+			"cue": "hammer_swing"
+		},
+		{
+			"at": 73.4583333333317,
+			"cue": "hammer_hit"
+		},
+		{
+			"at": 73.4583333333317,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 73.4583333333317,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 73.4583333333317,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 73.4916666666651,
+			"cue": "hammer_swing"
+		},
+		{
+			"at": 73.8583333333317,
+			"cue": "hammer_hit"
+		},
+		{
+			"at": 73.8583333333317,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 73.8583333333317,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 73.8583333333317,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 74.591666666665,
+			"cue": "warning"
+		},
+		{
+			"at": 74.691666666665,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 74.691666666665,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 74.691666666665,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 75.2249999999983,
+			"cue": "ui_open"
+		},
+		{
+			"at": 75.8583333333316,
+			"cue": "meteor_fall"
+		},
+		{
+			"at": 76.1249999999983,
+			"cue": "meteor_hit"
+		},
+		{
+			"at": 76.9583333333315,
+			"cue": "summon"
+		},
+		{
+			"at": 77.0916666666649,
+			"cue": "minion_spawn"
+		},
+		{
+			"at": 77.0916666666649,
+			"cue": "minion_spawn"
+		},
+		{
+			"at": 78.0916666666648,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 78.1916666666648,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 78.5249999999981,
+			"cue": "ui_select"
+		},
+		{
+			"at": 78.5916666666648,
+			"cue": "arcane_cast"
+		},
+		{
+			"at": 79.0583333333314,
+			"cue": "heal"
+		},
+		{
+			"at": 80.0916666666647,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 80.0916666666647,
+			"cue": "ui_open"
+		},
+		{
+			"at": 80.4583333333313,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 80.724999999998,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 80.924999999998,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 81.6916666666646,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 82.0916666666646,
+			"cue": "step"
+		},
+		{
+			"at": 82.1916666666646,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 82.4249999999979,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 82.6249999999979,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 83.4249999999978,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 83.8249999999978,
+			"cue": "step"
+		},
+		{
+			"at": 83.9249999999978,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 84.1583333333311,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 84.3583333333311,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 85.1583333333311,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 85.4916666666644,
+			"cue": "ui_select"
+		},
+		{
+			"at": 85.558333333331,
+			"cue": "energy_charge"
+		},
+		{
+			"at": 85.758333333331,
+			"cue": "bow_release"
+		},
+		{
+			"at": 86.0249999999977,
+			"cue": "energy_impact"
+		},
+		{
+			"at": 86.958333333331,
+			"cue": "land"
+		},
+		{
+			"at": 87.058333333331,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 87.3916666666643,
+			"cue": "ui_select"
+		},
+		{
+			"at": 87.4583333333309,
+			"cue": "illusion"
+		},
+		{
+			"at": 88.3916666666642,
+			"cue": "chain_charge"
+		},
+		{
+			"at": 88.8249999999975,
+			"cue": "chain_jump"
+		},
+		{
+			"at": 88.8249999999975,
+			"cue": "critical"
+		},
+		{
+			"at": 89.7583333333308,
+			"cue": "warning"
+		},
+		{
+			"at": 89.8583333333308,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 90.3916666666641,
+			"cue": "ui_open"
+		},
+		{
+			"at": 91.0249999999974,
+			"cue": "guard"
+		},
+		{
+			"at": 91.3583333333307,
+			"cue": "meteor_fall"
+		},
+		{
+			"at": 91.6583333333307,
+			"cue": "meteor_hit"
+		},
+		{
+			"at": 91.6583333333307,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 92.4249999999973,
+			"cue": "ui_select"
+		},
+		{
+			"at": 92.491666666664,
+			"cue": "giant"
+		},
+		{
+			"at": 93.4249999999973,
+			"cue": "hammer_swing"
+		},
+		{
+			"at": 93.6583333333306,
+			"cue": "hammer_hit"
+		},
+		{
+			"at": 93.6583333333306,
+			"cue": "critical"
+		},
+		{
+			"at": 93.6583333333306,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 93.6916666666639,
+			"cue": "hammer_swing"
+		},
+		{
+			"at": 94.0583333333306,
+			"cue": "hammer_hit"
+		},
+		{
+			"at": 94.0583333333306,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 94.7916666666639,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 94.8916666666639,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 94.8916666666639,
+			"cue": "fire_hit"
+		},
+		{
+			"at": 94.8916666666639,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 95.2583333333305,
+			"cue": "smoke"
+		},
+		{
+			"at": 96.3916666666638,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 96.4916666666638,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 96.8249999999971,
+			"cue": "ui_select"
+		},
+		{
+			"at": 99.3916666666636,
+			"cue": "dispel"
+		},
+		{
+			"at": 99.8583333333302,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 100.791666666664,
+			"cue": "warning"
+		},
+		{
+			"at": 100.891666666664,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 100.891666666664,
+			"cue": "ui_open"
+		},
+		{
+			"at": 101.424999999997,
+			"cue": "ui_open"
+		},
+		{
+			"at": 102.05833333333,
+			"cue": "meteor_fall"
+		},
+		{
+			"at": 102.324999999997,
+			"cue": "meteor_hit"
+		},
+		{
+			"at": 103.15833333333,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 103.424999999997,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 103.624999999997,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 104.391666666663,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 104.75833333333,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 105.024999999997,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 105.224999999997,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 105.991666666663,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 106.35833333333,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 106.624999999997,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 106.824999999997,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 106.824999999997,
+			"cue": "hero_death"
+		},
+		{
+			"at": 107.591666666663,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 107.924999999996,
+			"cue": "ui_select"
+		},
+		{
+			"at": 107.991666666663,
+			"cue": "bow_release"
+		},
+		{
+			"at": 108.45833333333,
+			"cue": "ice_hit"
+		},
+		{
+			"at": 108.45833333333,
+			"cue": "critical"
+		},
+		{
+			"at": 109.491666666663,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 109.824999999996,
+			"cue": "ui_select"
+		},
+		{
+			"at": 109.891666666663,
+			"cue": "illusion"
+		},
+		{
+			"at": 110.824999999996,
+			"cue": "chain_charge"
+		},
+		{
+			"at": 111.25833333333,
+			"cue": "chain_jump"
+		},
+		{
+			"at": 111.25833333333,
+			"cue": "critical"
+		},
+		{
+			"at": 112.191666666663,
+			"cue": "summon"
+		},
+		{
+			"at": 112.291666666663,
+			"cue": "critical"
+		},
+		{
+			"at": 112.291666666663,
+			"cue": "critical"
+		},
+		{
+			"at": 112.291666666663,
+			"cue": "critical"
+		},
+		{
+			"at": 112.291666666663,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 112.958333333329,
+			"cue": "step"
+		},
+		{
+			"at": 113.058333333329,
+			"cue": "step"
+		},
+		{
+			"at": 113.158333333329,
+			"cue": "step"
+		},
+		{
+			"at": 113.258333333329,
+			"cue": "step"
+		},
+		{
+			"at": 113.358333333329,
+			"cue": "hammer_swing"
+		},
+		{
+			"at": 113.824999999996,
+			"cue": "boss_hit"
+		},
+		{
+			"at": 114.591666666663,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 114.924999999996,
+			"cue": "ui_select"
+		},
+		{
+			"at": 114.991666666663,
+			"cue": "violet_beam"
+		},
+		{
+			"at": 115.458333333329,
+			"cue": "arcane_hit"
+		},
+		{
+			"at": 116.491666666663,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 116.491666666663,
+			"cue": "ui_open"
+		},
+		{
+			"at": 116.891666666663,
+			"cue": "step"
+		},
+		{
+			"at": 116.991666666663,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 117.224999999996,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 117.424999999996,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 118.124999999996,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 118.224999999996,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 118.591666666663,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 118.858333333329,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 119.058333333329,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 119.724999999996,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 119.824999999996,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 120.191666666662,
+			"cue": "laser_charge"
+		},
+		{
+			"at": 120.458333333329,
+			"cue": "laser_emit"
+		},
+		{
+			"at": 120.658333333329,
+			"cue": "laser_hit"
+		},
+		{
+			"at": 120.658333333329,
+			"cue": "hero_death"
+		},
+		{
+			"at": 121.324999999996,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 121.424999999996,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 121.758333333329,
+			"cue": "ui_select"
+		},
+		{
+			"at": 121.824999999996,
+			"cue": "flight"
+		},
+		{
+			"at": 122.758333333329,
+			"cue": "bow_release"
+		},
+		{
+			"at": 123.191666666662,
+			"cue": "arrow_hit"
+		},
+		{
+			"at": 124.224999999996,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 124.624999999995,
+			"cue": "step"
+		},
+		{
+			"at": 124.724999999995,
+			"cue": "fire_ignite"
+		},
+		{
+			"at": 125.624999999995,
+			"cue": "fire_ignite"
+		},
+		{
+			"at": 126.858333333329,
+			"cue": "ui_confirm"
+		},
+		{
+			"at": 127.191666666662,
+			"cue": "ui_select"
+		},
+		{
+			"at": 127.258333333329,
+			"cue": "violet_beam"
+		},
+		{
+			"at": 127.724999999995,
+			"cue": "arcane_hit"
+		},
+		{
+			"at": 127.724999999995,
+			"cue": "guard_hit"
+		},
+		{
+			"at": 127.724999999995,
+			"cue": "phase"
+		},
+		{
+			"at": 128.358333333329,
+			"cue": "phase"
+		},
+		{
+			"at": 129.358333333329,
+			"cue": "crown"
+		},
+		{
+			"at": 129.391666666662,
+			"cue": "victory"
+		}
+	]
+}
