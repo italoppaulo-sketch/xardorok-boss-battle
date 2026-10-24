@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xardorok · Marco 6A · Proposta sonora 01</title>
+<style>
+  :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#101218;color:#ece5d8}
+  body{max-width:880px;margin:0 auto;padding:40px 22px 60px;line-height:1.6}
+  .eyebrow{color:#e4aa69;letter-spacing:.18em;font-size:12px;text-transform:uppercase}
+  h1{font-family:Georgia,serif;font-size:clamp(32px,6vw,50px);font-weight:normal;line-height:1.12;margin:16px 0}
+  h2{font-size:19px;margin:0 0 4px}p{color:#bdc1ca;margin:8px 0 18px}
+  .hero,.effect{border:1px solid #373a42;background:#191c24;border-radius:12px;padding:24px;margin:20px 0}
+  .hero{border-top:3px solid #dc995a}.badge{font-size:12px;color:#e4aa69}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .effect{margin:0;padding:20px}.effect p{font-size:14px;min-height:44px}
+  audio{width:100%;margin:14px 0 8px}a{color:#e9bd85;text-underline-offset:3px}
+  footer{border-top:1px solid #373a42;padding-top:22px;margin-top:30px;color:#abb0bc;font-size:13px}
+</style>
+<div class="eyebrow">Xardorok Boss Battle · Marco 6A</div>
+<h1>O Último Rei<br>das Cinzas</h1>
+<p>Uma proposta de identidade sonora JRPG clássico. Ouça a música primeiro; depois compare o peso e a personalidade dos cinco efeitos. Comece com volume moderado.</p>
+<section class="hero">
+  <span class="badge">PROPOSTA 01 · INSTRUMENTAL · 75 SEGUNDOS</span>
+  <h2>Tema da batalha</h2>
+  <p>Direção: tensão, aventura e heroísmo; cordas sintetizadas, metais e baixo pulsante.</p>
+  <audio controls preload="none" src="music/o_ultimo_rei_das_cinzas_75s.ogg">Abra o arquivo OGG em seu reprodutor.</audio>
+  <a href="music/o_ultimo_rei_das_cinzas_75s.ogg" download>Baixar música OGG</a>
+</section>
+<div class="grid">
+  <section class="effect"><span class="badge">GROSSO · 2 S</span><h2>Martelo glacial</h2><p>Impacto pesado, metal forjado e fratura de gelo.</p><audio controls preload="none" src="sfx/characters/grosso_martelo.wav"></audio><a download href="sfx/characters/grosso_martelo.wav">Baixar WAV</a></section>
+  <section class="effect"><span class="badge">KODOKAMI · 3 S</span><h2>Fushigiri</h2><p>Corte de aço com ruptura de energia sobrenatural.</p><audio controls preload="none" src="sfx/characters/kodokami_fushigiri.wav"></audio><a download href="sfx/characters/kodokami_fushigiri.wav">Baixar WAV</a></section>
+  <section class="effect"><span class="badge">THUXIL · 3 S</span><h2>Raio encadeado</h2><p>Carga elétrica, descarga e ramificações sucessivas.</p><audio controls preload="none" src="sfx/characters/thuxil_raio.wav"></audio><a download href="sfx/characters/thuxil_raio.wav">Baixar WAV</a></section>
+  <section class="effect"><span class="badge">XARDOROK · 4 S</span><h2>Meteoro</h2><p>Descida, colisão rochosa, fogo e destroços.</p><audio controls preload="none" src="sfx/xardorok/xardorok_meteoro.wav"></audio><a download href="sfx/xardorok/xardorok_meteoro.wav">Baixar WAV</a></section>
+  <section class="effect"><span class="badge">ACÓLITOS · 1 S</span><h2>Laser vermelho</h2><p>Disparo arcano curto e agressivo, com cauda seca.</p><audio controls preload="none" src="sfx/minions/lacaio_laser.wav"></audio><a download href="sfx/minions/lacaio_laser.wav">Baixar WAV</a></section>
+</div>
+<footer>
+  Para aprovação: melodia memorável? Instrumentação adequada? Efeitos distinguíveis? Peso excessivo ou insuficiente?<br>
+  Arquivos gerados por IA e preparados para avaliação. Sem integração ao jogo e sem reprodução automática.<br>
+  <a href="DIRECAO_MUSICAL.md">Direção musical</a> · <a href="ORIGEM_E_LICENCAS.md">Origem e uso</a> · <a href="RELATORIO_TECNICO.md">Relatório</a>
+</footer>
+<script>
+  const players = [...document.querySelectorAll('audio')];
+  players.forEach(player => {
+    player.volume = .55;
+    player.addEventListener('play', () => players.forEach(other => { if(other !== player) other.pause(); }));
+  });
+</script>
+</html>

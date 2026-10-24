@@ -1,0 +1,35 @@
+{
+  "music": "Compose a wholly original instrumental 1990s console JRPG tactical boss battle theme titled 'O Último Rei das Cinzas' (The Last King of Ashes). 148 BPM, D minor, 4/4. Evoke the expressive sampled-orchestra palette of the 16-bit era with clean modern stereo production, NOT chiptune beeps or generic cinematic trailer music. No vocals, choir, speech, lyrics, existing melodies, or quotations. A memorable singable lead melody is essential: a bold ascending fourth, a hesitant falling step, then a rising answer; develop this ORIGINAL motif throughout, with a clear 8-bar question-and-answer identity. Human-feeling phrasing, subtle expressive dynamics, warm portamento-free brass and lush synthesized strings, pulsing articulated electric/synth bass, lively acoustic-style snare/toms/timpani, cymbal accents, tiny harp/bell highlights. Dramatic brief 4-bar introduction with low strings, ominous brass and timpani; melody enters decisively by 7 seconds. First 16 bars: adventurous heroic lead over urgent Dm-Bb-Gm-A harmony with tense C# leading tones. Next section: woodwind/string answer and bass counterline, reduce percussion briefly; then brighter F/Bb color and brass counterpoint, return to D minor. By roughly 55 seconds bring back the main hook fuller with a new countermelody, energetic drum fills and harmonic motion. Build a musically satisfying cadence near 75 seconds, not an abrupt cutoff. Maintain rhythmic propulsion suited to tactical combat, rhythmic breathing and contrasting orchestration rather than a repeated mechanical ostinato. Natural instrument attacks, no harsh piercing synths, no excessive sub-bass, no heavy limiting. Keep the original hook audible above accompaniment. This is ONE approval prototype, not a soundtrack album.",
+  "sfx": [
+    {
+      "id": "grosso_martelo",
+      "name": "Grosso — martelo glacial",
+      "duration": 2,
+      "promptText": "A single massive warhammer slams into stone and armor: deep physical thud, resonant forged metal clang, then brittle crystalline ice fractures and small shards settling. Weighty textured cinematic game Foley, compact readable attack, restrained natural room tail. No music, voice or piercing tones."
+    },
+    {
+      "id": "kodokami_fushigiri",
+      "name": "Kodokami — Fushigiri",
+      "duration": 3,
+      "promptText": "One devastating supernatural katana strike: brief tense low breath of air, fast razor-sharp blade draw and broad forceful slash, followed by dark airy energy tearing and a low resonant decay. Physical steel with eerie spectral texture, not a laser or drum impact. No voice, music, scream or shrill ringing."
+    },
+    {
+      "id": "thuxil_raio",
+      "name": "Thuxil — raio encadeado",
+      "duration": 3,
+      "promptText": "A blue arcane chain lightning discharge: tense electric charge for 0.3 seconds, sharp cracking initial bolt followed by three distinct branching sparks travelling left to right, fizzing ionized air fading naturally. Crisp varied electrical texture, restrained treble. No musical notes, voice, lasers or explosions."
+    },
+    {
+      "id": "xardorok_meteoro",
+      "name": "Xardorok — meteoro",
+      "duration": 4,
+      "promptText": "One burning meteor: rushing rocky descent grows for 1 second, then enormous stone impact and fiery explosion, gritty debris scattering with low rolling rumble and embers fading. Defined physical stages, powerful but controlled bass, dry foreground with short spacious tail. No music, voices or distorted clipping."
+    },
+    {
+      "id": "lacaio_laser",
+      "name": "Acólito — laser vermelho",
+      "duration": 1,
+      "promptText": "One short aggressive red arcane laser shot from a hooded battle mage: tiny hot charging tick, tight forceful focused energy zap with raspy sizzling edges, fast dry dissipating tail. Compact midrange punch, no shrill whistle, no metallic sword, no thunder, no music or voice."
+    }
+  ]
+}
