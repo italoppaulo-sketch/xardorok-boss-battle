@@ -139,7 +139,7 @@ func respond_meteor(b: RefCounted) -> void:
 		policy
 		in ["evita_meteoros", "evasao_excessiva", "defensivo", "cura", "antimagia", "lacaios"]
 	)
-	# Defesa usa bônus/PM quando a política prefere preservar sua ação ofensiva.
+	# Defesa usa Reação Defensiva quando a política prefere preservar sua ação ofensiva.
 	var prefer_guard := policy == "defensivo"
 	prefer_guard = prefer_guard or (policy == "agressivo" and b.units[hero].mana >= 80)
 	if policy == "evita_meteoros" and b.units[hero].hp >= 65 and b.can_observe(hero, 5):

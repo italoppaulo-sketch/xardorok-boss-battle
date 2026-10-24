@@ -5,6 +5,10 @@ extends RefCounted
 static func choose(b: RefCounted) -> Dictionary:
 	if not b.initial_summon_done and b.can_use(5, "summon", b.units[5].cell).is_empty():
 		return {"id": "summon", "cell": b.units[5].cell}
+	# A recarga própria limita a reposição; seus demais turnos continuam livres
+	# para escudo, fumaça e meteoros mesmo que todos os acólitos caiam depressa.
+	if b.living_minions() < 2 and b.can_use(5, "summon", b.units[5].cell).is_empty():
+		return {"id": "summon", "cell": b.units[5].cell}
 	var target: int = nearest_hero(b, 5)
 	if target < 0:
 		# Invocação e cobertura não precisam de uma vítima percebida.

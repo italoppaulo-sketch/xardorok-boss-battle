@@ -1,19 +1,21 @@
-# Xardorok Boss Battle — Marco 5: A Ira do Rei das Cinzas
+# Xardorok Boss Battle — Marco 5.2
 
-RPG tático em **Godot 4.7.2 / GDScript**, continuando o Marco 4. Corrige o desaparecimento indevido perto das ruínas e acrescenta escudo, aura ativável, meteoros com resposta limitada, incêndios, IA contextual e vitória cinematográfica. Os sprites aprovados dos cinco heróis e de Dalamud permanecem preservados.
+RPG tático 2D em **Godot 4.7.2 / GDScript**, baseado exclusivamente no Marco 5 aprovado, commit `b437d480c37b3834aa944b15c4e95385d567832d`. Acrescenta zoom 2D, seleção contextual, magos móveis com 90 HP, reposição de lacaios, Reação Defensiva e piso vulcânico contínuo. Os sprites aprovados permanecem preservados. Nenhum código ou ativo do Marco 5.1 foi incorporado.
 
 ## Executar no computador
 
-1. No GitHub Desktop, use **Fetch origin**, escolha **feature/marco-5-polish** e atualize a branch.
+1. No GitHub Desktop, use **Fetch origin**, escolha **feature/marco-5-2-combat-refinement** e atualize a branch.
 2. Abra `project.godot` no **Godot 4.7.2**, aguarde a importação e pressione **F5**.
 3. Se usar o ZIP, extraia o pacote inteiro em uma pasta separada e importe `project.godot`. Não copie apenas os scripts.
 
-O PR parte de `feature/marco-4-boss-hud`, pois o Marco 4 ainda aguarda revisão. Nenhuma alteração é incorporada automaticamente à `main`. Não há plugins ou dependências de execução externos.
+O PR parte de `feature/marco-5-polish`, preservando sua versão aprovada. Nenhuma alteração é incorporada automaticamente à `main`. Não há plugins ou dependências de execução externos.
 
 ## Jogar
 
 - A faixa superior mostra a iniciativa individual. Cada herói recebe **5 passos, 1 ação principal e 1 bônus** no próprio turno.
 - **1–5** ou retratos: inspecionar Grosso, Kodokami, Cassandra, Thomas e Thuxil. Só o combatente ativo pode agir.
+- **Roda do mouse:** zoom suave (0,85–1,8); **Home:** enquadramento original imediato; **botão do meio:** arrastar; **F:** centralizar no herói selecionado. O HUD permanece fixo.
+- **Tab / Shift+Tab:** alternar alvos elegíveis; **Enter:** confirmar; **Esc:** cancelar a lista contextual. Clique em uma região congestionada para abrir retratos, nomes, HP e indicação de aliado/inimigo.
 - **Esc / Mover:** clique nos pontos do piso. Movimento comum gasta passos, preservando a ação principal.
 - **A:** ataque básico. **Q / W / E / T:** habilidades da barra; clique no alvo ou no chão. Habilidades pessoais executam ao selecionar o ícone.
 - **Espaço:** encerrar turno; os inimigos agem automaticamente. Durante resposta de meteoro, confirma **manter posição**.
@@ -23,7 +25,7 @@ O PR parte de `feature/marco-4-boss-hud`, pois o Marco 4 ainda aguarda revisão.
 
 A iniciativa fixa começa com Kodokami 18, Thomas 16, Thuxil 15, Grosso 14, Xardorok 13 e Cassandra 12. Acólitos têm 17 e entram na rodada seguinte à invocação. Inspecionar outro herói não transfere o turno.
 
-## Combate e regras do Marco 5
+## Combate e regras do Marco 5.2
 
 | Recurso | Regra |
 | --- | --- |
@@ -35,9 +37,12 @@ A iniciativa fixa começa com Kodokami 18, Thomas 16, Thuxil 15, Grosso 14, Xard
 | Antimagia | Dissipa fumaça e buffs mágicos compatíveis, inclusive escudo e aura. Não remove a armadura intrínseca. |
 | Silêncio | Impede novas conjurações/reação mágica; ataques físicos continuam. Aura já ativada e escudo já lançado permanecem até expirar/dissipar. |
 | Meteoros | Marcam até 2 áreas Manhattan de raio 1. A iniciativa pausa para uma resposta de cada herói ameaçado; o impacto vem após a última, sem rodadas extras. Reações usam raio 0 e menor dano. |
-| Evasão emergencial | Exige ação disponível e destino livre fora de todas as marcas em até 2 passos. Gasta a ação. Fora do turno ativo, reserva também a próxima ação principal: esse turno começa com 0 ações; o seguinte volta a 1. Congelamento/enraizamento impedem. |
-| Defesa de meteoro | Custa 1 bônus + 8 PM atuais; reduz somente o dano dos impactos desta janela em 50%. Congelamento impede. Não renova recursos. |
+| Reação Defensiva (RD) | 1 por herói no início de cada rodada; independente da ação, bônus e PM. Não renova no início do turno próprio. Uma RD permite defender OU evadir. |
+| Evasão emergencial | Gasta 1 RD; destino livre fora de todas as marcas em até 2 passos válidos. Se o herói está no próprio turno e ainda tem ação principal, consome essa ação. Caso contrário, compromete uma ação principal futura; não debita a ação antiga de outro turno. Cada evasão cobra exatamente uma ação. Congelamento/enraizamento impedem. |
+| Defesa de meteoro | Gasta somente 1 RD; sem bônus, PM, deslocamento ou perda de ação. Reduz os impactos desta janela em 50%. Congelamento impede; enraizamento permite. Não impede incêndio, queimadura ou outros efeitos posteriores. |
 | Permanecer | Não custa recursos; recebe o dano caso continue na área. |
+| Lacaios | 90 HP, dano base 14 preservado, máximo 4 vivos. Invocação tem recarga de 3 turnos próprios do chefe e prioridade quando há menos de 2 vivos. Magos procuram distância, visão e caminhos seguros antes de disparar. |
+| Derrota dos lacaios | HP zero libera imediatamente célula e iniciativa. Após animação/dissipação de 0,65 s, remove sprite, barra e destaque. Índices históricos ficam estáveis para eventos pendentes. |
 | Incêndio | Impacto anuncia e incendeia células válidas por 2 rodadas. Entrar ou encerrar turno nelas causa 8 fogo, no máximo uma vez por combatente/turno lógico. Voo evita travessia intermediária, mas não o pouso no fogo. Não bloqueia movimento. |
 | Navegação inimiga | Considera risco de incêndio e busca caminhos alternativos. Acólitos procuram sair do fogo quando podem. |
 | Fases e reações | 900 HP; fase 2 a 450 HP, sem cura ou turno adicional. Até 2 reações por rodada, após cada 2 turnos de heróis. Brasa usa a mesma janela curta; comando fortalece magos. |
@@ -66,7 +71,7 @@ Armadura intrínseca do rei: multiplicador de dano 0,72, resistências físico 3
 
 A fumaça mantém ocultação real de corpo, nome, HP, retrato e inspeção para quem está fora da região; personagens na mesma nuvem podem se perceber. Ataques e IA mantêm LOS das ruínas. A apresentação dos sprites usa separadamente a ocultação de fumaça, evitando que uma ruína baixa apague o ator inteiro.
 
-A arena tem 119 células visuais, quatro obstáculos periféricos e 115 células transitáveis. Braseiros ocupam esses suportes; ruínas externas não alteram a navegação. O gelo decorativo foi retirado; gelo temporário das habilidades permanece. Fogo ativo do piso tem chamas animadas, distintas das texturas queimadas decorativas.
+A arena tem 119 células visuais, quatro obstáculos periféricos e 115 células transitáveis. Braseiros ocupam esses suportes; ruínas externas não alteram a navegação. O gelo decorativo foi retirado; gelo temporário das habilidades permanece. Fogo ativo usa textura de rocha negra e lava da referência original, amostrada continuamente entre células com máscara limitada às zonas realmente incendiadas. As bordas artísticas ficam dentro da célula; toda célula marcada continua perigosa. Veja as capturas comparativas em [terreno](docs/TERRENO_MARCO52.md).
 
 A vitória começa após o impacto final, com queda desacelerada visualmente, coroa desprendida e faixa dourada original. Dura 3,6 segundos e pode ser pulada. Não altera o relógio lógico do combate.
 
@@ -81,16 +86,16 @@ A vitória começa após o impacto final, com queda desacelerada visualmente, co
 
 ```text
 python tests/run_tests.py --godot CAMINHO_DO_GODOT
-python tests/report_balance.py
+python tests/report_balance52.py
 ```
 
 Testes gráficos requerem display, sem `--headless`:
 
 ```text
-godot --path . --rendering-method gl_compatibility --script tests/test_render_marco5.gd
-godot --path . --rendering-method gl_compatibility --script tests/test_match_visual_marco5.gd
+godot --path . --rendering-method gl_compatibility --script tests/test_render_terrain_marco52.gd
+godot --path . --rendering-method gl_compatibility --script tests/test_match_visual_marco52.gd
 ```
 
-Consulte [validação](docs/VALIDACAO_MARCO5.md), [balanceamento](docs/BALANCEAMENTO_MARCO5.md), [diagnóstico do bug](docs/BUG_VISIBILIDADE_MARCO5.md), [arte e licença](docs/ARTE_MARCO5.md) e [capturas reais](docs/capturas/).
+Consulte [validação 5.2](docs/VALIDACAO_MARCO52.md), [balanceamento 5.2](docs/BALANCEAMENTO_MARCO52.md), [interface](docs/INTERFACE_MARCO52.md), [terreno e antes/depois](docs/TERRENO_MARCO52.md), [arte e licença preservadas](docs/ARTE_MARCO5.md) e [capturas reais](docs/capturas/). Os relatórios antigos documentam somente seus respectivos marcos.
 
 Validação realizada em Linux com Godot 4.7.2 oficial. Windows, exportação executável e dificuldade definitiva para jogadores humanos continuam sujeitos a teste no computador do usuário. Os três seeds por política não equivalem a uma pesquisa com jogadores. Trilha e efeitos sonoros permanecem para a próxima etapa.

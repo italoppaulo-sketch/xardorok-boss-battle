@@ -55,6 +55,14 @@ func configure(index: int, forced_identity: String = "") -> void:
 	var metadata_path := "res://assets/characters/%s/atlas.json" % identity
 	var metadata: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(metadata_path))
 	idle_height = float(metadata.get("idle_height", 64))
+	# The sort origin is the real ground anchor, not the center of transparent PNGs.
+	# Keep the approved atlases intact and derive their existing feet alignment.
+	var frame_size: Array = metadata.get("frame_size", [112, 128])
+	var anchor: Array = metadata.get("anchor", [56, 118])
+	sprite.offset = Vector2(
+		float(frame_size[0]) * 0.5 - anchor[0], float(frame_size[1]) * 0.5 - anchor[1]
+	)
+	duplicate_sprite.offset = sprite.offset + Vector2(-24, 0)
 	if index == 3 or identity == "dalamud":
 		sprite.sprite_frames = sprite.sprite_frames.duplicate()
 		sprite.sprite_frames.add_animation("hover")
@@ -81,7 +89,7 @@ func animate(animation: String, duration: float = 0.55) -> void:
 
 
 func on_damage(dead: bool) -> void:
-	if not is_ready:
+	if not is_ready or was_dead:
 		return
 	if dead:
 		was_dead = true

@@ -39,6 +39,7 @@ static func create_units() -> Array[Dictionary]:
 				"move": 5,
 				"actions": 1,
 				"bonus": 1,
+				"defensive_reaction": BossConfig.DEFENSIVE_REACTIONS_PER_ROUND if i < 5 else 0,
 				"mana": 100,
 				"max_mana": 100,
 				"statuses": {},

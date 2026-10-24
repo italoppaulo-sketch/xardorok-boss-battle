@@ -291,8 +291,9 @@ const DATA := {
 		"color": "ff905a",
 		"description":
 		(
-			"Marca até 2 áreas de raio 1. Resposta imediata: manter, defender (bônus + 8 PM) "
-			+ "ou evadir até 2 passos (ação principal). Impacto após respostas; piso queima por 2 rodadas."
+			"Marca até 2 áreas de raio 1. Resposta imediata: manter, defender (redução de 50%) "
+			+ "ou evadir até 2 passos. Defesa/evasão custam 1 Reação Defensiva; evasão perde uma ação. "
+			+ "Impacto após respostas; piso queima por 2 rodadas."
 		)
 	},
 	"summon":
@@ -300,9 +301,9 @@ const DATA := {
 		"name": "Acólitos de Cinzas",
 		"target": "self",
 		"magic": true,
-		"cooldown": 4,
+		"cooldown": 3,
 		"color": "ff905a",
-		"description": "Invoca até 2 lacaios (máximo 3 vivos). Agem a partir da próxima rodada."
+		"description": "Invoca até 2 magos de 90 HP (máximo 4 vivos). Recarga 3 turnos próprios."
 	}
 }
 const LOADOUTS := [

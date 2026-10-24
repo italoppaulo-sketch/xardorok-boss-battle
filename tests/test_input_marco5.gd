@@ -37,6 +37,7 @@ func click(point: Vector2) -> void:
 
 
 func run() -> void:
+	root.size = Vector2i(1200, 700)
 	scene = load("res://scenes/main.tscn").instantiate()
 	root.add_child(scene)
 	await process_frame
@@ -62,13 +63,16 @@ func run() -> void:
 		var dest: Vector2i = destinations.keys()[0]
 		await click(scene.arena.center(dest))
 		expect(b.units[first].cell == dest, "Clique na arena executa evasão")
-		expect(b.units[first].actions == actions - 1, "HUD cobra principal da evasão")
+		expect(
+			b.units[first].actions == actions and b.emergency_action_debt.has(first),
+			"HUD compromete a próxima ação da evasão fora do turno"
+		)
 	if b.meteor_window and b.response_index >= 0:
 		var guarded: int = b.response_index
 		var pm: int = b.units[guarded].mana
 		await click(scene.hud.emergency_guard.get_global_rect().get_center())
-		expect(b.units[guarded].mana == pm - 8, "Botão Defender cobra PM")
-		expect(b.units[guarded].bonus == 0, "Botão Defender cobra bônus")
+		expect(b.units[guarded].mana == pm, "Botão Defender não cobra PM")
+		expect(b.units[guarded].defensive_reaction == 0, "Botão Defender cobra Reação Defensiva")
 	for response in 8:
 		if not b.meteor_window:
 			break
